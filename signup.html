@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitTrack - Hội viên</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <span>📞 0283 510 6868</span>
+      <span>✉ info@fittrack.com.vn</span>
+      <span>Thứ 2 - CN: 8:00 - 18:00</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">FitTrack</a>
+
+      <nav>
+        <a href="index.html">Trang chủ</a>
+        <a href="signup.html">Hội viên</a>
+        <a href="trainer.html">HLV cá nhân</a>
+        <a href="admin.html">Quản trị</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HERO -->
+    <section class="member-hero">
+
+      <div class="member-overlay"></div>
+
+      <div class="member-content">
+
+        <div class="member-left">
+          <span class="eyebrow">FitTrack Membership</span>
+
+          <h1>Đăng ký hội viên & bắt đầu hành trình khỏe mạnh</h1>
+
+          <p>
+            Theo dõi sức khỏe, nhận giáo án tập luyện cá nhân
+            và đồng hành cùng huấn luyện viên chuyên nghiệp.
+          </p>
+
+          <div class="member-benefits">
+
+            <div class="benefit-card">
+              <h3>💪 Tập luyện thông minh</h3>
+              <p>Theo dõi calories, thời lượng và tiến độ.</p>
+            </div>
+
+            <div class="benefit-card">
+              <h3>🔥 Giáo án cá nhân</h3>
+              <p>Lộ trình riêng theo mục tiêu của bạn.</p>
+            </div>
+
+            <div class="benefit-card">
+              <h3>🏆 HLV chuyên nghiệp</h3>
+              <p>Hỗ trợ và đồng hành mỗi ngày.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- FORM -->
+        <div class="auth-card">
+
+          <div class="auth-tabs">
+            <button class="tab-btn active" id="showRegister">
+              Đăng ký
+            </button>
+
+            <button class="tab-btn" id="showLogin">
+              Đăng nhập
+            </button>
+          </div>
+
+          <!-- REGISTER -->
+          <form id="signupForm" class="auth-form">
+
+            <h2>Tạo tài khoản hội viên</h2>
+
+            <input type="text" id="memberName" placeholder="Họ và tên" required />
+
+            <input type="email" id="memberEmail" placeholder="Email" required />
+
+            <input type="tel" id="memberPhone" placeholder="Số điện thoại" required />
+            
+            <input type="password" id="memberPassword" placeholder="Mật khẩu" required />
+            
+            <input type="password" id="memberConfirmPassword" placeholder="Xác nhận mật khẩu" required />
+
+            <select id="memberPlan" required>
+              <option value="Cơ bản">Gói Cơ bản</option>
+              <option value="Nâng cao">Gói Nâng cao</option>
+              <option value="Cá nhân">Gói Cá nhân</option>
+            </select>
+
+            <textarea id="memberNotes" rows="4" placeholder="Mục tiêu tập luyện..."></textarea>
+
+            <button type="submit" class="btn primary auth-btn">
+              Đăng ký hội viên
+            </button>
+
+            <p id="signupMessage" class="signup-message"></p>
+
+          </form>
+
+          <!-- LOGIN -->
+          <form id="loginForm" class="auth-form hidden">
+
+            <h2>Đăng nhập hội viên</h2>
+
+            <input type="email" placeholder="Email" required />
+
+            <input type="password" placeholder="Mật khẩu" required />
+
+            <button type="submit" class="btn primary auth-btn">
+              Đăng nhập
+            </button>
+
+            <p class="login-note">
+              Chào mừng bạn quay trở lại FitTrack 💙
+            </p>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- IMAGE SECTION -->
+    <section class="member-gallery">
+
+      <h2>Không gian tập luyện hiện đại</h2>
+
+      <div class="gallery-grid">
+
+        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438" alt="" />
+
+        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a" alt="" />
+
+        <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd" alt="" />
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+
+      <div class="footer-section">
+        <h3>Địa chỉ</h3>
+
+        <p>
+          Tầng 13, Tòa nhà Trường Thịnh,
+          Tràng An Complex, Hà Nội
+        </p>
+      </div>
+
+      <div class="footer-section">
+        <h3>Liên hệ</h3>
+
+        <p>Hotline: 0283 510 6868</p>
+        <p>Email: info@fittrack.com.vn</p>
+      </div>
+
+      <div class="footer-section">
+        <h3>Theo dõi chúng tôi</h3>
+
+        <a href="#">Facebook</a>
+        <a href="#">YouTube</a>
+        <a href="#">TikTok</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    const registerBtn = document.getElementById("showRegister");
+    const loginBtn = document.getElementById("showLogin");
+
+    const signupForm = document.getElementById("signupForm");
+    const loginForm = document.getElementById("loginForm");
+
+    registerBtn.addEventListener("click", () => {
+      signupForm.classList.remove("hidden");
+      loginForm.classList.add("hidden");
+
+      registerBtn.classList.add("active");
+      loginBtn.classList.remove("active");
+    });
+
+    loginBtn.addEventListener("click", () => {
+      loginForm.classList.remove("hidden");
+      signupForm.classList.add("hidden");
+
+      loginBtn.classList.add("active");
+      registerBtn.classList.remove("active");
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitTrack - Quản trị</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="index.html">FitTrack</a>
+        <nav>
+          <a href="index.html">Trang chủ</a>
+          <a href="workout.html">Theo dõi</a>
+          <a href="signup.html">Hội viên</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="panel hero-panel">
+        <div class="hero-grid hero-grid-center">
+          <div>
+            <span class="eyebrow">Trang quản trị</span>
+            <h1>Quản lý buổi tập hiệu quả</h1>
+            <p class="hero-text">
+              Tạo, chỉnh sửa và xóa dữ liệu luyện tập nhanh chóng. Mọi thay đổi
+              đều được lưu trực tiếp trên trình duyệt.
+            </p>
+          </div>
+          <aside class="hero-summary card-glow admin-summary-card">
+            <h2>Thông tin hiện tại</h2>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span>Tổng buổi tập</span>
+                <strong id="adminTotalWorkouts">0</strong>
+              </div>
+              <div class="summary-item">
+                <span>Bài tập phổ biến</span>
+                <strong id="adminFavoriteType">-</strong>
+              </div>
+              <div class="summary-item">
+                <span>Calories cao nhất</span>
+                <strong id="adminTotalCalories">0 kcal</strong>
+              </div>
+              <div class="summary-item">
+                <span>Buổi gần nhất</span>
+                <strong id="adminLatestDate">-</strong>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-header">
+          <h2>Danh sách buổi tập</h2>
+          <p class="section-description">
+            Xem toàn bộ dữ liệu, sau đó chọn sửa hoặc xóa khi cần.
+          </p>
+        </div>
+        <div id="adminList" class="table-wrapper"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Chỉnh sửa hoặc thêm mới</h2>
+        <form id="adminForm" class="form-grid">
+          <input type="hidden" id="workoutId" />
+          <label>
+            Ngày
+            <input type="date" id="adminDate" required />
+          </label>
+          <label>
+            Loại bài tập
+            <select id="adminType" required>
+              <option value="Chạy bộ">Chạy bộ</option>
+              <option value="Yoga">Yoga</option>
+              <option value="Gym">Gym</option>
+              <option value="Đạp xe">Đạp xe</option>
+              <option value="Bơi lội">Bơi lội</option>
+              <option value="Pilates">Pilates</option>
+            </select>
+          </label>
+          <label>
+            Thời lượng (phút)
+            <input type="number" id="adminDuration" min="1" step="1" required />
+          </label>
+          <label>
+            Calories tiêu thụ
+            <input type="number" id="adminCalories" min="0" step="1" required />
+          </label>
+          <label class="full-width">
+            Ghi chú
+            <textarea
+              id="adminNotes"
+              rows="4"
+              placeholder="Ghi chú thêm (ví dụ: buổi chạy đường dài)"
+            ></textarea>
+          </label>
+          <div class="form-actions full-width">
+            <button type="submit" class="btn primary">Lưu</button>
+            <button type="button" id="resetForm" class="btn secondary">
+              Đặt lại
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>
