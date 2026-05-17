@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 4cb64199a66102d12fba9aaddbca022698173e1b
 # FitTrack
 
 Ứng dụng FitTrack giúp bạn theo dõi buổi tập, lưu dữ liệu vào `localStorage`, và quản lý qua trang admin.
@@ -26,7 +30,10 @@ foreach ($path in $files.Keys) {
   Set-Content -Path $path -Value $files[$path] -Encoding UTF8
 }
 =======
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4cb64199a66102d12fba9aaddbca022698173e1b
 # FitTrack
 
 Ứng dụng FitTrack giúp bạn theo dõi buổi tập, lưu dữ liệu vào `localStorage`, và quản lý qua trang admin.
@@ -54,3 +61,7 @@ Dữ liệu được lưu trên máy bằng `localStorage`.
 foreach ($path in $files.Keys) {
   Set-Content -Path $path -Value $files[$path] -Encoding UTF8
 }
+<<<<<<< HEAD
+=======
+>>>>>>> 6d5b315397e7b2d76a698e4c303ad22564bad900
+>>>>>>> 4cb64199a66102d12fba9aaddbca022698173e1b

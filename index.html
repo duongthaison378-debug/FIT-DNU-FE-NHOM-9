@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 4cb64199a66102d12fba9aaddbca022698173e1b
 <!doctype html>
 <html lang="vi">
   <head>
@@ -225,3 +229,235 @@
     <script src="js/main.js"></script>
   </body>
 </html>
+<<<<<<< HEAD
+=======
+=======
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitTrack - Theo dõi tập luyện</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="top-bar">
+      <div class="container top-bar-inner">
+        <span>📞 0283 510 6868</span>
+        <span>✉ info@fittrack.com.vn</span>
+        <span>Thứ 2 - CN: 8:00 - 18:00</span>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="index.html">FitTrack</a>
+        <nav>
+          <a href="#workoutSection">Theo dõi</a>
+          <a href="signup.html">Hội viên</a>
+          <a href="trainer.html">HLV cá nhân</a>
+          <a href="admin.html">Quản trị</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="panel hero-panel">
+        <div class="hero-grid">
+          <div>
+            <span class="eyebrow">Giải pháp quản lý tập luyện</span>
+            <h1>Sức khỏe và hạnh phúc của bạn là sứ mệnh của chúng tôi</h1>
+            <p class="hero-text">
+              Khởi tạo lộ trình luyện tập, quản lý buổi tập và đăng ký hội viên
+              để nhận ưu đãi cá nhân hóa.
+            </p>
+            <div class="hero-actions">
+              <a class="btn primary" href="#workoutSection"
+                >Mở trang Theo dõi</a
+              >
+              <a class="btn secondary" href="signup.html">Đăng ký Hội viên</a>
+              <a class="btn secondary" href="trainer.html">HLV cá nhân</a>
+            </div>
+          </div>
+
+          <aside class="hero-summary card-glow">
+            <h2>FitTrack hỗ trợ</h2>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span>Theo dõi dễ dàng</span>
+                <strong>Ghi lại mọi buổi tập</strong>
+              </div>
+              <div class="summary-item">
+                <span>Ưu đãi hội viên</span>
+                <strong>Chăm sóc cá nhân</strong>
+              </div>
+              <div class="summary-item">
+                <span>Quản lý thông minh</span>
+                <strong>Tiến độ mỗi ngày</strong>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="panel sports-panel">
+        <h2>Chọn môn thể thao ưa thích</h2>
+        <div class="sports-grid">
+          <div class="sport-item">Chạy bộ</div>
+          <div class="sport-item">Yoga</div>
+          <div class="sport-item">Gym</div>
+          <div class="sport-item">Đạp xe</div>
+          <div class="sport-item">Bơi lội</div>
+          <div class="sport-item">Pilates</div>
+        </div>
+      </section>
+
+      <section class="panel features-panel">
+        <h2>FitTrack giúp bạn</h2>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <h3>Ghi buổi tập</h3>
+            <p>
+              Tạo và lưu buổi tập nhanh chóng, đồng thời ghi nhận thời lượng và
+              calories.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Thông tin hội viên</h3>
+            <p>
+              Đăng ký hội viên để nhận tin tức, ưu đãi và lộ trình tập luyện phù
+              hợp.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Huấn luyện viên cá nhân</h3>
+            <p>
+              Kết nối với HLV chuyên nghiệp để tối ưu hóa lịch tập và mục tiêu
+              sức khỏe của bạn.
+            </p>
+            <a class="btn secondary" href="trainer.html">Xem chi tiết</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel" id="workoutSection">
+        <h2>Thêm buổi tập mới</h2>
+        <form id="workoutForm" class="form-grid">
+          <label>
+            Ngày
+            <input type="date" id="date" required />
+          </label>
+          <label>
+            Loại bài tập
+            <select id="type" required>
+              <option value="Chạy bộ">Chạy bộ</option>
+              <option value="Yoga">Yoga</option>
+              <option value="Gym">Gym</option>
+              <option value="Đạp xe">Đạp xe</option>
+              <option value="Bơi lội">Bơi lội</option>
+              <option value="Pilates">Pilates</option>
+            </select>
+          </label>
+          <label>
+            Thời lượng (phút)
+            <input type="number" id="duration" min="1" step="1" required />
+          </label>
+          <label>
+            Calories tiêu thụ
+            <input type="number" id="calories" min="0" step="1" required />
+          </label>
+          <label class="full-width">
+            Ghi chú
+            <textarea
+              id="notes"
+              rows="4"
+              placeholder="Ghi chú thêm (ví dụ: chạy đường dài, yoga thư giãn)"
+            ></textarea>
+          </label>
+          <button type="submit" class="btn primary">Lưu buổi tập</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="section-header">
+          <h2>Lịch sử buổi tập đã lưu</h2>
+          <p class="section-description">
+            Xem lại các buổi tập bạn đã lưu trước đó, cùng ghi chú chi tiết.
+          </p>
+          <div class="search-container">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Tìm kiếm theo loại bài tập hoặc ghi chú..."
+            />
+          </div>
+        </div>
+        <div id="workoutList" class="list"></div>
+      </section>
+
+      <section class="panel testimonials-panel">
+        <h2>Ý kiến từ hội viên</h2>
+        <div class="testimonials-grid">
+          <div class="testimonial">
+            <p>"FitTrack giúp tôi theo dõi tiến độ tập luyện dễ dàng."</p>
+            <strong>Nguyễn Văn A</strong>
+          </div>
+          <div class="testimonial">
+            <p>"Ứng dụng tuyệt vời cho việc quản lý sức khỏe."</p>
+            <strong>Trần Thị B</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel blog-panel">
+        <h2>Kiến thức tập luyện</h2>
+        <div class="blog-grid">
+          <article class="blog-item">
+            <h3>Các nhóm cơ tập Gym</h3>
+            <p>Hướng dẫn chi tiết cho người mới bắt đầu.</p>
+            <a href="#">Đọc thêm</a>
+          </article>
+          <article class="blog-item">
+            <h3>Top 10 hoa quả ít calories</h3>
+            <p>Giúp dáng thon, da đẹp.</p>
+            <a href="#">Đọc thêm</a>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-section">
+          <h3>Địa chỉ</h3>
+          <p>
+            Tầng 13, Tòa nhà Trường Thịnh, Tràng An Complex, số 1 Phùng Chí
+            Kiên, P. Nghĩa Đô, Hà Nội
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Liên hệ</h3>
+          <p>Hotline: 0283 510 6868</p>
+          <p>Email: info@fittrack.com.vn</p>
+        </div>
+        <div class="footer-section">
+          <h3>Theo dõi chúng tôi</h3>
+          <a href="#">Facebook</a>
+          <a href="#">YouTube</a>
+          <a href="#">TikTok</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
+>>>>>>> 6d5b315397e7b2d76a698e4c303ad22564bad900
+>>>>>>> 4cb64199a66102d12fba9aaddbca022698173e1b
