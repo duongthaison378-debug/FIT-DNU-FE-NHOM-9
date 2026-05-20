@@ -1,0 +1,900 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>FitTrack - Quản trị</title>
+
+  <!-- JQUERY -->
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- FONT -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+
+      font-family: "Inter", sans-serif;
+
+      background:
+        radial-gradient(circle at top right,
+          rgba(37, 99, 235, .15),
+          transparent 30%),
+
+        radial-gradient(circle at bottom left,
+          rgba(16, 185, 129, .12),
+          transparent 25%),
+
+        #f3f6fb;
+
+      min-height: 100vh;
+
+      padding: 40px;
+
+    }
+
+    #adminDashboard {
+      display: none;
+    }
+
+    /* TOPBAR */
+
+    .admin-topbar {
+
+      background: white;
+
+      border-radius: 25px;
+
+      padding: 25px 30px;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      flex-wrap: wrap;
+
+      gap: 15px;
+
+      box-shadow:
+        0 15px 40px rgba(0, 0, 0, .08);
+
+      margin-bottom: 25px;
+
+    }
+
+    .admin-topbar h2 {
+
+      font-size: 2rem;
+
+      color: #111827;
+
+    }
+
+    .admin-topbar p {
+
+      margin-top: 5px;
+
+      color: #6b7280;
+
+    }
+
+    .admin-actions {
+
+      display: flex;
+
+      gap: 12px;
+
+      flex-wrap: wrap;
+
+    }
+
+    .admin-btn {
+
+      border: none;
+
+      padding: 12px 18px;
+
+      border-radius: 14px;
+
+      cursor: pointer;
+
+      font-weight: 700;
+
+      transition: .25s;
+
+    }
+
+    .admin-btn.home {
+
+      background: #dbeafe;
+
+      color: #2563eb;
+
+    }
+
+    .admin-btn.logout {
+
+      background: #fee2e2;
+
+      color: #dc2626;
+
+    }
+
+    .admin-btn.load {
+
+      background: #dcfce7;
+
+      color: #166534;
+
+    }
+
+    .admin-btn:hover {
+
+      transform: translateY(-2px);
+
+    }
+
+    /* SEARCH */
+
+    .search-box {
+
+      margin-bottom: 25px;
+
+    }
+
+    .search-box input {
+
+      width: 100%;
+
+      padding: 16px;
+
+      border-radius: 18px;
+
+      border: 1px solid #d1d5db;
+
+      background: white;
+
+      font-size: 1rem;
+
+    }
+
+    .search-box input:focus {
+
+      outline: none;
+
+      border-color: #2563eb;
+
+    }
+
+    /* STATS */
+
+    .admin-stats {
+
+      display: grid;
+
+      grid-template-columns: repeat(4, 1fr);
+
+      gap: 22px;
+
+      margin-bottom: 30px;
+
+    }
+
+    .admin-stat {
+
+      background: white;
+
+      border-radius: 25px;
+
+      padding: 28px;
+
+      box-shadow:
+        0 15px 40px rgba(0, 0, 0, .07);
+
+    }
+
+    .admin-stat span {
+
+      color: #6b7280;
+
+      display: block;
+
+      margin-bottom: 10px;
+
+    }
+
+    .admin-stat strong {
+
+      font-size: 2.2rem;
+
+      color: #111827;
+
+    }
+
+    /* FORM */
+
+    .admin-form-box {
+
+      background: white;
+
+      border-radius: 28px;
+
+      padding: 35px;
+
+      margin-bottom: 30px;
+
+      box-shadow:
+        0 15px 40px rgba(0, 0, 0, .07);
+
+    }
+
+    .admin-form-box h3 {
+
+      margin-bottom: 25px;
+
+      color: #111827;
+
+    }
+
+    .admin-form {
+
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 20px;
+
+    }
+
+    .admin-form input {
+
+      width: 100%;
+
+      padding: 15px;
+
+      border-radius: 16px;
+
+      border: 1px solid #d1d5db;
+
+      background: #f9fafb;
+
+    }
+
+    .admin-form button {
+
+      grid-column: 1/-1;
+
+      border: none;
+
+      border-radius: 18px;
+
+      padding: 16px;
+
+      background:
+        linear-gradient(135deg, #2563eb, #1d4ed8);
+
+      color: white;
+
+      font-size: 1rem;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+    }
+
+    /* TABLE */
+
+    .admin-table-box {
+
+      background: white;
+
+      border-radius: 28px;
+
+      padding: 35px;
+
+      overflow-x: auto;
+
+      box-shadow:
+        0 15px 40px rgba(0, 0, 0, .07);
+
+    }
+
+    .admin-table {
+
+      width: 100%;
+
+      border-collapse: collapse;
+
+      min-width: 900px;
+
+    }
+
+    .admin-table th,
+    .admin-table td {
+
+      padding: 16px;
+
+      border-bottom: 1px solid #e5e7eb;
+
+      text-align: left;
+
+    }
+
+    .admin-table th {
+
+      background: #f8fafc;
+
+      color: #6b7280;
+
+    }
+
+    .admin-table tr:hover {
+
+      background: #f9fbff;
+
+    }
+
+    .table-actions {
+
+      display: flex;
+
+      gap: 10px;
+
+    }
+
+    .edit-btn,
+    .delete-btn {
+
+      border: none;
+
+      padding: 10px 14px;
+
+      border-radius: 12px;
+
+      cursor: pointer;
+
+      font-weight: 700;
+
+      transition: .25s;
+
+    }
+
+    .edit-btn {
+
+      background: #dbeafe;
+
+      color: #2563eb;
+
+    }
+
+    .delete-btn {
+
+      background: #fee2e2;
+
+      color: #dc2626;
+
+    }
+
+    .edit-btn:hover,
+    .delete-btn:hover {
+
+      transform: translateY(-2px);
+
+    }
+
+    @media(max-width:950px) {
+
+      .admin-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .admin-form {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media(max-width:650px) {
+
+      body {
+        padding: 20px;
+      }
+
+      .admin-stats {
+        grid-template-columns: 1fr;
+      }
+
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- DASHBOARD -->
+
+  <div id="adminDashboard">
+
+    <!-- TOPBAR -->
+
+    <div class="admin-topbar">
+
+      <div>
+
+        <h2>Trang quản trị FitTrack</h2>
+
+        <p>
+
+          Quản lý bài tập và dữ liệu AJAX
+
+        </p>
+
+      </div>
+
+      <div class="admin-actions">
+
+        <button class="admin-btn home" onclick="window.location.href='index.html'">
+
+          Trang chủ
+
+        </button>
+
+        <button class="admin-btn load" onclick="loadData()">
+
+          Tải dữ liệu
+
+        </button>
+
+        <button class="admin-btn logout" id="logoutBtn">
+
+          Đăng xuất
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+      <input type="text" id="searchInput" placeholder="Tìm kiếm bài tập..." />
+
+    </div>
+
+    <!-- STATS -->
+
+    <div class="admin-stats">
+
+      <div class="admin-stat">
+
+        <span>Tổng bài tập</span>
+
+        <strong id="totalWorkout">0</strong>
+
+      </div>
+
+      <div class="admin-stat">
+
+        <span>Tổng nhóm cơ</span>
+
+        <strong id="totalGroup">0</strong>
+
+      </div>
+
+      <div class="admin-stat">
+
+        <span>Tổng calo</span>
+
+        <strong id="totalCalories">0</strong>
+
+      </div>
+
+      <div class="admin-stat">
+
+        <span>Tổng số lần</span>
+
+        <strong id="totalCount">0</strong>
+
+      </div>
+
+    </div>
+
+    <!-- FORM -->
+
+    <div class="admin-form-box">
+
+      <h3>Thêm / Chỉnh sửa bài tập</h3>
+
+      <form id="workoutForm" class="admin-form">
+
+        <input type="hidden" id="workoutId" />
+
+        <input type="text" id="TenBaiTap" placeholder="Tên bài tập" required />
+
+        <input type="text" id="NhomCo" placeholder="Nhóm cơ" required />
+
+        <input type="number" id="CaloMoiLan" placeholder="Calo mỗi lần" required />
+
+        <input type="number" id="SoLan" placeholder="Số lần" required />
+
+        <input type="date" id="Ngay" required />
+
+        <button type="submit">
+          Lưu dữ liệu
+        </button>
+
+      </form>
+
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="admin-table-box">
+
+      <h3>Danh sách bài tập</h3>
+
+      <table class="admin-table">
+
+        <thead>
+
+          <tr>
+
+            <th>ID</th>
+
+            <th>Tên bài tập</th>
+
+            <th>Nhóm cơ</th>
+
+            <th>Calo</th>
+
+            <th>Số lần</th>
+
+            <th>Ngày</th>
+
+            <th>Hành động</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="tableBody"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const API =
+      "https://69f9a93bc509a40d3aa2f648.mockapi.io/api/vl/FitTrack";
+
+    // KIỂM TRA LOGIN HỘI VIÊN
+
+    const member =
+      localStorage.getItem("fittrack_member");
+
+    // NẾU CHƯA LOGIN
+
+    if (!member) {
+
+      document.body.innerHTML = "";
+
+      window.location.href = "signup.html";
+
+    }
+
+    // NẾU ĐÃ LOGIN
+
+    else {
+
+      $("#adminDashboard").show();
+
+      loadData();
+
+    }
+
+    // ĐĂNG XUẤT
+
+    $("#logoutBtn").click(function () {
+
+      localStorage.removeItem("fittrack_member");
+
+      window.location.href = "signup.html";
+
+    });
+
+    // LOAD DATA
+
+    function loadData() {
+
+      $.ajax({
+
+        url: API,
+
+        method: "GET",
+
+        success: function (data) {
+
+          $("#tableBody").empty();
+
+          let totalCalories = 0;
+
+          let totalCount = 0;
+
+          data.forEach(function (item) {
+
+            totalCalories +=
+              Number(item.CaloMoiLan);
+
+            totalCount +=
+              Number(item.SoLan);
+
+            $("#tableBody").append(`
+
+              <tr>
+
+                <td>${item.id}</td>
+
+                <td>${item.TenBaiTap}</td>
+
+                <td>${item.NhomCo}</td>
+
+                <td>${item.CaloMoiLan}</td>
+
+                <td>${item.SoLan}</td>
+
+                <td>${item.Ngay}</td>
+
+                <td>
+
+                  <div class="table-actions">
+
+                    <button
+                    class="edit-btn"
+
+                    onclick="editWorkout(
+                    '${item.id}',
+                    '${item.TenBaiTap}',
+                    '${item.NhomCo}',
+                    '${item.CaloMoiLan}',
+                    '${item.SoLan}',
+                    '${item.Ngay}'
+                    )">
+
+                    Sửa
+
+                    </button>
+
+                    <button
+                    class="delete-btn"
+
+                    onclick="deleteWorkout(
+                    '${item.id}'
+                    )">
+
+                    Xóa
+
+                    </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            `);
+
+          });
+
+          $("#totalWorkout").text(data.length);
+
+          $("#totalGroup").text(
+
+            [...new Set(
+              data.map(i => i.NhomCo)
+            )].length
+
+          );
+
+          $("#totalCalories").text(totalCalories);
+
+          $("#totalCount").text(totalCount);
+
+        }
+
+      });
+
+    }
+
+    // SEARCH
+
+    $("#searchInput").on("keyup", function () {
+
+      const value =
+        $(this).val().toLowerCase();
+
+      $("#tableBody tr").filter(function () {
+
+        $(this).toggle(
+
+          $(this).text()
+            .toLowerCase()
+            .indexOf(value) > -1
+
+        );
+
+      });
+
+    });
+
+    // THÊM / SỬA
+
+    $("#workoutForm").submit(function (e) {
+
+      e.preventDefault();
+
+      const id =
+        $("#workoutId").val();
+
+      const workout = {
+
+        TenBaiTap:
+          $("#TenBaiTap").val(),
+
+        NhomCo:
+          $("#NhomCo").val(),
+
+        CaloMoiLan:
+          $("#CaloMoiLan").val(),
+
+        SoLan:
+          $("#SoLan").val(),
+
+        Ngay:
+          $("#Ngay").val(),
+
+      };
+
+      // UPDATE
+
+      if (id) {
+
+        $.ajax({
+
+          url: `${API}/${id}`,
+
+          method: "PUT",
+
+          data: workout,
+
+          success: function () {
+
+            alert("Cập nhật thành công");
+
+            $("#workoutForm")[0].reset();
+
+            $("#workoutId").val("");
+
+            loadData();
+
+          }
+
+        });
+
+      }
+
+      // ADD
+
+      else {
+
+        $.ajax({
+
+          url: API,
+
+          method: "POST",
+
+          data: workout,
+
+          success: function () {
+
+            alert("Thêm thành công");
+
+            $("#workoutForm")[0].reset();
+
+            loadData();
+
+          }
+
+        });
+
+      }
+
+    });
+
+    // DELETE
+
+    function deleteWorkout(id) {
+
+      if (confirm("Bạn có chắc muốn xóa?")) {
+
+        $.ajax({
+
+          url: `${API}/${id}`,
+
+          method: "DELETE",
+
+          success: function () {
+
+            loadData();
+
+          }
+
+        });
+
+      }
+
+    }
+
+    // EDIT
+
+    function editWorkout(
+
+      id,
+      TenBaiTap,
+      NhomCo,
+      CaloMoiLan,
+      SoLan,
+      Ngay
+
+    ) {
+
+      $("#workoutId").val(id);
+
+      $("#TenBaiTap").val(TenBaiTap);
+
+      $("#NhomCo").val(NhomCo);
+
+      $("#CaloMoiLan").val(CaloMoiLan);
+
+      $("#SoLan").val(SoLan);
+
+      $("#Ngay").val(Ngay);
+
+      window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+      });
+
+    }
+
+  </script>
+
+</body>
+
+</html>

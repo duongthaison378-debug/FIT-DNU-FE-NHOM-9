@@ -1,3 +1,4 @@
+/* <<<<<<< HEAD */
 :root {
   --bg: #f2f5fb;
   --surface: #ffffff;
@@ -1740,3 +1741,245 @@ tbody tr:hover {
   }
 
 }
+/* FORM CHỈNH SỬA */
+
+.edit-panel {
+  margin-top: 25px;
+
+  background: #ffffff;
+
+  border-radius: 24px;
+
+  padding: 30px;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, .08);
+
+  display: none;
+
+  animation: fadeUp .3s ease;
+}
+
+.edit-panel.active {
+  display: block;
+}
+
+.edit-title {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 25px;
+}
+
+.edit-title h3 {
+  margin: 0;
+
+  font-size: 1.5rem;
+
+  color: #111827;
+}
+
+.close-edit {
+  border: none;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  background: #fee2e2;
+
+  color: #dc2626;
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.close-edit:hover {
+  transform: rotate(90deg);
+}
+
+.edit-form {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 20px;
+}
+
+.edit-form input {
+  width: 100%;
+
+  padding: 15px;
+
+  border-radius: 16px;
+
+  border: 1px solid #d1d5db;
+
+  background: #f9fafb;
+
+  font-size: 1rem;
+}
+
+.edit-form input:focus {
+  outline: none;
+
+  border-color: #2563eb;
+
+  background: white;
+
+  box-shadow:
+    0 10px 25px rgba(37, 99, 235, .1);
+}
+
+.edit-form button {
+  grid-column: 1/-1;
+
+  border: none;
+
+  padding: 16px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(135deg,
+      #2563eb,
+      #1d4ed8);
+
+  color: white;
+
+  font-size: 1rem;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.edit-form button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 15px 30px rgba(37, 99, 235, .2);
+}
+
+/* NÚT SỬA XÓA */
+
+.table-actions {
+  display: flex;
+
+  gap: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+
+  border: none;
+
+  padding: 10px 14px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  font-weight: 700;
+
+  transition: .25s;
+}
+
+.edit-btn {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.delete-btn {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* SEARCH */
+
+.search-box {
+  margin: 20px 0;
+}
+
+.search-box input {
+  width: 100%;
+
+  padding: 16px 20px;
+
+  border-radius: 18px;
+
+  border: 1px solid #d1d5db;
+
+  background: white;
+
+  font-size: 1rem;
+}
+
+.search-box input:focus {
+  outline: none;
+
+  border-color: #2563eb;
+
+  box-shadow:
+    0 10px 25px rgba(37, 99, 235, .08);
+}
+
+/* MOBILE */
+
+@media(max-width:768px) {
+
+  .edit-form {
+    grid-template-columns: 1fr;
+  }
+
+}
+/* LOAD BUTTON */
+
+.load-btn {
+
+  border: none;
+
+  padding: 18px 30px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(135deg,
+      #10b981,
+      #059669);
+
+  color: white;
+
+  font-size: 1rem;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.load-btn:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 15px 30px rgba(16, 185, 129, .25);
+
+}
+/* =======
+>>>>>>>6d5b315397e7b2d76a698e4c303ad22564bad900 */

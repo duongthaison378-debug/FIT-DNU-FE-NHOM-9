@@ -1,3 +1,4 @@
+// <<<<<<< HEAD
 const workoutAPI = new APIResource("workouts");
 const memberAPI = new APIResource("members");
 
@@ -242,3 +243,5 @@ function initSignup() {
 
 initSignup();
 initApp();
+// =======
+// >>>>>>> 6d5b315397e7b2d76a698e4c303ad22564bad900

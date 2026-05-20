@@ -1,458 +1,807 @@
-<<<<<<< HEAD
 <!doctype html>
 <html lang="vi">
 
 <head>
+
   <meta charset="UTF-8" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>FitTrack - Hội viên</title>
 
+  <!-- FONT -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
+  <!-- CSS -->
+
   <link rel="stylesheet" href="css/style.css" />
+
+  <!-- JQUERY -->
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+
+      font-family: "Inter", sans-serif;
+
+      background:
+        linear-gradient(135deg, #eff6ff, #f8fafc);
+
+      min-height: 100vh;
+
+    }
+
+    .top-bar {
+
+      background: #111827;
+      color: white;
+      padding: 10px 0;
+
+    }
+
+    .container {
+
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+
+    }
+
+    .top-bar-inner {
+
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+
+    }
+
+    .site-header {
+
+      background: white;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, .05);
+
+    }
+
+    .header-inner {
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+
+    }
+
+    .brand {
+
+      font-size: 2rem;
+      font-weight: 800;
+      color: #2563eb;
+      text-decoration: none;
+
+    }
+
+    nav {
+
+      display: flex;
+      gap: 20px;
+
+    }
+
+    nav a {
+
+      text-decoration: none;
+      color: #111827;
+      font-weight: 600;
+
+    }
+
+    nav a:hover {
+
+      color: #2563eb;
+
+    }
+
+    .auth-page {
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 150px);
+      padding: 50px 20px;
+
+    }
+
+    .auth-container {
+
+      width: 100%;
+      max-width: 1100px;
+
+      background: white;
+
+      border-radius: 35px;
+
+      overflow: hidden;
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      box-shadow:
+        0 30px 70px rgba(0, 0, 0, .12);
+
+    }
+
+    .auth-banner {
+
+      position: relative;
+
+      background:
+        linear-gradient(135deg, #2563eb, #1d4ed8);
+
+      color: white;
+
+      padding: 50px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      overflow: hidden;
+
+    }
+
+    .auth-banner img {
+
+      width: 100%;
+      border-radius: 25px;
+      margin-top: 30px;
+
+    }
+
+    .overlay {
+
+      position: absolute;
+      inset: 0;
+
+      background:
+        radial-gradient(circle at top,
+          rgba(255, 255, 255, .2),
+          transparent 50%);
+
+    }
+
+    .banner-content {
+
+      position: relative;
+      z-index: 2;
+
+    }
+
+    .banner-content h1 {
+
+      font-size: 3rem;
+      margin-bottom: 20px;
+
+    }
+
+    .banner-content p {
+
+      line-height: 1.7;
+      opacity: .95;
+
+    }
+
+    .auth-card {
+
+      padding: 50px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+    }
+
+    .auth-top {
+
+      text-align: center;
+      margin-bottom: 30px;
+
+    }
+
+    .logo-circle {
+
+      width: 80px;
+      height: 80px;
+
+      margin: auto;
+
+      border-radius: 50%;
+
+      background:
+        linear-gradient(135deg, #2563eb, #1d4ed8);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: white;
+
+      font-size: 2rem;
+
+      margin-bottom: 20px;
+
+    }
+
+    .auth-top h1 {
+
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+
+    }
+
+    .auth-top p {
+
+      color: #6b7280;
+
+    }
+
+    .auth-form {
+
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+
+    }
+
+    .auth-form.hidden {
+
+      display: none;
+
+    }
+
+    .auth-form h2 {
+
+      color: #111827;
+
+    }
+
+    .auth-form input,
+    .auth-form select,
+    .auth-form textarea {
+
+      width: 100%;
+
+      padding: 16px;
+
+      border-radius: 16px;
+
+      border: 1px solid #d1d5db;
+
+      background: #f9fafb;
+
+      font-size: 1rem;
+
+      transition: .25s;
+
+    }
+
+    .auth-form input:focus,
+    .auth-form select:focus,
+    .auth-form textarea:focus {
+
+      outline: none;
+
+      border-color: #2563eb;
+
+      background: white;
+
+      box-shadow:
+        0 10px 25px rgba(37, 99, 235, .12);
+
+    }
+
+    .auth-btn {
+
+      border: none;
+
+      padding: 16px;
+
+      border-radius: 16px;
+
+      background:
+        linear-gradient(135deg, #2563eb, #1d4ed8);
+
+      color: white;
+
+      font-size: 1rem;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition: .3s;
+
+    }
+
+    .auth-btn:hover {
+
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 15px 30px rgba(37, 99, 235, .25);
+
+    }
+
+    .switch-text {
+
+      text-align: center;
+
+      color: #6b7280;
+
+    }
+
+    .switch-text span {
+
+      color: #2563eb;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+    }
+
+    .site-footer {
+
+      background: #111827;
+
+      color: white;
+
+      padding: 50px 0;
+
+      margin-top: 50px;
+
+    }
+
+    .footer-inner {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 30px;
+
+    }
+
+    .footer-section h3 {
+
+      margin-bottom: 15px;
+
+    }
+
+    .footer-section a {
+
+      display: block;
+
+      color: #d1d5db;
+
+      margin-bottom: 10px;
+
+      text-decoration: none;
+
+    }
+
+    @media(max-width:900px) {
+
+      .auth-container {
+
+        grid-template-columns: 1fr;
+
+      }
+
+      .footer-inner {
+
+        grid-template-columns: 1fr;
+
+      }
+
+    }
+  </style>
+
 </head>
 
 <body>
+
+  <!-- TOP -->
+
   <div class="top-bar">
+
     <div class="container top-bar-inner">
+
       <span>📞 0283 510 6868</span>
+
       <span>✉ info@fittrack.com.vn</span>
+
       <span>Thứ 2 - CN: 8:00 - 18:00</span>
+
     </div>
+
   </div>
 
+  <!-- HEADER -->
+
   <header class="site-header">
+
     <div class="container header-inner">
-      <a class="brand" href="index.html">FitTrack</a>
+
+      <a class="brand" href="index.html">
+        FitTrack
+      </a>
 
       <nav>
-        <a href="index.html">Trang chủ</a>
-        <a href="signup.html">Hội viên</a>
-        <a href="trainer.html">HLV cá nhân</a>
-        <a href="admin.html">Quản trị</a>
+
+        <a href="index.html">
+          Trang chủ
+        </a>
+
+        <a href="signup.html">
+          Hội viên
+        </a>
+
+        <a href="trainer.html">
+          HLV cá nhân
+        </a>
+
+        <a href="quanly.html">
+          Quản lý buổi tập
+        </a>
+
       </nav>
+
     </div>
+
   </header>
+
+  <!-- MAIN -->
 
   <main class="auth-page">
 
-  <div class="auth-container">
+    <div class="auth-container">
 
-    <!-- BÊN TRÁI -->
-    <div class="auth-banner">
+      <!-- LEFT -->
 
-      <div class="overlay"></div>
+      <div class="auth-banner">
 
-      <div class="banner-content">
-        <h1>FitTrack</h1>
+        <div class="overlay"></div>
 
-        <p>
-          Theo dõi luyện tập, kết nối huấn luyện viên
-          và xây dựng cơ thể khỏe mạnh mỗi ngày 💪
-        </p>
+        <div class="banner-content">
 
-        <img
-          src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop"
-          alt="Fitness"
-        />
-      </div>
+          <h1>FitTrack</h1>
 
-    </div>
+          <p>
 
-    <!-- BÊN PHẢI -->
-    <div class="auth-card">
+            Theo dõi luyện tập, kết nối huấn luyện viên
+            và xây dựng cơ thể khỏe mạnh mỗi ngày 💪
 
-      <!-- THAY PHẦN auth-tabs CŨ BẰNG ĐOẠN NÀY -->
-      
-      <div class="auth-top">
-      
-        <div class="logo-circle">
-          💪
+          </p>
+
+          <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop"
+            alt="Fitness" />
+
         </div>
-      
-        <h1>FitTrack</h1>
-      
-        <p>
-          Chào mừng bạn đến với hệ thống
-          theo dõi luyện tập hiện đại
-        </p>
-      
+
       </div>
 
-      <!-- LOGIN -->
-      <form id="loginForm" class="auth-form">
+      <!-- RIGHT -->
 
-        <h2>Chào mừng trở lại 👋</h2>
+      <div class="auth-card">
 
-        <input
-          type="email"
-          placeholder="Email"
-          id="loginEmail"
-          required
-        />
+        <div class="auth-top">
 
-        <input
-          type="password"
-          placeholder="Mật khẩu"
-          id="loginPassword"
-          required
-        />
+          <div class="logo-circle">
+            💪
+          </div>
 
-        <button
-          type="submit"
-          class="btn primary auth-btn"
-        >
-          Đăng nhập
-        </button>
+          <h1>FitTrack</h1>
 
-        <p class="switch-text">
-          Chưa có tài khoản?
+          <p>
 
-          <span id="goRegister">
-            Đăng ký ngay
-          </span>
-        </p>
+            Chào mừng bạn đến với hệ thống
+            theo dõi luyện tập hiện đại
 
-      </form>
+          </p>
 
-      <!-- REGISTER -->
-      <!-- FORM ĐĂNG KÝ -->
-      
-      <form id="signupForm" class="auth-form hidden">
-      
-        <h2>Tạo tài khoản hội viên ✨</h2>
-      
-        <p class="auth-description">
-          Điền thông tin để bắt đầu hành trình luyện tập
-        </p>
-      
-        <!-- KHÔNG CÒN CHỮ ĐĂNG NHẬP Ở TRÊN -->
-      
-        <input type="text" id="memberName" placeholder="Họ và tên" required />
-      
-        <input type="email" id="memberEmail" placeholder="Email" required />
-      
-        <input type="tel" id="memberPhone" placeholder="Số điện thoại" required />
-      
-        <input type="password" id="memberPassword" placeholder="Mật khẩu" required />
-      
-        <input type="password" id="memberConfirmPassword" placeholder="Xác nhận mật khẩu" required />
-      
-        <select id="memberPlan">
-      
-          <option>Cơ bản</option>
-      
-          <option>Nâng cao</option>
-      
-          <option>Cá nhân</option>
-      
-        </select>
-      
-        <textarea id="memberNotes" placeholder="Mục tiêu tập luyện..."></textarea>
-      
-        <button type="submit" class="btn primary auth-btn">
-          Đăng ký hội viên
-        </button>
-      
-        <p class="switch-text">
-      
-          Đã có tài khoản?
-      
-          <span id="goLogin">
+        </div>
+
+        <!-- LOGIN -->
+
+        <form id="loginForm" class="auth-form">
+
+          <h2>Chào mừng trở lại 👋</h2>
+
+          <input type="email" id="loginEmail" placeholder="Email" required />
+
+          <input type="password" id="loginPassword" placeholder="Mật khẩu" required />
+
+          <button type="submit" class="auth-btn">
             Đăng nhập
-          </span>
-      
-        </p>
-      
-      </form>
+          </button>
+
+          <p class="switch-text">
+
+            Chưa có tài khoản?
+
+            <span id="goRegister">
+              Đăng ký ngay
+            </span>
+
+          </p>
+
+        </form>
+
+        <!-- REGISTER -->
+
+        <form id="signupForm" class="auth-form hidden">
+
+          <h2>Tạo tài khoản hội viên ✨</h2>
+
+          <input type="text" id="memberName" placeholder="Họ và tên" required />
+
+          <input type="email" id="memberEmail" placeholder="Email" required />
+
+          <input type="tel" id="memberPhone" placeholder="Số điện thoại" required />
+
+          <input type="password" id="memberPassword" placeholder="Mật khẩu" required />
+
+          <input type="password" id="memberConfirmPassword" placeholder="Xác nhận mật khẩu" required />
+
+          <select id="memberPlan">
+
+            <option>Cơ bản</option>
+
+            <option>Nâng cao</option>
+
+            <option>Cá nhân</option>
+
+          </select>
+
+          <textarea id="memberNotes" placeholder="Mục tiêu tập luyện..."></textarea>
+
+          <button type="submit" class="auth-btn">
+            Đăng ký hội viên
+          </button>
+
+          <p class="switch-text">
+
+            Đã có tài khoản?
+
+            <span id="goLogin">
+              Đăng nhập
+            </span>
+
+          </p>
+
+        </form>
+
+      </div>
 
     </div>
 
-  </div>
+  </main>
 
-</main>
+  <!-- FOOTER -->
 
   <footer class="site-footer">
+
     <div class="container footer-inner">
 
       <div class="footer-section">
+
         <h3>Địa chỉ</h3>
 
         <p>
+
           Tầng 13, Tòa nhà Trường Thịnh,
           Tràng An Complex, Hà Nội
+
         </p>
+
       </div>
 
       <div class="footer-section">
+
         <h3>Liên hệ</h3>
 
         <p>Hotline: 0283 510 6868</p>
+
         <p>Email: info@fittrack.com.vn</p>
+
       </div>
 
       <div class="footer-section">
+
         <h3>Theo dõi chúng tôi</h3>
 
         <a href="#">Facebook</a>
+
         <a href="#">YouTube</a>
+
         <a href="#">TikTok</a>
+
       </div>
 
     </div>
+
   </footer>
 
-  <script src="js/api.js"></script>
-  <script src="js/main.js"></script>
+  <!-- SCRIPT -->
+
+  <script>
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const signupForm =
+      document.getElementById("signupForm");
+
+    const goLogin =
+      document.getElementById("goLogin");
+
+    const goRegister =
+      document.getElementById("goRegister");
+
+    // CHUYỂN FORM
+
+    goRegister.addEventListener("click", () => {
+
+      loginForm.classList.add("hidden");
+
+      signupForm.classList.remove("hidden");
+
+    });
+
+    goLogin.addEventListener("click", () => {
+
+      signupForm.classList.add("hidden");
+
+      loginForm.classList.remove("hidden");
+
+    });
+
+    // ĐĂNG KÝ
+
+    $("#signupForm").submit(function (e) {
+
+      e.preventDefault();
+
+      const email =
+        $("#memberEmail").val();
+
+      const password =
+        $("#memberPassword").val();
+
+      const confirmPassword =
+        $("#memberConfirmPassword").val();
+
+      if (password !== confirmPassword) {
+
+        alert("Mật khẩu xác nhận không khớp");
+
+        return;
+
+      }
+
+      let users =
+        JSON.parse(
+          localStorage.getItem("fittrack_users")
+        ) || [];
+
+      // KIỂM TRA EMAIL TRÙNG
+
+      const existed =
+        users.find(user => user.email === email);
+
+      if (existed) {
+
+        alert("Email đã tồn tại");
+
+        return;
+
+      }
+
+      // THÊM USER
+
+      users.push({
+
+        email: email,
+
+        password: password
+
+      });
+
+      localStorage.setItem(
+
+        "fittrack_users",
+
+        JSON.stringify(users)
+
+      );
+
+      alert("Đăng ký thành công");
+
+      $("#signupForm")[0].reset();
+
+      signupForm.classList.add("hidden");
+
+      loginForm.classList.remove("hidden");
+
+    });
+
+    // ĐĂNG NHẬP
+
+    $("#loginForm").submit(function (e) {
+
+      e.preventDefault();
+
+      const email =
+        $("#loginEmail").val();
+
+      const password =
+        $("#loginPassword").val();
+
+      let users =
+        JSON.parse(
+          localStorage.getItem("fittrack_users")
+        ) || [];
+
+      const user =
+        users.find(u =>
+
+          u.email === email &&
+          u.password === password
+
+        );
+
+      if (user) {
+
+        // LƯU TRẠNG THÁI LOGIN
+
+        localStorage.setItem(
+          "fittrack_member",
+          email
+        );
+
+        alert("Đăng nhập thành công");
+
+        // CHUYỂN ADMIN
+
+        window.location.href =
+          "index.html";
+
+      }
+
+      else {
+
+        alert("Sai email hoặc mật khẩu");
+
+      }
+
+    });
+
+  </script>
 
 </body>
 
 </html>
-
-<!doctype html>
-<html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FitTrack - Đăng ký hội viên</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <div class="top-bar">
-      <div class="container top-bar-inner">
-        <span>📞 0283 510 6868</span>
-        <span>✉ info@fittrack.com.vn</span>
-        <span>Thứ 2 - CN: 8:00 - 18:00</span>
-      </div>
-    </div>
-
-    <header class="site-header">
-      <div class="container header-inner">
-        <a class="brand" href="index.html">FitTrack</a>
-        <nav>
-          <a href="index.html">Trang chủ</a>
-          <a href="#workoutSection">Theo dõi</a>
-          <a href="signup.html">Hội viên</a>
-          <a href="trainer.html">HLV cá nhân</a>
-          <a href="admin.html">Quản trị</a>
-        </nav>
-      </div>
-    </header>
-
-    <main class="container">
-      <section class="panel hero-panel">
-        <div class="hero-grid">
-          <div>
-            <span class="eyebrow">Đăng ký hội viên</span>
-            <h1>Gia nhập Hội viên FitTrack</h1>
-            <p class="hero-text">
-              Nhận gói tập luyện cá nhân, ưu đãi đặc biệt và hỗ trợ từ chuyên
-              gia.
-            </p>
-          </div>
-          <aside class="hero-summary card-glow">
-            <h2>Lợi ích hội viên</h2>
-            <div class="summary-grid">
-              <div class="summary-item">
-                <span>Hỗ trợ cá nhân</span>
-                <strong>Tư vấn lộ trình</strong>
-              </div>
-              <div class="summary-item">
-                <span>Gói ưu đãi</span>
-                <strong>Ưu đãi thành viên</strong>
-              </div>
-              <div class="summary-item">
-                <span>Báo cáo tiến độ</span>
-                <strong>Thống kê hàng tuần</strong>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="section-header">
-          <h2>Thông tin đăng ký</h2>
-          <p class="section-description">
-            Điền thông tin để trở thành hội viên và nhận ưu đãi tập luyện tốt
-            hơn.
-          </p>
-        </div>
-
-        <form id="signupForm" class="form-grid signup-grid">
-          <label>
-            Họ và tên
-            <input type="text" id="memberName" required />
-          </label>
-          <label>
-            Email
-            <input type="email" id="memberEmail" required />
-          </label>
-          <label>
-            Số điện thoại
-            <input type="tel" id="memberPhone" required />
-          </label>
-          <label>
-            Gói hội viên
-            <select id="memberPlan" required>
-              <option value="Cơ bản">Cơ bản</option>
-              <option value="Nâng cao">Nâng cao</option>
-              <option value="Cá nhân">Cá nhân</option>
-            </select>
-          </label>
-          <label class="full-width">
-            Yêu cầu đặc biệt
-            <textarea
-              id="memberNotes"
-              rows="4"
-              placeholder="Ví dụ: tập giảm cân, tăng sức mạnh..."
-            ></textarea>
-          </label>
-          <button type="submit" class="btn primary full-width">
-            Đăng ký hội viên
-          </button>
-        </form>
-
-        <p id="signupMessage" class="signup-message"></p>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <div class="footer-section">
-          <h3>Địa chỉ</h3>
-          <p>
-            Tầng 13, Tòa nhà Trường Thịnh, Tràng An Complex, số 1 Phùng Chí
-            Kiên, P. Nghĩa Đô, Hà Nội
-          </p>
-        </div>
-        <div class="footer-section">
-          <h3>Liên hệ</h3>
-          <p>Hotline: 0283 510 6868</p>
-          <p>Email: info@fittrack.com.vn</p>
-        </div>
-        <div class="footer-section">
-          <h3>Theo dõi chúng tôi</h3>
-          <a href="#">Facebook</a>
-          <a href="#">YouTube</a>
-          <a href="#">TikTok</a>
-        </div>
-      </div>
-    </footer>
-
-    <script src="js/api.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/main.js"></script>
-    
-    <script>
-
-      const loginForm = document.getElementById("loginForm");
-      const signupForm = document.getElementById("signupForm");
-
-      const showLogin = document.getElementById("showLogin");
-      const showRegister = document.getElementById("showRegister");
-
-      const goLogin = document.getElementById("goLogin");
-      const goRegister = document.getElementById("goRegister");
-
-      /* TAB */
-
-      showLogin.addEventListener("click", () => {
-
-        loginForm.classList.remove("hidden");
-        signupForm.classList.add("hidden");
-
-        showLogin.classList.add("active");
-
-      });
-
-      showRegister.addEventListener("click", () => {
-
-        signupForm.classList.remove("hidden");
-        loginForm.classList.add("hidden");
-
-      });
-
-      /* TEXT SWITCH */
-
-      goLogin.addEventListener("click", () => {
-        showLogin.click();
-      });
-
-      goRegister.addEventListener("click", () => {
-        showRegister.click();
-      });
-
-    </script>
-    
-    <script src="js/api.js"></script>
-    <script src="js/main.js"></script>
-    
-    <script>
-
-      document.addEventListener("DOMContentLoaded", () => {
-
-        const loginForm =
-          document.getElementById("loginForm");
-
-        const signupForm =
-          document.getElementById("signupForm");
-
-        const goLogin =
-          document.getElementById("goLogin");
-
-        const goRegister =
-          document.getElementById("goRegister");
-
-        // CHUYỂN QUA ĐĂNG KÝ
-
-        if (goRegister) {
-
-          goRegister.addEventListener("click", () => {
-
-            loginForm.classList.add("hidden");
-
-            signupForm.classList.remove("hidden");
-
-          });
-
-        }
-
-        // CHUYỂN QUA ĐĂNG NHẬP
-
-        if (goLogin) {
-
-          goLogin.addEventListener("click", () => {
-
-            signupForm.classList.add("hidden");
-
-            loginForm.classList.remove("hidden");
-
-          });
-
-        }
-
-      });
-
-    </script>
-    
-    </body>
-    
-    </html>
-  </body>
-</html>
-  </body>
-</html>
-=======
->>>>>>> 6d5b315397e7b2d76a698e4c303ad22564bad900
-

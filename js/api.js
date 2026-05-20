@@ -1,3 +1,5 @@
+// <<<<<<< HEAD
+
 class APIResource {
   constructor(resourceName) {
     this.resourceName = resourceName;
@@ -50,3 +52,5 @@ class APIResource {
     return { id };
   }
 }
+// =======
+// >>>>>>> 6d5b315397e7b2d76a698e4c303ad22564bad900
