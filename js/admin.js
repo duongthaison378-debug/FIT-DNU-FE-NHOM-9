@@ -1,153 +1,1287 @@
-const workoutAPI = new APIResource("workouts");
-let currentEditId = "";
+// =========================================
+// FITTRACK ADMIN.JS
+// =========================================
 
-function createButton(text, className, onClick) {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = `btn ${className}`;
-  button.textContent = text;
-  button.addEventListener("click", onClick);
-  return button;
-}
+// =========================================
+// LOGIN CHECK
+// =========================================
 
-function getFavoriteType(workouts) {
-  const count = workouts.reduce((acc, workout) => {
-    acc[workout.type] = (acc[workout.type] || 0) + 1;
-    return acc;
-  }, {});
-  const sorted = Object.entries(count).sort((a, b) => b[1] - a[1]);
-  return sorted.length ? sorted[0][0] : "-";
-}
-
-async function renderAdminSummary() {
-  const workouts = await workoutAPI.layDanhSach();
-  setText("adminTotalWorkouts", workouts.length);
-  setText("adminFavoriteType", getFavoriteType(workouts));
-  setText(
-    "adminTotalCalories",
-    `${workouts.reduce((sum, item) => sum + Number(item.calories || 0), 0)} kcal`,
-  );
-  setText(
-    "adminLatestDate",
-    workouts.length ? formatDate(workouts[0].date) : "-",
-  );
-}
-
-async function renderAdminTable() {
-  const workouts = await workoutAPI.layDanhSach();
-  const container = document.getElementById("adminList");
-  if (!container) return;
-
-  await renderAdminSummary();
-
-  if (!workouts.length) {
-    container.innerHTML =
-      "<p>Chưa có buổi tập nào. Hãy thêm buổi tập trong trang chủ.</p>";
-    return;
-  }
-
-  const table = document.createElement("table");
-  table.innerHTML = `
-    <thead>
-      <tr>
-        <th>Ngày</th>
-        <th>Loại</th>
-        <th>Thời lượng</th>
-        <th>Calories</th>
-        <th>Ghi chú</th>
-        <th>Hành động</th>
-      </tr>
-    </thead>
-  `;
-
-  const body = document.createElement("tbody");
-  workouts.forEach((workout) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${formatDate(workout.date)}</td>
-      <td>${workout.type}</td>
-      <td>${formatDuration(workout.duration)}</td>
-      <td>${formatCalories(workout.calories)}</td>
-      <td>${workout.notes || "-"}</td>
-      <td></td>
-    `;
-
-    const actionCell = row.querySelector("td:last-child");
-    const editButton = createButton("Sửa", "secondary", () =>
-      fillForm(workout),
+const currentUser =
+    JSON.parse(
+        localStorage.getItem(
+            "fittrackCurrentUser"
+        )
     );
-    const deleteButton = createButton("Xóa", "danger", async () => {
-      if (confirm("Bạn có chắc muốn xóa buổi tập này?")) {
-        await workoutAPI.xoa(workout.id);
-        await renderAdminTable();
-        resetAdminForm();
-      }
+
+if (
+    !currentUser
+) {
+
+    alert(
+        "Bạn cần đăng nhập"
+    );
+
+    window.location.href =
+        "signup.html";
+
+}
+
+// =========================================
+// ELEMENTS
+// =========================================
+
+const usersTable =
+    document.getElementById(
+        "usersTable"
+    );
+
+const workoutTable =
+    document.getElementById(
+        "workoutTable"
+    );
+
+const premiumTable =
+    document.getElementById(
+        "premiumTable"
+    );
+
+const postTable =
+    document.getElementById(
+        "postTable"
+    );
+
+const totalUsers =
+    document.getElementById(
+        "totalUsers"
+    );
+
+const totalWorkouts =
+    document.getElementById(
+        "totalWorkouts"
+    );
+
+const totalPremium =
+    document.getElementById(
+        "totalPremium"
+    );
+
+const totalTrainer =
+    document.getElementById(
+        "totalTrainer"
+    );
+
+// =========================================
+// DATA
+// =========================================
+
+let users =
+    JSON.parse(
+        localStorage.getItem(
+            "fittrackUsers"
+        )
+    ) || [];
+
+let workouts =
+    JSON.parse(
+        localStorage.getItem(
+            "fittrackWorkouts"
+        )
+    ) || [];
+
+let premiums =
+    JSON.parse(
+        localStorage.getItem(
+            "fittrackPremiums"
+        )
+    ) || [];
+
+let posts =
+    JSON.parse(
+        localStorage.getItem(
+            "fittrackPosts"
+        )
+    ) || [];
+
+let schedules =
+    JSON.parse(
+        localStorage.getItem(
+            "fittrackSchedules"
+        )
+    ) || [];
+
+let trainers =
+    JSON.parse(
+        localStorage.getItem(
+            "fittrackTrainers"
+        )
+    ) || [];
+
+// =========================================
+// SAVE DATA
+// =========================================
+
+function saveUsers() {
+
+    localStorage.setItem(
+
+        "fittrackUsers",
+
+        JSON.stringify(users)
+
+    );
+
+}
+
+function saveWorkouts() {
+
+    localStorage.setItem(
+
+        "fittrackWorkouts",
+
+        JSON.stringify(workouts)
+
+    );
+
+}
+
+function savePremiums() {
+
+    localStorage.setItem(
+
+        "fittrackPremiums",
+
+        JSON.stringify(premiums)
+
+    );
+
+}
+
+function savePosts() {
+
+    localStorage.setItem(
+
+        "fittrackPosts",
+
+        JSON.stringify(posts)
+
+    );
+
+}
+
+function saveSchedules() {
+
+    localStorage.setItem(
+
+        "fittrackSchedules",
+
+        JSON.stringify(schedules)
+
+    );
+
+}
+
+function saveTrainers() {
+
+    localStorage.setItem(
+
+        "fittrackTrainers",
+
+        JSON.stringify(trainers)
+
+    );
+
+}
+
+// =========================================
+// UPDATE STATS
+// =========================================
+
+function updateStats() {
+
+    if (
+        totalUsers
+    ) {
+
+        totalUsers.innerText =
+            users.length;
+
+    }
+
+    if (
+        totalWorkouts
+    ) {
+
+        totalWorkouts.innerText =
+            workouts.length;
+
+    }
+
+    if (
+        totalPremium
+    ) {
+
+        totalPremium.innerText =
+            premiums.length;
+
+    }
+
+    if (
+        totalTrainer
+    ) {
+
+        totalTrainer.innerText =
+            trainers.length;
+
+    }
+
+}
+
+// =========================================
+// USERS MANAGEMENT
+// THAY TOÀN BỘ PHẦN USERS CŨ
+// =========================================
+
+// =========================================
+// USERS DATA
+// =========================================
+
+let users =
+    JSON.parse(
+        localStorage.getItem(
+            "fittrackUsers"
+        )
+    ) || [];
+
+// =========================================
+// ELEMENTS
+// =========================================
+
+const usersTable =
+    document.getElementById(
+        "usersTable"
+    );
+
+const totalUsers =
+    document.getElementById(
+        "totalUsers"
+    );
+
+// =========================================
+// UPDATE STATS
+// =========================================
+
+function updateStats(){
+
+    if(
+        totalUsers
+    ){
+
+        totalUsers.innerText =
+            users.length;
+
+    }
+
+}
+
+// =========================================
+// RENDER USERS
+// =========================================
+
+function renderUsers(){
+
+    if(
+        !usersTable
+    ) return;
+
+    usersTable.innerHTML = "";
+
+    users.forEach(
+        (user,index)=>{
+
+            usersTable.innerHTML += `
+
+                <tr>
+
+                    <td>
+
+                        ${index + 1}
+
+                    </td>
+
+                    <td>
+
+                        <input
+                            type="text"
+                            value="${user.name}"
+                            id="name-${index}"
+                            class="table-input">
+
+                    </td>
+
+                    <td>
+
+                        <input
+                            type="email"
+                            value="${user.email}"
+                            id="email-${index}"
+                            class="table-input">
+
+                    </td>
+
+                    <td>
+
+                        <input
+                            type="text"
+                            value="${user.password}"
+                            id="password-${index}"
+                            class="table-input">
+
+                    </td>
+
+                    <td>
+
+                        <select
+                            id="role-${index}"
+                            class="table-input">
+
+                            <option
+                            value="user"
+                            ${user.role === "user"
+                            ? "selected"
+                            : ""}>
+
+                                User
+
+                            </option>
+
+                            <option
+                            value="admin"
+                            ${user.role === "admin"
+                            ? "selected"
+                            : ""}>
+
+                                Admin
+
+                            </option>
+
+                            <option
+                            value="trainer"
+                            ${user.role === "trainer"
+                            ? "selected"
+                            : ""}>
+
+                                Trainer
+
+                            </option>
+
+                        </select>
+
+                    </td>
+
+                    <td>
+
+                        <div
+                        class="action-buttons">
+
+                            <button
+                            class="btn btn-blue"
+                            onclick="saveUser(${index})">
+
+                                Lưu
+
+                            </button>
+
+                            <button
+                            class="btn btn-red"
+                            onclick="deleteUser(${index})">
+
+                                Xóa
+
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+    updateStats();
+
+}
+
+// =========================================
+// ADD USER
+// =========================================
+
+function addUser(){
+
+    const name =
+        document.getElementById(
+            "userName"
+        ).value;
+
+    const email =
+        document.getElementById(
+            "userEmail"
+        ).value;
+
+    const password =
+        document.getElementById(
+            "userPassword"
+        ).value;
+
+    const role =
+        document.getElementById(
+            "userRole"
+        ).value;
+
+    if(
+        !name ||
+        !email ||
+        !password
+    ){
+
+        alert(
+            "Vui lòng nhập đầy đủ thông tin"
+        );
+
+        return;
+
+    }
+
+    const emailExists =
+        users.some(
+            user =>
+                user.email === email
+        );
+
+    if(
+        emailExists
+    ){
+
+        alert(
+            "Email đã tồn tại"
+        );
+
+        return;
+
+    }
+
+    users.push({
+
+        name,
+        email,
+        password,
+        role
+
     });
 
-    const actionGroup = document.createElement("div");
-    actionGroup.className = "action-group";
-    actionGroup.append(editButton, deleteButton);
-    actionCell.appendChild(actionGroup);
-    body.appendChild(row);
-  });
+    localStorage.setItem(
 
-  table.appendChild(body);
-  container.innerHTML = "";
-  container.appendChild(table);
+        "fittrackUsers",
+
+        JSON.stringify(users)
+
+    );
+
+    renderUsers();
+
+    alert(
+        "Thêm tài khoản thành công"
+    );
+
+    // RESET FORM
+
+    document.getElementById(
+        "userName"
+    ).value = "";
+
+    document.getElementById(
+        "userEmail"
+    ).value = "";
+
+    document.getElementById(
+        "userPassword"
+    ).value = "";
+
 }
 
-function fillForm(workout) {
-  currentEditId = workout.id;
-  document.getElementById("workoutId").value = workout.id;
-  document.getElementById("adminDate").value = workout.date;
-  document.getElementById("adminType").value = workout.type;
-  document.getElementById("adminDuration").value = workout.duration;
-  document.getElementById("adminCalories").value = workout.calories;
-  document.getElementById("adminNotes").value = workout.notes || "";
+// =========================================
+// SAVE USER
+// =========================================
+
+function saveUser(index){
+
+    const newName =
+        document.getElementById(
+            `name-${index}`
+        ).value;
+
+    const newEmail =
+        document.getElementById(
+            `email-${index}`
+        ).value;
+
+    const newPassword =
+        document.getElementById(
+            `password-${index}`
+        ).value;
+
+    const newRole =
+        document.getElementById(
+            `role-${index}`
+        ).value;
+
+    users[index] = {
+
+        ...users[index],
+
+        name: newName,
+        email: newEmail,
+        password: newPassword,
+        role: newRole
+
+    };
+
+    localStorage.setItem(
+
+        "fittrackUsers",
+
+        JSON.stringify(users)
+
+    );
+
+    // UPDATE CURRENT USER
+
+    const currentUser =
+        JSON.parse(
+            localStorage.getItem(
+                "fittrackCurrentUser"
+            )
+        );
+
+    if(
+        currentUser &&
+        currentUser.email === users[index].email
+    ){
+
+        localStorage.setItem(
+
+            "fittrackCurrentUser",
+
+            JSON.stringify(users[index])
+
+        );
+
+    }
+
+    renderUsers();
+
+    alert(
+        "Cập nhật tài khoản thành công"
+    );
+
 }
 
-function resetAdminForm() {
-  currentEditId = "";
-  const form = document.getElementById("adminForm");
-  if (form) form.reset();
-  document.getElementById("workoutId").value = "";
+// =========================================
+// DELETE USER
+// =========================================
+
+function deleteUser(index){
+
+    const confirmDelete =
+        confirm(
+            "Bạn có chắc muốn xóa tài khoản này?"
+        );
+
+    if(
+        !confirmDelete
+    ){
+
+        return;
+
+    }
+
+    users.splice(index,1);
+
+    localStorage.setItem(
+
+        "fittrackUsers",
+
+        JSON.stringify(users)
+
+    );
+
+    renderUsers();
+
+    alert(
+        "Xóa tài khoản thành công"
+    );
+
 }
 
-async function handleAdminSubmit(event) {
-  event.preventDefault();
-  const id = document.getElementById("workoutId").value;
-  const date = document.getElementById("adminDate").value;
-  const type = document.getElementById("adminType").value;
-  const duration = document.getElementById("adminDuration").value;
-  const calories = document.getElementById("adminCalories").value;
-  const notes = document.getElementById("adminNotes").value.trim();
+// =========================================
+// ADD USER BUTTON
+// =========================================
 
-  if (!date || !type || !duration || !calories) return;
+const addUserBtn =
+    document.getElementById(
+        "addUserBtn"
+    );
 
-  const workoutData = {
-    date,
-    type,
-    duration: Number(duration),
-    calories: Number(calories),
-    notes,
-  };
+if(
+    addUserBtn
+){
 
-  if (id) {
-    await workoutAPI.capNhat(id, workoutData);
-  } else {
-    await workoutAPI.themMoi(workoutData);
-  }
+    addUserBtn.addEventListener(
+        "click",
+        addUser
+    );
 
-  await renderAdminTable();
-  resetAdminForm();
 }
 
-function initAdminPage() {
-  const form = document.getElementById("adminForm");
-  if (form) form.addEventListener("submit", handleAdminSubmit);
-  const resetButton = document.getElementById("resetForm");
-  if (resetButton) resetButton.addEventListener("click", resetAdminForm);
-  renderAdminTable();
+// =========================================
+// INIT
+// =========================================
+
+renderUsers();
+updateStats();
+
+function deleteUser(index) {
+
+    users.splice(index, 1);
+
+    saveUsers();
+
+    renderUsers();
+
 }
 
-initAdminPage();
+// =========================================
+// WORKOUTS
+// =========================================
+
+function renderWorkouts() {
+
+    if (
+        !workoutTable
+    ) return;
+
+    workoutTable.innerHTML = "";
+
+    workouts.forEach(
+        (workout, index) => {
+
+            workoutTable.innerHTML += `
+
+                <tr>
+
+                    <td>
+
+                        ${workout.name}
+
+                    </td>
+
+                    <td>
+
+                        ${workout.level}
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-red"
+                            onclick="deleteWorkout(${index})">
+
+                            Xóa
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+    updateStats();
+
+}
+
+function addWorkout() {
+
+    const name =
+        document.getElementById(
+            "workoutName"
+        ).value;
+
+    const level =
+        document.getElementById(
+            "workoutLevel"
+        ).value;
+
+    workouts.push({
+
+        name,
+        level
+
+    });
+
+    saveWorkouts();
+
+    renderWorkouts();
+
+}
+
+function deleteWorkout(index) {
+
+    workouts.splice(index, 1);
+
+    saveWorkouts();
+
+    renderWorkouts();
+
+}
+
+// =========================================
+// PREMIUM
+// =========================================
+
+function renderPremiums() {
+
+    if (
+        !premiumTable
+    ) return;
+
+    premiumTable.innerHTML = "";
+
+    premiums.forEach(
+        (premium, index) => {
+
+            premiumTable.innerHTML += `
+
+                <tr>
+
+                    <td>
+
+                        ${premium.name}
+
+                    </td>
+
+                    <td>
+
+                        ${premium.price} VNĐ
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-red"
+                            onclick="deletePremium(${index})">
+
+                            Xóa
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+    updateStats();
+
+}
+
+function addPremium() {
+
+    const name =
+        document.getElementById(
+            "premiumName"
+        ).value;
+
+    const price =
+        document.getElementById(
+            "premiumPrice"
+        ).value;
+
+    premiums.push({
+
+        name,
+        price
+
+    });
+
+    savePremiums();
+
+    renderPremiums();
+
+}
+
+function deletePremium(index) {
+
+    premiums.splice(index, 1);
+
+    savePremiums();
+
+    renderPremiums();
+
+}
+
+// =========================================
+// POSTS
+// =========================================
+
+function renderPosts() {
+
+    if (
+        !postTable
+    ) return;
+
+    postTable.innerHTML = "";
+
+    posts.forEach(
+        (post, index) => {
+
+            postTable.innerHTML += `
+
+                <tr>
+
+                    <td>
+
+                        ${post.title}
+
+                    </td>
+
+                    <td>
+
+                        ${post.content}
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-red"
+                            onclick="deletePost(${index})">
+
+                            Xóa
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+}
+
+function addPost() {
+
+    const title =
+        document.getElementById(
+            "postTitle"
+        ).value;
+
+    const content =
+        document.getElementById(
+            "postContent"
+        ).value;
+
+    posts.push({
+
+        title,
+        content
+
+    });
+
+    savePosts();
+
+    renderPosts();
+
+}
+
+function deletePost(index) {
+
+    posts.splice(index, 1);
+
+    savePosts();
+
+    renderPosts();
+
+}
+
+// =========================================
+// SETTINGS
+// =========================================
+
+function saveSettings() {
+
+    const siteTitle =
+        document.getElementById(
+            "siteTitle"
+        ).value;
+
+    const themeColor =
+        document.getElementById(
+            "themeColor"
+        ).value;
+
+    localStorage.setItem(
+
+        "fittrackSiteTitle",
+
+        siteTitle
+
+    );
+
+    localStorage.setItem(
+
+        "fittrackThemeColor",
+
+        themeColor
+
+    );
+
+    document.documentElement.style
+        .setProperty(
+            "--primary-color",
+            themeColor
+        );
+
+    alert(
+        "Lưu cài đặt thành công"
+    );
+
+}
+
+// =========================================
+// LOGOUT
+// =========================================
+
+const logoutBtn =
+    document.getElementById(
+        "logoutBtn"
+    );
+
+if (
+    logoutBtn
+) {
+
+    logoutBtn.addEventListener(
+        "click",
+        () => {
+
+            localStorage.removeItem(
+                "fittrackCurrentUser"
+            );
+
+            alert(
+                "Đăng xuất thành công"
+            );
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+}
+
+// =========================================
+// EVENT LISTENERS
+// =========================================
+
+const addUserBtn =
+    document.getElementById(
+        "addUserBtn"
+    );
+
+if (
+    addUserBtn
+) {
+
+    addUserBtn.addEventListener(
+        "click",
+        addUser
+    );
+
+}
+
+const addWorkoutBtn =
+    document.getElementById(
+        "addWorkoutBtn"
+    );
+
+if (
+    addWorkoutBtn
+) {
+
+    addWorkoutBtn.addEventListener(
+        "click",
+        addWorkout
+    );
+
+}
+
+const addPremiumBtn =
+    document.getElementById(
+        "addPremiumBtn"
+    );
+
+if (
+    addPremiumBtn
+) {
+
+    addPremiumBtn.addEventListener(
+        "click",
+        addPremium
+    );
+
+}
+
+const addPostBtn =
+    document.getElementById(
+        "addPostBtn"
+    );
+
+if (
+    addPostBtn
+) {
+
+    addPostBtn.addEventListener(
+        "click",
+        addPost
+    );
+
+}
+
+const saveSettingsBtn =
+    document.getElementById(
+        "saveSettingsBtn"
+    );
+
+if (
+    saveSettingsBtn
+) {
+
+    saveSettingsBtn.addEventListener(
+        "click",
+        saveSettings
+    );
+
+}
+
+// =========================================
+// INIT
+// =========================================
+
+renderUsers();
+
+renderWorkouts();
+
+renderPremiums();
+
+renderPosts();
+
+updateStats();
+// =========================================
+// SCHEDULE
+// =========================================
+
+const scheduleTable =
+    document.getElementById(
+        "scheduleTable"
+    );
+
+function renderSchedules() {
+
+    if (
+        !scheduleTable
+    ) return;
+
+    scheduleTable.innerHTML = "";
+
+    schedules.forEach(
+        (schedule, index) => {
+
+            scheduleTable.innerHTML += `
+
+                <tr>
+
+                    <td>
+
+                        ${schedule.title}
+
+                    </td>
+
+                    <td>
+
+                        ${schedule.date}
+
+                    </td>
+
+                    <td>
+
+                        ${schedule.time}
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-red"
+                            onclick="deleteSchedule(${index})">
+
+                            Xóa
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+}
+
+function deleteSchedule(index) {
+
+    schedules.splice(index, 1);
+
+    saveSchedules();
+
+    renderSchedules();
+
+}
+
+// =========================================
+// TRAINER
+// =========================================
+
+const trainerTable =
+    document.getElementById(
+        "trainerTable"
+    );
+
+function renderTrainers() {
+
+    if (
+        !trainerTable
+    ) return;
+
+    trainerTable.innerHTML = "";
+
+    trainers.forEach(
+        (trainer, index) => {
+
+            trainerTable.innerHTML += `
+
+                <tr>
+
+                    <td>
+
+                        ${trainer.name}
+
+                    </td>
+
+                    <td>
+
+                        ${trainer.special}
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-red"
+                            onclick="deleteTrainer(${index})">
+
+                            Xóa
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+}
+
+function addTrainer() {
+
+    const name =
+        document.getElementById(
+            "trainerName"
+        ).value;
+
+    const special =
+        document.getElementById(
+            "trainerSpecial"
+        ).value;
+
+    trainers.push({
+
+        name,
+        special
+
+    });
+
+    saveTrainers();
+
+    renderTrainers();
+
+}
+
+function deleteTrainer(index) {
+
+    trainers.splice(index, 1);
+
+    saveTrainers();
+
+    renderTrainers();
+
+}
+
+const addTrainerBtn =
+    document.getElementById(
+        "addTrainerBtn"
+    );
+
+if (
+    addTrainerBtn
+) {
+
+    addTrainerBtn.addEventListener(
+        "click",
+        addTrainer
+    );
+
+}
+
+renderSchedules();
+
+renderTrainers();
