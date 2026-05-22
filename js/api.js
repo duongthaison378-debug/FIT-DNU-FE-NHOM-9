@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* =========================================
    FITTRACK API.JS
 ========================================= */
@@ -11,6 +12,31 @@ const API_BASE_URL =
 
 class APIResource{
 
+=======
+<<<<<<< HEAD
+/* =========================================
+   FITTRACK API.JS
+========================================= */
+=======
+// <<<<<<< HEAD
+
+class APIResource {
+  constructor(resourceName) {
+    this.resourceName = resourceName;
+    this.storageKey = `fittrack_${resourceName}`;
+  }
+>>>>>>> bd0f2e60372e16c10e1317ac2494898e0b270600
+
+const API_BASE_URL =
+    "https://jsonplaceholder.typicode.com";
+
+/* =========================================
+   API CLASS
+========================================= */
+
+class APIResource{
+
+>>>>>>> ebf787379a51bedf9f618bf2160cafe79046ff22
     constructor(resourceName){
 
         this.resourceName =
@@ -300,6 +326,10 @@ class APIResource{
     }
 
 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> ebf787379a51bedf9f618bf2160cafe79046ff22
 
 /* =========================================
    USERS API
@@ -1303,4 +1333,12 @@ function clearFitTrackDatabase() {
         "Đã xóa toàn bộ dữ liệu"
     );
 
+<<<<<<< HEAD
 }
+=======
+}
+=======
+// =======
+// >>>>>>> 6d5b315397e7b2d76a698e4c303ad22564bad900
+>>>>>>> bd0f2e60372e16c10e1317ac2494898e0b270600
+>>>>>>> ebf787379a51bedf9f618bf2160cafe79046ff22

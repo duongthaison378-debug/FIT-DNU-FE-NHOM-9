@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        FitTrack - Quản Lý Buổi Tập
+    </title>
+
+    <!-- GOOGLE FONT -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- CSS -->
+
+    <style>
+        * {
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        body {
+
+            font-family: "Inter", sans-serif;
+            background: #0f172a;
+            color: white;
+            line-height: 1.6;
+
+        }
+
+        a {
+
+            text-decoration: none;
+
+        }
+
+        img {
+
+            width: 100%;
+            display: block;
+
+        }
+
+        .container {
+
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .site-header {
+
+            width: 100%;
+            background: #111827;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+
+        }
+
+        .header-inner {
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+
+        }
+
+        .brand {
+
+            color: #22c55e;
+            font-size: 30px;
+            font-weight: 800;
+
+        }
+
+        .menu-toggle {
+
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+
+        }
+
+        .main-nav {
+
+            display: flex;
+            gap: 20px;
+
+        }
+
+        .main-nav a {
+
+            color: white;
+            transition: 0.3s;
+
+        }
+
+        .main-nav a:hover {
+
+            color: #22c55e;
+
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .workout-hero {
+
+            padding: 80px 0;
+            text-align: center;
+
+        }
+
+        .workout-hero h1 {
+
+            font-size: 60px;
+            margin-bottom: 20px;
+
+        }
+
+        .workout-hero p {
+
+            color: #cbd5e1;
+            max-width: 700px;
+            margin: auto;
+
+        }
+
+        /* =========================
+           SECTION TITLE
+        ========================= */
+
+        .section-title {
+
+            text-align: center;
+            margin-bottom: 50px;
+
+        }
+
+        .section-title span {
+
+            color: #22c55e;
+            font-size: 14px;
+            font-weight: 700;
+
+        }
+
+        .section-title h2 {
+
+            font-size: 42px;
+            margin-top: 10px;
+
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-section {
+
+            padding: 60px 0;
+
+        }
+
+        .workout-form {
+
+            background: #1e293b;
+            padding: 40px;
+            border-radius: 25px;
+            max-width: 700px;
+            margin: auto;
+
+        }
+
+        .workout-form input,
+        .workout-form select,
+        .workout-form textarea {
+
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 12px;
+            background: #334155;
+            color: white;
+            font-size: 15px;
+            outline: none;
+
+        }
+
+        .workout-form textarea {
+
+            resize: none;
+            height: 120px;
+
+        }
+
+        .btn {
+
+            display: inline-block;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: #22c55e;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+
+        }
+
+        .btn:hover {
+
+            background: #16a34a;
+
+        }
+
+        /* =========================
+           WORKOUT GRID
+        ========================= */
+
+        .workout-section {
+
+            padding: 80px 0;
+
+        }
+
+        .workout-grid {
+
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+
+        }
+
+        .workout-card {
+
+            background: #1e293b;
+            border-radius: 25px;
+            overflow: hidden;
+            transition: 0.3s;
+
+        }
+
+        .workout-card:hover {
+
+            transform: translateY(-6px);
+
+        }
+
+        .workout-card img {
+
+            height: 220px;
+            object-fit: cover;
+
+        }
+
+        .workout-info {
+
+            padding: 25px;
+
+        }
+
+        .workout-info h3 {
+
+            margin-bottom: 15px;
+            color: #22c55e;
+
+        }
+
+        .workout-info p {
+
+            color: #cbd5e1;
+            margin-bottom: 12px;
+
+        }
+
+        .workout-level {
+
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: #334155;
+            margin-bottom: 18px;
+            font-size: 13px;
+
+        }
+
+        .delete-btn {
+
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: #ef4444;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+
+        }
+
+        .delete-btn:hover {
+
+            background: #dc2626;
+
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats-section {
+
+            padding: 80px 0;
+
+        }
+
+        .stats-grid {
+
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+
+        }
+
+        .stats-card {
+
+            background: #1e293b;
+            padding: 35px;
+            border-radius: 25px;
+            text-align: center;
+
+        }
+
+        .stats-card h3 {
+
+            font-size: 45px;
+            color: #22c55e;
+            margin-bottom: 10px;
+
+        }
+
+        .stats-card p {
+
+            color: #cbd5e1;
+
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .site-footer {
+
+            background: #111827;
+            margin-top: 80px;
+
+        }
+
+        .footer-inner {
+
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            padding: 60px 0;
+
+        }
+
+        .footer-section h3 {
+
+            margin-bottom: 20px;
+
+        }
+
+        .footer-section a {
+
+            display: block;
+            margin-bottom: 10px;
+            color: #cbd5e1;
+
+        }
+
+        .footer-section a:hover {
+
+            color: #22c55e;
+
+        }
+
+        .footer-bottom {
+
+            border-top: 1px solid #1e293b;
+            text-align: center;
+            padding: 20px;
+            color: #94a3b8;
+
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width:900px) {
+
+            .menu-toggle {
+
+                display: block;
+
+            }
+
+            .main-nav {
+
+                position: absolute;
+                top: 80px;
+                right: 0;
+                background: #111827;
+                width: 280px;
+                flex-direction: column;
+                padding: 20px;
+                display: none;
+
+            }
+
+            .main-nav.show-menu {
+
+                display: flex;
+
+            }
+
+            .workout-hero h1 {
+
+                font-size: 40px;
+
+            }
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header class="site-header">
+
+        <div class="container header-inner">
+
+            <a href="index.html" class="brand">
+
+                FitTrack
+
+            </a>
+
+            <button class="menu-toggle" id="menuToggle">
+
+                ☰
+
+            </button>
+
+            <nav class="main-nav" id="mainNav">
+
+                <a href="index.html">
+                    Trang chủ
+                </a>
+
+                <a href="schedule.html">
+                    Lịch tập
+                </a>
+
+                <a href="nutrition.html">
+                    Dinh dưỡng
+                </a>
+
+                <a href="trainer.html">
+                    HLV
+                </a>
+
+                <a href="premium.html">
+                    Premium
+                </a>
+
+                <a href="support.html">
+                    Hỗ trợ
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+    <!-- =========================
+         HERO
+    ========================= -->
+
+    <section class="workout-hero">
+
+        <div class="container">
+
+            <h1>
+
+                Quản lý buổi tập
+
+            </h1>
+
+            <p>
+
+                Theo dõi các bài tập,
+                tạo workout plan,
+                quản lý thời gian luyện tập
+                và nâng cao thể lực mỗi ngày.
+
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         FORM
+    ========================= -->
+
+    <section class="form-section">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <span>
+
+                    CREATE WORKOUT
+
+                </span>
+
+                <h2>
+
+                    Tạo bài tập mới
+
+                </h2>
+
+            </div>
+
+            <div class="workout-form">
+
+                <input type="text" id="workoutName" placeholder="Tên bài tập">
+
+                <select id="workoutType">
+
+                    <option value="Gym">
+
+                        Gym
+
+                    </option>
+
+                    <option value="Cardio">
+
+                        Cardio
+
+                    </option>
+
+                    <option value="Yoga">
+
+                        Yoga
+
+                    </option>
+
+                    <option value="HIIT">
+
+                        HIIT
+
+                    </option>
+
+                </select>
+
+                <select id="workoutLevel">
+
+                    <option value="Beginner">
+
+                        Beginner
+
+                    </option>
+
+                    <option value="Intermediate">
+
+                        Intermediate
+
+                    </option>
+
+                    <option value="Advanced">
+
+                        Advanced
+
+                    </option>
+
+                </select>
+
+                <input type="number" id="workoutDuration" placeholder="Thời gian tập (phút)">
+
+                <textarea id="workoutDescription" placeholder="Mô tả bài tập"></textarea>
+
+                <button class="btn" id="addWorkoutBtn">
+
+                    Thêm bài tập
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         WORKOUT LIST
+    ========================= -->
+
+    <section class="workout-section">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <span>
+
+                    WORKOUT LIST
+
+                </span>
+
+                <h2>
+
+                    Danh sách bài tập
+
+                </h2>
+
+            </div>
+
+            <div class="workout-grid" id="workoutGrid">
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         STATS
+    ========================= -->
+
+    <section class="stats-section">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <span>
+
+                    WORKOUT STATS
+
+                </span>
+
+                <h2>
+
+                    Thống kê luyện tập
+
+                </h2>
+
+            </div>
+
+            <div class="stats-grid">
+
+                <div class="stats-card">
+
+                    <h3 id="totalWorkout">
+
+                        0
+
+                    </h3>
+
+                    <p>
+
+                        Tổng bài tập
+
+                    </p>
+
+                </div>
+
+                <div class="stats-card">
+
+                    <h3 id="totalDuration">
+
+                        0
+
+                    </h3>
+
+                    <p>
+
+                        Tổng thời gian (phút)
+
+                    </p>
+
+                </div>
+
+                <div class="stats-card">
+
+                    <h3>
+
+                        7
+
+                    </h3>
+
+                    <p>
+
+                        Ngày hoạt động
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer class="site-footer">
+
+        <div class="container footer-inner">
+
+            <div class="footer-section">
+
+                <h3>
+
+                    FitTrack
+
+                </h3>
+
+                <p>
+
+                    Fitness Management System
+
+                </p>
+
+            </div>
+
+            <div class="footer-section">
+
+                <h3>
+
+                    Liên kết
+
+                </h3>
+
+                <a href="index.html">
+
+                    Trang chủ
+
+                </a>
+
+                <a href="schedule.html">
+
+                    Lịch tập
+
+                </a>
+
+                <a href="nutrition.html">
+
+                    Dinh dưỡng
+
+                </a>
+
+            </div>
+
+            <div class="footer-section">
+
+                <h3>
+
+                    Hỗ trợ
+
+                </h3>
+
+                <a href="support.html">
+
+                    Trung tâm hỗ trợ
+
+                </a>
+
+            </div>
+
+            <div class="footer-section">
+
+                <h3>
+
+                    Liên hệ
+
+                </h3>
+
+                <p>
+
+                    📞 0283 510 6868
+
+                </p>
+
+                <p>
+
+                    ✉ support@fittrack.com
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            © 2026 FitTrack.
+            All Rights Reserved.
+
+        </div>
+
+    </footer>
+
+    <!-- =========================
+         SCRIPT
+    ========================= -->
+
+    <script>
+
+        // MENU MOBILE
+
+        const menuToggle =
+            document.getElementById(
+                "menuToggle"
+            );
+
+        const mainNav =
+            document.getElementById(
+                "mainNav"
+            );
+
+        menuToggle.addEventListener(
+            "click",
+            () => {
+
+                mainNav.classList.toggle(
+                    "show-menu"
+                );
+
+            }
+        );
+
+        // DATA
+
+        let workouts =
+            JSON.parse(
+                localStorage.getItem(
+                    "fittrackWorkouts"
+                )
+            ) || [];
+
+        // ELEMENT
+
+        const workoutGrid =
+            document.getElementById(
+                "workoutGrid"
+            );
+
+        const addWorkoutBtn =
+            document.getElementById(
+                "addWorkoutBtn"
+            );
+
+        // RENDER
+
+        function renderWorkouts() {
+
+            workoutGrid.innerHTML = "";
+
+            let totalDuration = 0;
+
+            workouts.forEach(
+                (workout, index) => {
+
+                    totalDuration +=
+                        Number(
+                            workout.duration
+                        );
+
+                    workoutGrid.innerHTML += `
+
+                        <div class="workout-card">
+
+                            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop"
+                                 alt="Workout">
+
+                            <div class="workout-info">
+
+                                <span class="workout-level">
+
+                                    ${workout.level}
+
+                                </span>
+
+                                <h3>
+
+                                    ${workout.name}
+
+                                </h3>
+
+                                <p>
+
+                                    🏋️ ${workout.type}
+
+                                </p>
+
+                                <p>
+
+                                    ⏱ ${workout.duration} phút
+
+                                </p>
+
+                                <p>
+
+                                    ${workout.description}
+
+                                </p>
+
+                                <button class="delete-btn"
+                                        onclick="deleteWorkout(${index})">
+
+                                    Xóa bài tập
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+            document.getElementById(
+                "totalWorkout"
+            ).innerText =
+                workouts.length;
+
+            document.getElementById(
+                "totalDuration"
+            ).innerText =
+                totalDuration;
+
+        }
+
+        // ADD WORKOUT
+
+        addWorkoutBtn.addEventListener(
+            "click",
+            () => {
+
+                const name =
+                    document.getElementById(
+                        "workoutName"
+                    ).value;
+
+                const type =
+                    document.getElementById(
+                        "workoutType"
+                    ).value;
+
+                const level =
+                    document.getElementById(
+                        "workoutLevel"
+                    ).value;
+
+                const duration =
+                    document.getElementById(
+                        "workoutDuration"
+                    ).value;
+
+                const description =
+                    document.getElementById(
+                        "workoutDescription"
+                    ).value;
+
+                if (
+                    !name ||
+                    !duration ||
+                    !description
+                ) {
+
+                    alert(
+                        "Vui lòng nhập đầy đủ thông tin"
+                    );
+
+                    return;
+
+                }
+
+                workouts.push({
+
+                    name,
+                    type,
+                    level,
+                    duration,
+                    description
+
+                });
+
+                localStorage.setItem(
+
+                    "fittrackWorkouts",
+
+                    JSON.stringify(
+                        workouts
+                    )
+
+                );
+
+                renderWorkouts();
+
+                document.getElementById(
+                    "workoutName"
+                ).value = "";
+
+                document.getElementById(
+                    "workoutDuration"
+                ).value = "";
+
+                document.getElementById(
+                    "workoutDescription"
+                ).value = "";
+
+            }
+        );
+
+        // DELETE
+
+        function deleteWorkout(index) {
+
+            workouts.splice(index, 1);
+
+            localStorage.setItem(
+
+                "fittrackWorkouts",
+
+                JSON.stringify(
+                    workouts
+                )
+
+            );
+
+            renderWorkouts();
+
+        }
+
+        // INIT
+
+        renderWorkouts();
+
+    </script>
+
+    <script src="main.js"> </script>
+    
+    <script src="api.js"></script>
+
+</body>
+
+</html>

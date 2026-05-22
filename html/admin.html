@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        FitTrack Admin Dashboard
+    </title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        body {
+
+            font-family: "Inter", sans-serif;
+            background: #0f172a;
+            color: white;
+            display: flex;
+            min-height: 100vh;
+
+        }
+
+        a {
+
+            text-decoration: none;
+
+        }
+
+        button {
+
+            cursor: pointer;
+
+        }
+
+        .sidebar {
+
+            width: 280px;
+            background: #111827;
+            padding: 30px 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+
+        }
+
+        .logo {
+
+            font-size: 32px;
+            font-weight: 800;
+            color: #22c55e;
+            margin-bottom: 40px;
+
+        }
+
+        .menu {
+
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+        }
+
+        .menu a {
+
+            color: white;
+            padding: 16px;
+            border-radius: 14px;
+            transition: 0.3s;
+            background: #1e293b;
+
+        }
+
+        .menu a:hover {
+
+            background: #22c55e;
+
+        }
+
+        .main {
+
+            margin-left: 280px;
+            width: calc(100% - 280px);
+            padding: 30px;
+
+        }
+
+        .topbar {
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+
+        }
+
+        .topbar h1 {
+
+            font-size: 35px;
+
+        }
+
+        .logout-btn {
+
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            background: #ef4444;
+            color: white;
+            font-weight: 700;
+
+        }
+
+        .logout-btn:hover {
+
+            background: #dc2626;
+
+        }
+
+        .stats-grid {
+
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 25px;
+            margin-bottom: 40px;
+
+        }
+
+        .stats-card {
+
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 20px;
+
+        }
+
+        .stats-card h2 {
+
+            font-size: 40px;
+            margin-top: 15px;
+
+        }
+
+        .stats-card p {
+
+            color: #cbd5e1;
+
+        }
+
+        .section {
+
+            background: #1e293b;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 35px;
+
+        }
+
+        .section h2 {
+
+            margin-bottom: 25px;
+            font-size: 28px;
+
+        }
+
+        table {
+
+            width: 100%;
+            border-collapse: collapse;
+
+        }
+
+        table th {
+
+            background: #334155;
+            padding: 16px;
+            text-align: left;
+
+        }
+
+        table td {
+
+            padding: 16px;
+            border-bottom: 1px solid #334155;
+
+        }
+
+        .form-grid {
+
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 20px;
+            margin-bottom: 25px;
+
+        }
+
+        .form-grid input,
+        .form-grid select {
+
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: #334155;
+            color: white;
+
+        }
+
+        .btn {
+
+            padding: 12px 18px;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+
+        }
+
+        .btn-green {
+
+            background: #22c55e;
+
+        }
+
+        .btn-blue {
+
+            background: #3b82f6;
+
+        }
+
+        .btn-red {
+
+            background: #ef4444;
+
+        }
+
+        .action-buttons {
+
+            display: flex;
+            gap: 10px;
+
+        }
+
+        .table-input {
+
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background: #334155;
+            color: white;
+
+        }
+
+        @media(max-width:900px) {
+
+            body {
+
+                flex-direction: column;
+
+            }
+
+            .sidebar {
+
+                width: 100%;
+                position: relative;
+                height: auto;
+
+            }
+
+            .main {
+
+                margin-left: 0;
+                width: 100%;
+
+            }
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            FitTrack
+
+        </div>
+
+        <nav class="menu">
+
+            <a href="#dashboard">
+                📊 Dashboard
+            </a>
+
+            <a href="#users">
+                👤 Người dùng
+            </a>
+
+            <a href="#workouts">
+                🏋️ Bài tập
+            </a>
+
+            <a href="#schedule">
+                📅 Lịch tập
+            </a>
+
+            <a href="#premium">
+                ⭐ Premium
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <h1>
+
+                Admin Dashboard
+
+            </h1>
+
+            <button class="logout-btn" id="logoutBtn">
+
+                🚪 Đăng xuất
+
+            </button>
+
+        </div>
+
+        <!-- STATS -->
+
+        <section class="stats-grid" id="dashboard">
+
+            <div class="stats-card">
+
+                <p>
+                    Tổng User
+                </p>
+
+                <h2 id="totalUsers">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="stats-card">
+
+                <p>
+                    Workout
+                </p>
+
+                <h2 id="totalWorkouts">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="stats-card">
+
+                <p>
+                    Premium
+                </p>
+
+                <h2 id="totalPremium">
+                    0
+                </h2>
+
+            </div>
+
+            <div class="stats-card">
+
+                <p>
+                    Trainer
+                </p>
+
+                <h2 id="totalTrainer">
+                    0
+                </h2>
+
+            </div>
+
+        </section>
+
+        <!-- USERS -->
+
+        <section class="section" id="users">
+
+            <h2>
+
+                👤 Quản lý tài khoản
+
+            </h2>
+
+            <div class="form-grid">
+
+                <input type="text" id="userName" placeholder="Tên">
+
+                <input type="email" id="userEmail" placeholder="Email">
+
+                <input type="password" id="userPassword" placeholder="Mật khẩu">
+
+                <select id="userRole">
+
+                    <option value="user">
+                        User
+                    </option>
+
+                    <option value="trainer">
+                        Trainer
+                    </option>
+
+                    <option value="admin">
+                        Admin
+                    </option>
+
+                </select>
+
+                <button class="btn btn-green" id="addUserBtn">
+
+                    Thêm tài khoản
+
+                </button>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>STT</th>
+                        <th>Tên</th>
+                        <th>Email</th>
+                        <th>Mật khẩu</th>
+                        <th>Quyền</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="usersTable">
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+        <!-- WORKOUT -->
+
+        <section class="section" id="workouts">
+
+            <h2>
+
+                🏋️ Quản lý Workout
+
+            </h2>
+
+            <div class="form-grid">
+
+                <input type="text" id="workoutName" placeholder="Tên bài tập">
+
+                <select id="workoutLevel">
+
+                    <option value="Beginner">
+                        Beginner
+                    </option>
+
+                    <option value="Intermediate">
+                        Intermediate
+                    </option>
+
+                    <option value="Advanced">
+                        Advanced
+                    </option>
+
+                </select>
+
+                <button class="btn btn-green" id="addWorkoutBtn">
+
+                    Thêm Workout
+
+                </button>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>STT</th>
+                        <th>Tên bài tập</th>
+                        <th>Level</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="workoutTable">
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+        <!-- SCHEDULE -->
+
+        <section class="section" id="schedule">
+
+            <h2>
+
+                📅 Quản lý lịch tập
+
+            </h2>
+
+            <div class="form-grid">
+
+                <input type="text" id="scheduleTitle" placeholder="Tiêu đề">
+
+                <input type="date" id="scheduleDate">
+
+                <input type="time" id="scheduleTime">
+
+                <button class="btn btn-green" id="addScheduleBtn">
+
+                    Thêm lịch tập
+
+                </button>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>STT</th>
+                        <th>Tiêu đề</th>
+                        <th>Ngày</th>
+                        <th>Giờ</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="scheduleTable">
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+        <!-- PREMIUM -->
+
+        <section class="section" id="premium">
+
+            <h2>
+
+                ⭐ Quản lý Premium
+
+            </h2>
+
+            <div class="form-grid">
+
+                <input type="text" id="premiumName" placeholder="Tên gói">
+
+                <input type="number" id="premiumPrice" placeholder="Giá">
+
+                <button class="btn btn-green" id="addPremiumBtn">
+
+                    Thêm Premium
+
+                </button>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>STT</th>
+                        <th>Gói</th>
+                        <th>Giá</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="premiumTable">
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+    <script>
+
+        const currentUser =
+            JSON.parse(
+                localStorage.getItem(
+                    "fittrackCurrentUser"
+                )
+            );
+
+        if (
+            !currentUser ||
+            currentUser.role !== "admin"
+        ) {
+
+            alert(
+                "Chỉ admin mới truy cập được"
+            );
+
+            window.location.href =
+                "index.html";
+
+        }
+
+        document
+            .getElementById("logoutBtn")
+            .addEventListener(
+                "click",
+                () => {
+
+                    localStorage.removeItem(
+                        "fittrackCurrentUser"
+                    );
+
+                    window.location.href =
+                        "index.html";
+
+                }
+            );
+
+        let users =
+            JSON.parse(
+                localStorage.getItem(
+                    "fittrackUsers"
+                )
+            ) || [];
+
+        let workouts =
+            JSON.parse(
+                localStorage.getItem(
+                    "fittrackWorkouts"
+                )
+            ) || [];
+
+        let schedules =
+            JSON.parse(
+                localStorage.getItem(
+                    "fittrackSchedules"
+                )
+            ) || [];
+
+        let premiums =
+            JSON.parse(
+                localStorage.getItem(
+                    "fittrackPremiums"
+                )
+            ) || [];
+
+        function updateStats() {
+
+            document.getElementById(
+                "totalUsers"
+            ).innerText =
+                users.length;
+
+            document.getElementById(
+                "totalWorkouts"
+            ).innerText =
+                workouts.length;
+
+            document.getElementById(
+                "totalPremium"
+            ).innerText =
+                premiums.length;
+
+            document.getElementById(
+                "totalTrainer"
+            ).innerText =
+                users.filter(
+                    user => user.role === "trainer"
+                ).length;
+
+        }
+
+        // USERS
+
+        function renderUsers() {
+
+            const table =
+                document.getElementById(
+                    "usersTable"
+                );
+
+            table.innerHTML = "";
+
+            users.forEach(
+                (user, index) => {
+
+                    table.innerHTML += `
+
+                    <tr>
+
+                        <td>${index + 1}</td>
+
+                        <td>
+
+                            <input
+                            class="table-input"
+                            id="name-${index}"
+                            value="${user.name}">
+
+                        </td>
+
+                        <td>
+
+                            <input
+                            class="table-input"
+                            id="email-${index}"
+                            value="${user.email}">
+
+                        </td>
+
+                        <td>
+
+                            <input
+                            class="table-input"
+                            id="password-${index}"
+                            value="${user.password}">
+
+                        </td>
+
+                        <td>
+
+                            <select
+                            class="table-input"
+                            id="role-${index}">
+
+                                <option value="user"
+                                ${user.role === "user" ? "selected" : ""}>
+                                User
+                                </option>
+
+                                <option value="trainer"
+                                ${user.role === "trainer" ? "selected" : ""}>
+                                Trainer
+                                </option>
+
+                                <option value="admin"
+                                ${user.role === "admin" ? "selected" : ""}>
+                                Admin
+                                </option>
+
+                            </select>
+
+                        </td>
+
+                        <td>
+
+                            <div class="action-buttons">
+
+                                <button
+                                class="btn btn-blue"
+                                onclick="saveUser(${index})">
+
+                                    Lưu
+
+                                </button>
+
+                                <button
+                                class="btn btn-red"
+                                onclick="deleteUser(${index})">
+
+                                    Xóa
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    `;
+
+                }
+            );
+
+            updateStats();
+
+        }
+
+        function saveUser(index) {
+
+            users[index].name =
+                document.getElementById(
+                    `name-${index}`
+                ).value;
+
+            users[index].email =
+                document.getElementById(
+                    `email-${index}`
+                ).value;
+
+            users[index].password =
+                document.getElementById(
+                    `password-${index}`
+                ).value;
+
+            users[index].role =
+                document.getElementById(
+                    `role-${index}`
+                ).value;
+
+            localStorage.setItem(
+                "fittrackUsers",
+                JSON.stringify(users)
+            );
+
+            alert("Đã cập nhật");
+
+            renderUsers();
+
+        }
+
+        function deleteUser(index) {
+
+            users.splice(index, 1);
+
+            localStorage.setItem(
+                "fittrackUsers",
+                JSON.stringify(users)
+            );
+
+            renderUsers();
+
+        }
+
+        document.getElementById(
+            "addUserBtn"
+        ).addEventListener(
+            "click",
+            () => {
+
+                const name =
+                    document.getElementById(
+                        "userName"
+                    ).value;
+
+                const email =
+                    document.getElementById(
+                        "userEmail"
+                    ).value;
+
+                const password =
+                    document.getElementById(
+                        "userPassword"
+                    ).value;
+
+                const role =
+                    document.getElementById(
+                        "userRole"
+                    ).value;
+
+                users.push({
+
+                    name,
+                    email,
+                    password,
+                    role
+
+                });
+
+                localStorage.setItem(
+                    "fittrackUsers",
+                    JSON.stringify(users)
+                );
+
+                renderUsers();
+
+            }
+        );
+
+        // WORKOUT
+
+        function renderWorkouts() {
+
+            const table =
+                document.getElementById(
+                    "workoutTable"
+                );
+
+            table.innerHTML = "";
+
+            workouts.forEach(
+                (workout, index) => {
+
+                    table.innerHTML += `
+
+                    <tr>
+
+                        <td>${index + 1}</td>
+
+                        <td>
+
+                            <input
+                            class="table-input"
+                            id="workout-name-${index}"
+                            value="${workout.name}">
+
+                        </td>
+
+                        <td>
+
+                            <select
+                            class="table-input"
+                            id="workout-level-${index}">
+
+                                <option value="Beginner"
+                                ${workout.level === "Beginner" ? "selected" : ""}>
+                                Beginner
+                                </option>
+
+                                <option value="Intermediate"
+                                ${workout.level === "Intermediate" ? "selected" : ""}>
+                                Intermediate
+                                </option>
+
+                                <option value="Advanced"
+                                ${workout.level === "Advanced" ? "selected" : ""}>
+                                Advanced
+                                </option>
+
+                            </select>
+
+                        </td>
+
+                        <td>
+
+                            <div class="action-buttons">
+
+                                <button
+                                class="btn btn-blue"
+                                onclick="saveWorkout(${index})">
+
+                                    Lưu
+
+                                </button>
+
+                                <button
+                                class="btn btn-red"
+                                onclick="deleteWorkout(${index})">
+
+                                    Xóa
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    `;
+
+                }
+            );
+
+        }
+
+        function saveWorkout(index) {
+
+            workouts[index].name =
+                document.getElementById(
+                    `workout-name-${index}`
+                ).value;
+
+            workouts[index].level =
+                document.getElementById(
+                    `workout-level-${index}`
+                ).value;
+
+            localStorage.setItem(
+                "fittrackWorkouts",
+                JSON.stringify(workouts)
+            );
+
+            renderWorkouts();
+
+        }
+
+        function deleteWorkout(index) {
+
+            workouts.splice(index, 1);
+
+            localStorage.setItem(
+                "fittrackWorkouts",
+                JSON.stringify(workouts)
+            );
+
+            renderWorkouts();
+
+        }
+
+        document.getElementById(
+            "addWorkoutBtn"
+        ).addEventListener(
+            "click",
+            () => {
+
+                const name =
+                    document.getElementById(
+                        "workoutName"
+                    ).value;
+
+                const level =
+                    document.getElementById(
+                        "workoutLevel"
+                    ).value;
+
+                workouts.push({
+
+                    name,
+                    level
+
+                });
+
+                localStorage.setItem(
+                    "fittrackWorkouts",
+                    JSON.stringify(workouts)
+                );
+
+                renderWorkouts();
+
+            }
+        );
+
+        // SCHEDULE
+
+        function renderSchedules() {
+
+            const table =
+                document.getElementById(
+                    "scheduleTable"
+                );
+
+            table.innerHTML = "";
+
+            schedules.forEach(
+                (schedule, index) => {
+
+                    table.innerHTML += `
+
+                    <tr>
+
+                        <td>${index + 1}</td>
+
+                        <td>
+
+                            <input
+                            class="table-input"
+                            id="schedule-title-${index}"
+                            value="${schedule.title}">
+
+                        </td>
+
+                        <td>
+
+                            <input
+                            type="date"
+                            class="table-input"
+                            id="schedule-date-${index}"
+                            value="${schedule.date}">
+
+                        </td>
+
+                        <td>
+
+                            <input
+                            type="time"
+                            class="table-input"
+                            id="schedule-time-${index}"
+                            value="${schedule.time}">
+
+                        </td>
+
+                        <td>
+
+                            <div class="action-buttons">
+
+                                <button
+                                class="btn btn-blue"
+                                onclick="saveSchedule(${index})">
+
+                                    Lưu
+
+                                </button>
+
+                                <button
+                                class="btn btn-red"
+                                onclick="deleteSchedule(${index})">
+
+                                    Xóa
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    `;
+
+                }
+            );
+
+        }
+
+        function saveSchedule(index) {
+
+            schedules[index].title =
+                document.getElementById(
+                    `schedule-title-${index}`
+                ).value;
+
+            schedules[index].date =
+                document.getElementById(
+                    `schedule-date-${index}`
+                ).value;
+
+            schedules[index].time =
+                document.getElementById(
+                    `schedule-time-${index}`
+                ).value;
+
+            localStorage.setItem(
+                "fittrackSchedules",
+                JSON.stringify(schedules)
+            );
+
+            renderSchedules();
+
+        }
+
+        function deleteSchedule(index) {
+
+            schedules.splice(index, 1);
+
+            localStorage.setItem(
+                "fittrackSchedules",
+                JSON.stringify(schedules)
+            );
+
+            renderSchedules();
+
+        }
+
+        document.getElementById(
+            "addScheduleBtn"
+        ).addEventListener(
+            "click",
+            () => {
+
+                const title =
+                    document.getElementById(
+                        "scheduleTitle"
+                    ).value;
+
+                const date =
+                    document.getElementById(
+                        "scheduleDate"
+                    ).value;
+
+                const time =
+                    document.getElementById(
+                        "scheduleTime"
+                    ).value;
+
+                schedules.push({
+
+                    title,
+                    date,
+                    time
+
+                });
+
+                localStorage.setItem(
+                    "fittrackSchedules",
+                    JSON.stringify(schedules)
+                );
+
+                renderSchedules();
+
+            }
+        );
+
+        // PREMIUM
+
+        function renderPremiums() {
+
+            const table =
+                document.getElementById(
+                    "premiumTable"
+                );
+
+            table.innerHTML = "";
+
+            premiums.forEach(
+                (premium, index) => {
+
+                    table.innerHTML += `
+
+                    <tr>
+
+                        <td>${index + 1}</td>
+
+                        <td>
+
+                            <input
+                            class="table-input"
+                            id="premium-name-${index}"
+                            value="${premium.name}">
+
+                        </td>
+
+                        <td>
+
+                            <input
+                            class="table-input"
+                            id="premium-price-${index}"
+                            value="${premium.price}">
+
+                        </td>
+
+                        <td>
+
+                            <div class="action-buttons">
+
+                                <button
+                                class="btn btn-blue"
+                                onclick="savePremium(${index})">
+
+                                    Lưu
+
+                                </button>
+
+                                <button
+                                class="btn btn-red"
+                                onclick="deletePremium(${index})">
+
+                                    Xóa
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    `;
+
+                }
+            );
+
+        }
+
+        function savePremium(index) {
+
+            premiums[index].name =
+                document.getElementById(
+                    `premium-name-${index}`
+                ).value;
+
+            premiums[index].price =
+                document.getElementById(
+                    `premium-price-${index}`
+                ).value;
+
+            localStorage.setItem(
+                "fittrackPremiums",
+                JSON.stringify(premiums)
+            );
+
+            renderPremiums();
+
+        }
+
+        function deletePremium(index) {
+
+            premiums.splice(index, 1);
+
+            localStorage.setItem(
+                "fittrackPremiums",
+                JSON.stringify(premiums)
+            );
+
+            renderPremiums();
+
+        }
+
+        document.getElementById(
+            "addPremiumBtn"
+        ).addEventListener(
+            "click",
+            () => {
+
+                const name =
+                    document.getElementById(
+                        "premiumName"
+                    ).value;
+
+                const price =
+                    document.getElementById(
+                        "premiumPrice"
+                    ).value;
+
+                premiums.push({
+
+                    name,
+                    price
+
+                });
+
+                localStorage.setItem(
+                    "fittrackPremiums",
+                    JSON.stringify(premiums)
+                );
+
+                renderPremiums();
+
+            }
+        );
+
+        renderUsers();
+        renderWorkouts();
+        renderSchedules();
+        renderPremiums();
+        updateStats();
+
+    </script>
+
+    <script src="main.js"> </script>
+
+    <script src="api.js"></script>
+
+</body>
+
+</html>
