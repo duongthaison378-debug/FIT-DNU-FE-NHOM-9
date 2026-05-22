@@ -10,9 +10,11 @@
   <title>FitTrack - Quản trị</title>
 
   <!-- JQUERY -->
+
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
   <!-- FONT -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -42,214 +44,16 @@
         #f3f6fb;
 
       min-height: 100vh;
+
       padding: 40px;
 
     }
 
-    /* NAVBAR */
-
-    .topbar {
-
-      width: 100%;
-
-      background: white;
-
-      padding: 20px 35px;
-
-      border-radius: 25px;
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-      margin-bottom: 35px;
-
-      box-shadow:
-        0 15px 40px rgba(0, 0, 0, .08);
-
-      flex-wrap: wrap;
-
-      gap: 15px;
-
-    }
-
-    .logo {
-
-      font-size: 2rem;
-
-      font-weight: 800;
-
-      color: #111827;
-
-    }
-
-    .menu {
-
-      display: flex;
-
-      gap: 18px;
-
-      flex-wrap: wrap;
-
-    }
-
-    .menu a {
-
-      text-decoration: none;
-
-      color: #374151;
-
-      font-weight: 600;
-
-      padding: 12px 18px;
-
-      border-radius: 14px;
-
-      transition: .25s;
-
-    }
-
-    .menu a:hover {
-
-      background: #eff6ff;
-
-      color: #2563eb;
-
-    }
-
-    /* LOGIN */
-
-    .admin-login-box {
-
-      max-width: 450px;
-
-      margin: 60px auto;
-
-      background: white;
-
-      border-radius: 30px;
-
-      padding: 45px;
-
-      box-shadow:
-        0 25px 70px rgba(0, 0, 0, .12);
-
-    }
-
-    .admin-login-box h1 {
-
-      text-align: center;
-
-      margin-bottom: 10px;
-
-      font-size: 2.5rem;
-
-      color: #111827;
-
-    }
-
-    .admin-login-box p {
-
-      text-align: center;
-
-      color: #6b7280;
-
-      margin-bottom: 30px;
-
-    }
-
-    .admin-login-box input {
-
-      width: 100%;
-
-      padding: 16px;
-
-      border-radius: 16px;
-
-      border: 1px solid #d1d5db;
-
-      margin-bottom: 15px;
-
-      background: #f9fafb;
-
-      font-size: 1rem;
-
-      transition: .25s;
-
-    }
-
-    .admin-login-box input:focus {
-
-      outline: none;
-
-      border-color: #2563eb;
-
-      background: white;
-
-      box-shadow:
-        0 10px 25px rgba(37, 99, 235, .12);
-
-    }
-
-    .admin-login-box button {
-
-      width: 100%;
-
-      border: none;
-
-      padding: 16px;
-
-      border-radius: 16px;
-
-      background:
-        linear-gradient(135deg,
-          #2563eb,
-          #1d4ed8);
-
-      color: white;
-
-      font-size: 1rem;
-
-      font-weight: 700;
-
-      cursor: pointer;
-
-      transition: .3s;
-
-    }
-
-    .admin-login-box button:hover {
-
-      transform: translateY(-2px);
-
-      box-shadow:
-        0 15px 30px rgba(37, 99, 235, .25);
-
-    }
-
-    .login-error {
-
-      color: #ef4444;
-
-      text-align: center;
-
-      font-size: .95rem;
-
-      font-weight: 600;
-
-      margin-top: 12px;
-
-    }
-
-    /* DASHBOARD */
-
-    .admin-dashboard {
-
+    #adminDashboard {
       display: none;
-
     }
+
+    /* TOPBAR */
 
     .admin-topbar {
 
@@ -272,7 +76,7 @@
       box-shadow:
         0 15px 40px rgba(0, 0, 0, .08);
 
-      margin-bottom: 30px;
+      margin-bottom: 25px;
 
     }
 
@@ -286,9 +90,9 @@
 
     .admin-topbar p {
 
-      color: #6b7280;
-
       margin-top: 5px;
+
+      color: #6b7280;
 
     }
 
@@ -318,7 +122,7 @@
 
     }
 
-    .home {
+    .admin-btn.home {
 
       background: #dbeafe;
 
@@ -326,11 +130,19 @@
 
     }
 
-    .logout {
+    .admin-btn.logout {
 
       background: #fee2e2;
 
       color: #dc2626;
+
+    }
+
+    .admin-btn.load {
+
+      background: #dcfce7;
+
+      color: #166534;
 
     }
 
@@ -340,37 +152,35 @@
 
     }
 
-    /* LOAD BUTTON */
+    /* SEARCH */
 
-    .load-btn {
-
-      border: none;
-
-      padding: 15px 22px;
-
-      border-radius: 16px;
-
-      background:
-        linear-gradient(135deg, #10b981, #059669);
-
-      color: white;
-
-      font-weight: 700;
-
-      cursor: pointer;
+    .search-box {
 
       margin-bottom: 25px;
 
-      transition: .25s;
+    }
+
+    .search-box input {
+
+      width: 100%;
+
+      padding: 16px;
+
+      border-radius: 18px;
+
+      border: 1px solid #d1d5db;
+
+      background: white;
+
+      font-size: 1rem;
 
     }
 
-    .load-btn:hover {
+    .search-box input:focus {
 
-      transform: translateY(-2px);
+      outline: none;
 
-      box-shadow:
-        0 15px 30px rgba(16, 185, 129, .25);
+      border-color: #2563eb;
 
     }
 
@@ -479,9 +289,7 @@
       padding: 16px;
 
       background:
-        linear-gradient(135deg,
-          #2563eb,
-          #1d4ed8);
+        linear-gradient(135deg, #2563eb, #1d4ed8);
 
       color: white;
 
@@ -622,51 +430,9 @@
 
 <body>
 
-  <!-- MENU -->
-
-  <div class="topbar">
-
-    <div class="logo">
-      FitTrack
-    </div>
-
-    <div class="menu">
-
-      <a href="index.html">Trang chủ</a>
-
-      <a href="signup.html">Hội viên</a>
-
-      <a href="trainer.html">HLV cá nhân</a>
-
-      <a href="admin.html">Quản trị</a>
-
-    </div>
-
-  </div>
-
-  <!-- LOGIN -->
-
-  <div class="admin-login-box">
-
-    <h1>FitTrack Admin</h1>
-
-    <p>Đăng nhập để quản lý hệ thống</p>
-
-    <input type="text" id="adminUsername" placeholder="Tên đăng nhập" />
-
-    <input type="password" id="adminPassword" placeholder="Mật khẩu" />
-
-    <button id="adminLoginBtn">
-      Đăng nhập
-    </button>
-
-    <div id="loginError" class="login-error"></div>
-
-  </div>
-
   <!-- DASHBOARD -->
 
-  <div class="admin-dashboard">
+  <div id="adminDashboard">
 
     <!-- TOPBAR -->
 
@@ -676,29 +442,45 @@
 
         <h2>Trang quản trị FitTrack</h2>
 
-        <p>Quản lý dữ liệu AJAX</p>
+        <p>
+
+          Quản lý bài tập và dữ liệu AJAX
+
+        </p>
 
       </div>
 
       <div class="admin-actions">
 
         <button class="admin-btn home" onclick="window.location.href='index.html'">
+
           Trang chủ
+
+        </button>
+
+        <button class="admin-btn load" onclick="loadData()">
+
+          Tải dữ liệu
+
         </button>
 
         <button class="admin-btn logout" id="logoutBtn">
+
           Đăng xuất
+
         </button>
 
       </div>
 
     </div>
 
-    <!-- BUTTON LOAD AJAX -->
+    <!-- SEARCH -->
 
-    <button id="btnLoad" class="load-btn">
-      Tải dữ liệu lên
-    </button>
+    <div class="search-box">
+
+      <input type="text" id="searchInput" placeholder="Tìm kiếm bài tập..." />
+
+    </div>
 
     <!-- STATS -->
 
@@ -809,82 +591,42 @@
     const API =
       "https://69f9a93bc509a40d3aa2f648.mockapi.io/api/vl/FitTrack";
 
-    const ADMIN_USER = "admin";
+    // KIỂM TRA LOGIN HỘI VIÊN
 
-    const ADMIN_PASS = "123456";
+    const member =
+      localStorage.getItem("fittrack_member");
 
-    /* LOGIN */
+    // NẾU CHƯA LOGIN
 
-    $("#adminLoginBtn").click(function () {
+    if (!member) {
 
-      const username =
-        $("#adminUsername").val().trim();
+      document.body.innerHTML = "";
 
-      const password =
-        $("#adminPassword").val().trim();
+      window.location.href = "signup.html";
 
-      $("#loginError").text("");
+    }
 
-      $("#adminUsername").css({
-        border: "1px solid #d1d5db",
-        background: "#f9fafb"
-      });
+    // NẾU ĐÃ LOGIN
 
-      $("#adminPassword").css({
-        border: "1px solid #d1d5db",
-        background: "#f9fafb"
-      });
+    else {
 
-      if (
-        username === ADMIN_USER &&
-        password === ADMIN_PASS
-      ) {
-
-        $(".admin-login-box").hide();
-
-        $(".admin-dashboard").fadeIn();
-
-      }
-
-      else {
-
-        $("#adminUsername").css({
-          border: "2px solid #ef4444",
-          background: "#fef2f2"
-        });
-
-        $("#adminPassword").css({
-          border: "2px solid #ef4444",
-          background: "#fef2f2"
-        });
-
-        $("#loginError").text(
-          "Sai tài khoản hoặc mật khẩu"
-        );
-
-      }
-
-    });
-
-    /* LOGOUT */
-
-    $("#logoutBtn").click(function () {
-
-      $(".admin-dashboard").hide();
-
-      $(".admin-login-box").fadeIn();
-
-      $("#adminPassword").val("");
-
-    });
-
-    /* LOAD AJAX DATA */
-
-    $("#btnLoad").click(function () {
+      $("#adminDashboard").show();
 
       loadData();
 
+    }
+
+    // ĐĂNG XUẤT
+
+    $("#logoutBtn").click(function () {
+
+      localStorage.removeItem("fittrack_member");
+
+      window.location.href = "signup.html";
+
     });
+
+    // LOAD DATA
 
     function loadData() {
 
@@ -987,7 +729,28 @@
 
     }
 
-    /* SUBMIT FORM */
+    // SEARCH
+
+    $("#searchInput").on("keyup", function () {
+
+      const value =
+        $(this).val().toLowerCase();
+
+      $("#tableBody tr").filter(function () {
+
+        $(this).toggle(
+
+          $(this).text()
+            .toLowerCase()
+            .indexOf(value) > -1
+
+        );
+
+      });
+
+    });
+
+    // THÊM / SỬA
 
     $("#workoutForm").submit(function (e) {
 
@@ -1015,7 +778,7 @@
 
       };
 
-      /* UPDATE */
+      // UPDATE
 
       if (id) {
 
@@ -1043,7 +806,7 @@
 
       }
 
-      /* ADD */
+      // ADD
 
       else {
 
@@ -1071,7 +834,7 @@
 
     });
 
-    /* DELETE */
+    // DELETE
 
     function deleteWorkout(id) {
 
@@ -1095,15 +858,17 @@
 
     }
 
-    /* EDIT */
+    // EDIT
 
     function editWorkout(
+
       id,
       TenBaiTap,
       NhomCo,
       CaloMoiLan,
       SoLan,
       Ngay
+
     ) {
 
       $("#workoutId").val(id);
@@ -1133,132 +898,3 @@
 </body>
 
 </html>
-    <script src="js/api.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/admin.js"></script>
-  </body>
-</html>
-
-<!doctype html>
-<html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FitTrack - Quản trị</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <header class="site-header">
-      <div class="container header-inner">
-        <a class="brand" href="index.html">FitTrack</a>
-        <nav>
-          <a href="index.html">Trang chủ</a>
-          <a href="workout.html">Theo dõi</a>
-          <a href="signup.html">Hội viên</a>
-        </nav>
-      </div>
-    </header>
-
-    <main class="container">
-      <section class="panel hero-panel">
-        <div class="hero-grid hero-grid-center">
-          <div>
-            <span class="eyebrow">Trang quản trị</span>
-            <h1>Quản lý buổi tập hiệu quả</h1>
-            <p class="hero-text">
-              Tạo, chỉnh sửa và xóa dữ liệu luyện tập nhanh chóng. Mọi thay đổi
-              đều được lưu trực tiếp trên trình duyệt.
-            </p>
-          </div>
-          <aside class="hero-summary card-glow admin-summary-card">
-            <h2>Thông tin hiện tại</h2>
-            <div class="summary-grid">
-              <div class="summary-item">
-                <span>Tổng buổi tập</span>
-                <strong id="adminTotalWorkouts">0</strong>
-              </div>
-              <div class="summary-item">
-                <span>Bài tập phổ biến</span>
-                <strong id="adminFavoriteType">-</strong>
-              </div>
-              <div class="summary-item">
-                <span>Calories cao nhất</span>
-                <strong id="adminTotalCalories">0 kcal</strong>
-              </div>
-              <div class="summary-item">
-                <span>Buổi gần nhất</span>
-                <strong id="adminLatestDate">-</strong>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="section-header">
-          <h2>Danh sách buổi tập</h2>
-          <p class="section-description">
-            Xem toàn bộ dữ liệu, sau đó chọn sửa hoặc xóa khi cần.
-          </p>
-        </div>
-        <div id="adminList" class="table-wrapper"></div>
-      </section>
-
-      <section class="panel">
-        <h2>Chỉnh sửa hoặc thêm mới</h2>
-        <form id="adminForm" class="form-grid">
-          <input type="hidden" id="workoutId" />
-          <label>
-            Ngày
-            <input type="date" id="adminDate" required />
-          </label>
-          <label>
-            Loại bài tập
-            <select id="adminType" required>
-              <option value="Chạy bộ">Chạy bộ</option>
-              <option value="Yoga">Yoga</option>
-              <option value="Gym">Gym</option>
-              <option value="Đạp xe">Đạp xe</option>
-              <option value="Bơi lội">Bơi lội</option>
-              <option value="Pilates">Pilates</option>
-            </select>
-          </label>
-          <label>
-            Thời lượng (phút)
-            <input type="number" id="adminDuration" min="1" step="1" required />
-          </label>
-          <label>
-            Calories tiêu thụ
-            <input type="number" id="adminCalories" min="0" step="1" required />
-          </label>
-          <label class="full-width">
-            Ghi chú
-            <textarea
-              id="adminNotes"
-              rows="4"
-              placeholder="Ghi chú thêm (ví dụ: buổi chạy đường dài)"
-            ></textarea>
-          </label>
-          <div class="form-actions full-width">
-            <button type="submit" class="btn primary">Lưu</button>
-            <button type="button" id="resetForm" class="btn secondary">
-              Đặt lại
-            </button>
-          </div>
-        </form>
-      </section>
-    </main>
-
-    <script src="js/api.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/admin.js"></script>
-  </body>
-</html>
-
-

@@ -1,0 +1,119 @@
+<!-- <<<<<<< HEAD -->
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Call API AJAX</title>
+
+    <!-- Import jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background: #f5f5f5;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        ul {
+            margin-top: 20px;
+            padding: 0;
+        }
+
+        li {
+            list-style: none;
+            background: white;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            line-height: 1.8;
+        }
+
+        strong {
+            color: #007bff;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Danh sách FitTrack</h2>
+
+    <button id="btnLoad">Lấy dữ liệu</button>
+
+    <ul id="result"></ul>
+
+    <script>
+        $(document).ready(function () {
+            $("#btnLoad").click(function () {
+                $.ajax({
+                    url: "https://69f9a93bc509a40d3aa2f648.mockapi.io/api/vl/FitTrack",
+
+                    method: "GET",
+
+                    dataType: "json",
+
+                    success: function (data) {
+                        console.log(data);
+
+                        $("#result").empty();
+
+                        data.forEach(function (item) {
+                            $("#result").append(`
+
+                  <li>
+
+                    <strong>${item.TenBaiTap}</strong> <br>
+
+                    ID: ${item.id} <br>
+
+                    Nhóm cơ: ${item.NhomCo} <br>
+
+                    Calo mỗi lần: ${item.CaloMoiLan} <br>
+
+                    Số lần: ${item.SoLan} <br>
+
+                    Ngày: ${item.Ngay} <br>
+
+                    Created At: ${item.createdAt}
+
+                  </li>
+
+                `);
+                        });
+                    },
+
+                    error: function (xhr, status, error) {
+                        console.error(error);
+
+                        $("#result").html(`
+
+                <li>Không thể lấy dữ liệu từ API</li>
+
+              `);
+                    },
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+<!-- =======
+>>>>>>> 6d5b315397e7b2d76a698e4c303ad22564bad900 -->

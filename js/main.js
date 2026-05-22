@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 /* =========================================
    FITTRACK MAIN JS
 ========================================= */
+=======
+// <<<<<<< HEAD
+const workoutAPI = new APIResource("workouts");
+const memberAPI = new APIResource("members");
+>>>>>>> bd0f2e60372e16c10e1317ac2494898e0b270600
 
 console.log(
     "FitTrack Loaded"
@@ -252,6 +258,7 @@ if(
 
 }
 
+<<<<<<< HEAD
 /* =========================================
    LOGOUT
 ========================================= */
@@ -1300,3 +1307,9 @@ if (
     );
 
 }
+=======
+initSignup();
+initApp();
+// =======
+// >>>>>>> 6d5b315397e7b2d76a698e4c303ad22564bad900
+>>>>>>> bd0f2e60372e16c10e1317ac2494898e0b270600

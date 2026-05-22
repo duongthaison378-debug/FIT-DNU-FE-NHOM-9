@@ -1,6 +1,16 @@
+<<<<<<< HEAD
 /* =========================================
    FITTRACK API.JS
 ========================================= */
+=======
+// <<<<<<< HEAD
+
+class APIResource {
+  constructor(resourceName) {
+    this.resourceName = resourceName;
+    this.storageKey = `fittrack_${resourceName}`;
+  }
+>>>>>>> bd0f2e60372e16c10e1317ac2494898e0b270600
 
 const API_BASE_URL =
     "https://jsonplaceholder.typicode.com";
@@ -300,6 +310,7 @@ class APIResource{
     }
 
 }
+<<<<<<< HEAD
 
 /* =========================================
    USERS API
@@ -1304,3 +1315,7 @@ function clearFitTrackDatabase() {
     );
 
 }
+=======
+// =======
+// >>>>>>> 6d5b315397e7b2d76a698e4c303ad22564bad900
+>>>>>>> bd0f2e60372e16c10e1317ac2494898e0b270600
