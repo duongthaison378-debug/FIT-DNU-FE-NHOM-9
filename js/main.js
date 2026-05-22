@@ -1,247 +1,1302 @@
-// <<<<<<< HEAD
-const workoutAPI = new APIResource("workouts");
-const memberAPI = new APIResource("members");
+/* =========================================
+   FITTRACK MAIN JS
+========================================= */
 
-function formatDate(value) {
-  if (!value) return "-";
-  const date = new Date(value);
-  return date.toLocaleDateString("vi-VN", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-}
+console.log(
+    "FitTrack Loaded"
+);
 
-function formatDuration(value) {
-  return `${value} phút`;
-}
+/* =========================================
+   MENU MOBILE
+========================================= */
 
-function formatCalories(value) {
-  return `${value} kcal`;
-}
-
-function generateId() {
-  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
-}
-
-function setText(id, value) {
-  const element = document.getElementById(id);
-  if (element) element.textContent = value;
-}
-
-let searchTerm = "";
-
-function getFavoriteType(workouts) {
-  const count = workouts.reduce((acc, workout) => {
-    acc[workout.type] = (acc[workout.type] || 0) + 1;
-    return acc;
-  }, {});
-  const sorted = Object.entries(count).sort((a, b) => b[1] - a[1]);
-  return sorted.length ? sorted[0][0] : "-";
-}
-
-function countCurrentMonth(workouts) {
-  const current = new Date();
-  return workouts.filter((workout) => {
-    const date = new Date(workout.date);
-    return (
-      date.getFullYear() === current.getFullYear() &&
-      date.getMonth() === current.getMonth()
+const menuToggle =
+    document.getElementById(
+        "menuToggle"
     );
-  }).length;
-}
 
-async function renderWorkoutSummary() {
-  const workouts = await workoutAPI.layDanhSach();
-  setText("totalWorkouts", workouts.length);
-  setText(
-    "totalDuration",
-    workouts.reduce((sum, workout) => sum + Number(workout.duration || 0), 0),
-  );
-  setText(
-    "totalCalories",
-    workouts.reduce((sum, workout) => sum + Number(workout.calories || 0), 0),
-  );
-  setText("favoriteType", getFavoriteType(workouts));
-  setText("monthlyWorkouts", countCurrentMonth(workouts));
-  setText(
-    "todayLabel",
-    new Date().toLocaleDateString("vi-VN", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }),
-  );
-}
+const mainNav =
+    document.getElementById(
+        "mainNav"
+    );
 
-function renderWorkoutItem(workout) {
-  return `
-    <div class="list-item">
-      <h3>${formatDate(workout.date)} — ${workout.type}</h3>
-      <div class="item-meta">
-        <span class="badge">${formatDuration(workout.duration)}</span>
-        <span class="badge">${formatCalories(workout.calories)}</span>
-      </div>
-      <p>${workout.notes || "Không có ghi chú"}</p>
-    </div>
-  `;
-}
+if(
+    menuToggle &&
+    mainNav
+){
 
-async function renderWorkoutList() {
-  const workouts = await workoutAPI.layDanhSach();
-  const listElement = document.getElementById("workoutList");
-  if (!listElement) return;
+    menuToggle.addEventListener(
+        "click",
+        ()=>{
 
-  const filteredWorkouts = searchTerm
-    ? workouts.filter(
-        (workout) =>
-          workout.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (workout.notes &&
-            workout.notes.toLowerCase().includes(searchTerm.toLowerCase())),
-      )
-    : workouts;
+            mainNav.classList.toggle(
+                "show-menu"
+            );
 
-  listElement.innerHTML = filteredWorkouts.length
-    ? filteredWorkouts.map(renderWorkoutItem).join("")
-    : searchTerm
-      ? '<p class="empty-state">Không tìm thấy buổi tập nào phù hợp với từ khóa tìm kiếm.</p>'
-      : '<p class="empty-state">Chưa có buổi tập nào. Hãy thêm buổi tập đầu tiên!</p>';
-}
-
-async function handleFormSubmit(event) {
-  event.preventDefault();
-  const date = document.getElementById("date").value;
-  const type = document.getElementById("type").value;
-  const duration = document.getElementById("duration").value;
-  const calories = document.getElementById("calories").value;
-  const notes = document.getElementById("notes").value.trim();
-
-  if (!date || !type || !duration || !calories) return;
-
-  await workoutAPI.themMoi({
-    date,
-    type,
-    duration: Number(duration),
-    calories: Number(calories),
-    notes,
-  });
-
-  event.target.reset();
-  await renderWorkoutSummary();
-  await renderWorkoutList();
-}
-
-function getQueryParam(name) {
-  const params = new URLSearchParams(window.location.search);
-  return params.get(name) || "";
-}
-
-async function initApp() {
-  const form = document.getElementById("workoutForm");
-  if (form) {
-    form.addEventListener("submit", handleFormSubmit);
-  }
-
-  const searchInput = document.getElementById("searchInput");
-  if (searchInput) {
-    searchInput.addEventListener("input", (event) => {
-      searchTerm = event.target.value.trim();
-      renderWorkoutList();
-    });
-  }
-
-  const searchButton = document.getElementById("searchButton");
-  if (searchButton) {
-    searchButton.addEventListener("click", () => renderWorkoutList());
-  }
-
-  const searchHomeInput = document.getElementById("searchHomeInput");
-  const searchHomeButton = document.getElementById("searchHomeButton");
-  if (searchHomeButton && searchHomeInput) {
-    searchHomeButton.addEventListener("click", () => {
-      const query = searchHomeInput.value.trim();
-      if (query) {
-        searchTerm = query;
-        const searchInput = document.getElementById("searchInput");
-        if (searchInput) {
-          searchInput.value = query;
         }
-        renderWorkoutList();
-      }
-    });
-  }
+    );
 
-  const initialSearch = getQueryParam("search");
-  if (initialSearch) {
-    searchTerm = initialSearch;
-    if (searchInput) {
-      searchInput.value = searchTerm;
+}
+
+/* =========================================
+   CLOSE MENU WHEN CLICK LINK
+========================================= */
+
+const navLinks =
+    document.querySelectorAll(
+        ".main-nav a"
+    );
+
+navLinks.forEach(
+    link=>{
+
+        link.addEventListener(
+            "click",
+            ()=>{
+
+                if(
+                    mainNav
+                ){
+
+                    mainNav.classList.remove(
+                        "show-menu"
+                    );
+
+                }
+
+            }
+        );
+
     }
-  }
+);
 
-  await renderWorkoutSummary();
-  await renderWorkoutList();
+/* =========================================
+   DARK MODE
+========================================= */
+
+const savedTheme =
+    localStorage.getItem(
+        "fittrackTheme"
+    );
+
+if(
+    savedTheme === "dark"
+){
+
+    document.body.classList.add(
+        "dark-mode"
+    );
+
 }
 
-async function handleSignup(event) {
-  event.preventDefault();
-  const name = document.getElementById("memberName").value.trim();
-  const email = document.getElementById("memberEmail").value.trim();
-  const phone = document.getElementById("memberPhone").value.trim();
-  const password = document.getElementById("memberPassword").value;
-  const confirmPassword = document.getElementById("memberConfirmPassword").value;
-  const plan = document.getElementById("memberPlan").value;
-  const notes = document.getElementById("memberNotes").value.trim();
-  const messageElement = document.getElementById("signupMessage");
+const themeToggle =
+    document.getElementById(
+        "themeToggle"
+    );
 
-  if (!name || !email || !phone || !password || !confirmPassword) {
-  if (messageElement) {
-    messageElement.textContent =
-      "Vui lòng điền đầy đủ thông tin bắt buộc.";
-    messageElement.style.color = "#dc2626";
-  }
-  return;
+if(
+    themeToggle
+){
+
+    themeToggle.addEventListener(
+        "click",
+        ()=>{
+
+            document.body.classList.toggle(
+                "dark-mode"
+            );
+
+            if(
+                document.body.classList.contains(
+                    "dark-mode"
+                )
+            ){
+
+                localStorage.setItem(
+                    "fittrackTheme",
+                    "dark"
+                );
+
+            }
+            else{
+
+                localStorage.setItem(
+                    "fittrackTheme",
+                    "light"
+                );
+
+            }
+
+        }
+    );
+
 }
 
-if (password.length < 6) {
-  messageElement.textContent =
-    "Mật khẩu phải có ít nhất 6 ký tự.";
-  messageElement.style.color = "#dc2626";
-  return;
+/* =========================================
+   CURRENT USER
+========================================= */
+
+const currentUser =
+    JSON.parse(
+        localStorage.getItem(
+            "fittrackCurrentUser"
+        )
+    );
+
+    /* =========================================
+   SHOW / HIDE LOGOUT
+========================================= */
+
+const logoutBtn =
+    document.getElementById(
+        "logoutBtn"
+    );
+
+// Nếu chưa đăng nhập
+
+if(
+    !currentUser &&
+    logoutBtn
+){
+
+    logoutBtn.style.display =
+        "none";
+
 }
 
-if (password !== confirmPassword) {
-  messageElement.textContent =
-    "Mật khẩu xác nhận không khớp.";
-  messageElement.style.color = "#dc2626";
-  return;
+// Nếu đã đăng nhập
+
+if(
+    currentUser &&
+    logoutBtn
+){
+
+    logoutBtn.style.display =
+        "inline-block";
+
 }
 
-await memberAPI.themMoi({
-  name,
-  email,
-  phone,
-  password,
-  plan,
-  notes,
-});
+const userNameElement =
+    document.getElementById(
+        "currentUserName"
+    );
 
-  if (messageElement) {
-    messageElement.textContent = "Cảm ơn! Bạn đã đăng ký hội viên thành công.";
-    messageElement.style.color = "#047857";
-  }
+if(
+    currentUser &&
+    userNameElement
+){
 
-  event.target.reset();
+    userNameElement.innerText =
+        currentUser.name;
+
 }
 
-function initSignup() {
-  const form = document.getElementById("signupForm");
-  if (form) {
-    form.addEventListener("submit", handleSignup);
-  }
+/* =========================================
+   LOGIN CHECK
+========================================= */
+
+const protectedPages = [
+
+    "admin.html",
+    "progress.html",
+    "schedule.html",
+    "workout.html",
+    "premium.html"
+
+];
+
+const currentPage =
+    window.location.pathname
+        .split("/")
+        .pop();
+
+if(
+
+    protectedPages.includes(
+        currentPage
+    )
+
+    &&
+
+    !currentUser
+
+){
+
+    document.body.innerHTML = `
+
+        <div class="auth-warning">
+
+            <h1>
+
+                🔒 Bạn chưa đăng nhập
+
+            </h1>
+
+            <p>
+
+                Vui lòng đăng nhập
+                để truy cập trang này.
+
+            </p>
+
+            <a href="signup.html"
+               class="btn primary">
+
+                Đăng nhập ngay
+
+            </a>
+
+        </div>
+
+    `;
+
 }
 
-initSignup();
-initApp();
-// =======
-// >>>>>>> 6d5b315397e7b2d76a698e4c303ad22564bad900
+/* =========================================
+   LOGOUT
+========================================= */
+
+const logoutBtn =
+    document.getElementById(
+        "logoutBtn"
+    );
+
+if(
+    logoutBtn
+){
+
+    logoutBtn.addEventListener(
+        "click",
+        e=>{
+
+            e.preventDefault();
+
+            localStorage.removeItem(
+                "fittrackCurrentUser"
+            );
+
+            alert(
+                "🚪 Đăng xuất thành công"
+            );
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+}
+
+/* =========================================
+   PREMIUM STATUS
+========================================= */
+
+const premiumStatus =
+    localStorage.getItem(
+        "fittrackPremium"
+    );
+
+const premiumBadge =
+    document.getElementById(
+        "premiumBadge"
+    );
+
+if(
+    premiumStatus === "true"
+){
+
+    console.log(
+        "Premium User"
+    );
+
+    if(
+        premiumBadge
+    ){
+
+        premiumBadge.innerHTML =
+            "⭐ Premium";
+
+    }
+
+}
+
+/* =========================================
+   SCROLL ANIMATION
+========================================= */
+
+const animatedItems =
+    document.querySelectorAll(
+
+        ".feature-card,\
+         .workout-card,\
+         .stats-card,\
+         .trainer-card,\
+         .nutrition-card,\
+         .pricing-card,\
+         .testimonial-card"
+
+    );
+
+function revealOnScroll(){
+
+    animatedItems.forEach(
+        item=>{
+
+            const itemTop =
+                item.getBoundingClientRect()
+                    .top;
+
+            const screenHeight =
+                window.innerHeight;
+
+            if(
+                itemTop <
+                screenHeight - 100
+            ){
+
+                item.style.opacity =
+                    "1";
+
+                item.style.transform =
+                    "translateY(0px)";
+
+            }
+
+        }
+    );
+
+}
+
+animatedItems.forEach(
+    item=>{
+
+        item.style.opacity = "0";
+
+        item.style.transform =
+            "translateY(40px)";
+
+        item.style.transition =
+            "0.6s";
+
+    }
+);
+
+window.addEventListener(
+    "scroll",
+    revealOnScroll
+);
+
+revealOnScroll();
+
+/* =========================================
+   COUNTER ANIMATION
+========================================= */
+
+const counters =
+    document.querySelectorAll(
+        ".counter"
+    );
+
+counters.forEach(
+    counter=>{
+
+        counter.innerText = "0";
+
+        const updateCounter = ()=>{
+
+            const target =
+                +counter.getAttribute(
+                    "data-target"
+                );
+
+            const current =
+                +counter.innerText;
+
+            const increment =
+                target / 100;
+
+            if(
+                current < target
+            ){
+
+                counter.innerText =
+                    `${Math.ceil(
+                        current + increment
+                    )}`;
+
+                setTimeout(
+                    updateCounter,
+                    20
+                );
+
+            }
+            else{
+
+                counter.innerText =
+                    target;
+
+            }
+
+        };
+
+        updateCounter();
+
+    }
+);
+
+/* =========================================
+   WORKOUT STORAGE
+========================================= */
+
+function getWorkouts(){
+
+    return JSON.parse(
+
+        localStorage.getItem(
+            "fittrackWorkouts"
+        )
+
+    ) || [];
+
+}
+
+function saveWorkout(workout){
+
+    const workouts =
+        getWorkouts();
+
+    workouts.push(workout);
+
+    localStorage.setItem(
+
+        "fittrackWorkouts",
+
+        JSON.stringify(
+            workouts
+        )
+
+    );
+
+}
+
+/* =========================================
+   SCHEDULE STORAGE
+========================================= */
+
+function getSchedules(){
+
+    return JSON.parse(
+
+        localStorage.getItem(
+            "fittrackSchedules"
+        )
+
+    ) || [];
+
+}
+
+function saveSchedule(schedule){
+
+    const schedules =
+        getSchedules();
+
+    schedules.push(schedule);
+
+    localStorage.setItem(
+
+        "fittrackSchedules",
+
+        JSON.stringify(
+            schedules
+        )
+
+    );
+
+}
+
+/* =========================================
+   BMI CALCULATOR
+========================================= */
+
+const bmiBtn =
+    document.getElementById(
+        "calculateBMI"
+    );
+
+if(
+    bmiBtn
+){
+
+    bmiBtn.addEventListener(
+        "click",
+        ()=>{
+
+            const weight =
+                document.getElementById(
+                    "weight"
+                ).value;
+
+            const height =
+                document.getElementById(
+                    "height"
+                ).value;
+
+            const bmiResult =
+                document.getElementById(
+                    "bmiResult"
+                );
+
+            if(
+                !weight ||
+                !height
+            ){
+
+                bmiResult.innerText =
+                    "Vui lòng nhập đủ thông tin";
+
+                return;
+
+            }
+
+            const bmi = (
+
+                weight /
+
+                (
+                    (height / 100)
+                    *
+                    (height / 100)
+                )
+
+            ).toFixed(1);
+
+            bmiResult.innerText =
+                `BMI của bạn: ${bmi}`;
+
+        }
+    );
+
+}
+
+/* =========================================
+   CONTACT FORM
+========================================= */
+
+const supportForm =
+    document.getElementById(
+        "supportForm"
+    );
+
+if(
+    supportForm
+){
+
+    supportForm.addEventListener(
+        "submit",
+        e=>{
+
+            e.preventDefault();
+
+            alert(
+                "📩 Gửi hỗ trợ thành công"
+            );
+
+            supportForm.reset();
+
+        }
+    );
+
+}
+
+/* =========================================
+   NEWSLETTER
+========================================= */
+
+const newsletterForm =
+    document.getElementById(
+        "newsletterForm"
+    );
+
+if(
+    newsletterForm
+){
+
+    newsletterForm.addEventListener(
+        "submit",
+        e=>{
+
+            e.preventDefault();
+
+            const email =
+                document.getElementById(
+                    "newsletterEmail"
+                ).value;
+
+            if(
+                !email
+            ){
+
+                alert(
+                    "Nhập email của bạn"
+                );
+
+                return;
+
+            }
+
+            alert(
+                "🎉 Đăng ký thành công"
+            );
+
+            newsletterForm.reset();
+
+        }
+    );
+
+}
+
+/* =========================================
+   LOADING SCREEN
+========================================= */
+
+window.addEventListener(
+    "load",
+    ()=>{
+
+        const loader =
+            document.getElementById(
+                "loader"
+            );
+
+        if(
+            loader
+        ){
+
+            loader.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+/* =========================================
+   AUTO YEAR
+========================================= */
+
+const currentYear =
+    document.getElementById(
+        "currentYear"
+    );
+
+if(
+    currentYear
+){
+
+    currentYear.innerText =
+        new Date().getFullYear();
+
+}
+
+/* =========================================
+   SEARCH WORKOUT
+========================================= */
+
+const searchInput =
+    document.getElementById(
+        "searchWorkout"
+    );
+
+if(
+    searchInput
+){
+
+    searchInput.addEventListener(
+        "keyup",
+        ()=>{
+
+            const value =
+                searchInput.value
+                    .toLowerCase();
+
+            const cards =
+                document.querySelectorAll(
+                    ".workout-card"
+                );
+
+            cards.forEach(
+                card=>{
+
+                    const text =
+                        card.innerText
+                            .toLowerCase();
+
+                    if(
+                        text.includes(
+                            value
+                        )
+                    ){
+
+                        card.style.display =
+                            "block";
+
+                    }
+                    else{
+
+                        card.style.display =
+                            "none";
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+}
+
+/* =========================================
+   PREMIUM BUY
+========================================= */
+
+const buyButtons =
+    document.querySelectorAll(
+        ".buyPremiumBtn"
+    );
+
+buyButtons.forEach(
+    button=>{
+
+        button.addEventListener(
+            "click",
+            ()=>{
+
+                localStorage.setItem(
+                    "fittrackPremium",
+                    "true"
+                );
+
+                alert(
+                    "⭐ Nâng cấp Premium thành công"
+                );
+
+            }
+        );
+
+    }
+);
+
+/* =========================================
+   PAGE LOADED
+========================================= */
+
+console.log(
+    "FitTrack Main JS Ready"
+);
+/* =========================================
+   LOGOUT
+========================================= */
+
+const logoutBtn =
+    document.getElementById(
+        "logoutBtn"
+    );
+
+if(
+    logoutBtn
+){
+
+    logoutBtn.addEventListener(
+        "click",
+        e=>{
+
+            e.preventDefault();
+
+            // Xóa tài khoản hiện tại
+
+            localStorage.removeItem(
+                "fittrackCurrentUser"
+            );
+
+            // Xóa premium nếu muốn
+
+            // localStorage.removeItem(
+            //     "fittrackPremium"
+            // );
+
+            alert(
+                "🚪 Đăng xuất thành công"
+            );
+
+            // Chuyển về trang chủ
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+}
+
+localStorage.setItem(
+
+    "fittrackCurrentUser",
+
+    JSON.stringify({
+
+        name:name,
+        email:email
+
+    })
+
+);
+// =========================================
+// FITTRACK MAIN.JS
+// =========================================
+
+// =========================================
+// MENU MOBILE
+// =========================================
+
+const menuToggle =
+    document.getElementById(
+        "menuToggle"
+    );
+
+const mainNav =
+    document.getElementById(
+        "mainNav"
+    );
+
+if (
+    menuToggle &&
+    mainNav
+) {
+
+    menuToggle.addEventListener(
+        "click",
+        () => {
+
+            mainNav.classList.toggle(
+                "show-menu"
+            );
+
+        }
+    );
+
+}
+
+// =========================================
+// CURRENT USER
+// =========================================
+
+const currentUser =
+    JSON.parse(
+        localStorage.getItem(
+            "fittrackCurrentUser"
+        )
+    );
+
+// =========================================
+// NAVIGATION LOGIN STATUS
+// =========================================
+
+const logoutBtn =
+    document.getElementById(
+        "logoutBtn"
+    );
+
+const loginNav =
+    document.getElementById(
+        "loginNav"
+    );
+
+const adminNav =
+    document.getElementById(
+        "adminNav"
+    );
+
+// =========================================
+// SHOW/HIDE MENU
+// =========================================
+
+if (
+    currentUser
+) {
+
+    if (
+        logoutBtn
+    ) {
+
+        logoutBtn.style.display =
+            "block";
+
+    }
+
+    if (
+        loginNav
+    ) {
+
+        loginNav.style.display =
+            "none";
+
+    }
+
+    // =============================
+    // ADMIN MENU
+    // =============================
+
+    if (
+        currentUser.role === "admin"
+    ) {
+
+        if (
+            adminNav
+        ) {
+
+            adminNav.style.display =
+                "block";
+
+        }
+
+    }
+
+} else {
+
+    if (
+        logoutBtn
+    ) {
+
+        logoutBtn.style.display =
+            "none";
+
+    }
+
+    if (
+        adminNav
+    ) {
+
+        adminNav.style.display =
+            "none";
+
+    }
+
+}
+
+// =========================================
+// LOGOUT
+// =========================================
+
+if (
+    logoutBtn
+) {
+
+    logoutBtn.addEventListener(
+        "click",
+        (e) => {
+
+            e.preventDefault();
+
+            localStorage.removeItem(
+                "fittrackCurrentUser"
+            );
+
+            alert(
+                "Đăng xuất thành công"
+            );
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+}
+
+// =========================================
+// ADMIN PAGE CHECK
+// =========================================
+
+const isAdminPage =
+    window.location.pathname.includes(
+        "admin.html"
+    );
+
+if (
+    isAdminPage
+) {
+
+    if (
+        !currentUser
+    ) {
+
+        alert(
+            "Bạn chưa đăng nhập"
+        );
+
+        window.location.href =
+            "signup.html";
+
+    }
+
+    if (
+        currentUser.role !== "admin"
+    ) {
+
+        alert(
+            "Bạn không có quyền truy cập"
+        );
+
+        window.location.href =
+            "index.html";
+
+    }
+
+}
+
+// =========================================
+// DARK MODE
+// =========================================
+
+const savedTheme =
+    localStorage.getItem(
+        "fittrackTheme"
+    );
+
+if (
+    savedTheme === "dark"
+) {
+
+    document.body.classList.add(
+        "dark-mode"
+    );
+
+}
+
+// =========================================
+// WEBSITE SETTINGS
+// =========================================
+
+const siteTitle =
+    localStorage.getItem(
+        "fittrackSiteTitle"
+    );
+
+if (
+    siteTitle
+) {
+
+    const brand =
+        document.querySelector(
+            ".brand"
+        );
+
+    if (
+        brand
+    ) {
+
+        brand.innerText =
+            siteTitle;
+
+    }
+
+}
+
+const themeColor =
+    localStorage.getItem(
+        "fittrackThemeColor"
+    );
+
+if (
+    themeColor
+) {
+
+    document.documentElement
+        .style
+        .setProperty(
+            "--primary-color",
+            themeColor
+        );
+
+}
+
+// =========================================
+// PREMIUM CHECK
+// =========================================
+
+const premiumStatus =
+    localStorage.getItem(
+        "fittrackPremium"
+    );
+
+if (
+    premiumStatus === "true"
+) {
+
+    console.log(
+        "Premium Member"
+    );
+
+}
+
+// =========================================
+// GLOBAL NOTIFICATION
+// =========================================
+
+function showNotification(
+    message
+) {
+
+    const notification =
+        document.createElement(
+            "div"
+        );
+
+    notification.className =
+        "global-notification";
+
+    notification.innerText =
+        message;
+
+    document.body.appendChild(
+        notification
+    );
+
+    setTimeout(
+        () => {
+
+            notification.remove();
+
+        },
+        3000
+    );
+
+}
+
+// =========================================
+// USER GREETING
+// =========================================
+
+const greetingBox =
+    document.getElementById(
+        "greetingBox"
+    );
+
+if (
+    greetingBox &&
+    currentUser
+) {
+
+    greetingBox.innerHTML = `
+
+        Xin chào,
+        <strong>
+
+            ${currentUser.name}
+
+        </strong>
+
+    `;
+
+}
+
+// =========================================
+// AUTO INIT STORAGE
+// =========================================
+
+if (
+    !localStorage.getItem(
+        "fittrackUsers"
+    )
+) {
+
+    localStorage.setItem(
+
+        "fittrackUsers",
+
+        JSON.stringify([])
+
+    );
+
+}
+
+if (
+    !localStorage.getItem(
+        "fittrackWorkouts"
+    )
+) {
+
+    localStorage.setItem(
+
+        "fittrackWorkouts",
+
+        JSON.stringify([])
+
+    );
+
+}
+
+if (
+    !localStorage.getItem(
+        "fittrackPremiums"
+    )
+) {
+
+    localStorage.setItem(
+
+        "fittrackPremiums",
+
+        JSON.stringify([])
+
+    );
+
+}
+
+if (
+    !localStorage.getItem(
+        "fittrackPosts"
+    )
+) {
+
+    localStorage.setItem(
+
+        "fittrackPosts",
+
+        JSON.stringify([])
+
+    );
+
+}
+
+if (
+    !localStorage.getItem(
+        "fittrackSchedules"
+    )
+) {
+
+    localStorage.setItem(
+
+        "fittrackSchedules",
+
+        JSON.stringify([])
+
+    );
+
+}
+
+if (
+    !localStorage.getItem(
+        "fittrackTrainers"
+    )
+) {
+
+    localStorage.setItem(
+
+        "fittrackTrainers",
+
+        JSON.stringify([])
+
+    );
+
+}

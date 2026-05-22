@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
-        FitTrack - HLV Cá Nhân
+        FitTrack - Dinh Dưỡng
     </title>
 
     <!-- GOOGLE FONT -->
@@ -21,7 +21,6 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
-
     <!-- CSS -->
 
     <style>
@@ -129,13 +128,13 @@
            HERO
         ========================= */
 
-        .trainer-hero {
+        .nutrition-hero {
 
             padding: 80px 0;
 
         }
 
-        .trainer-hero-grid {
+        .nutrition-hero-grid {
 
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -144,14 +143,14 @@
 
         }
 
-        .trainer-hero-content h1 {
+        .nutrition-content h1 {
 
             font-size: 58px;
             margin-bottom: 20px;
 
         }
 
-        .trainer-hero-content p {
+        .nutrition-content p {
 
             color: #cbd5e1;
             margin-bottom: 30px;
@@ -168,7 +167,7 @@
 
         }
 
-        .trainer-hero-image img {
+        .nutrition-image img {
 
             border-radius: 25px;
 
@@ -183,8 +182,10 @@
             display: inline-block;
             padding: 14px 28px;
             border-radius: 12px;
-            font-weight: 600;
+            font-weight: 700;
             transition: 0.3s;
+            border: none;
+            cursor: pointer;
 
         }
 
@@ -198,20 +199,6 @@
         .primary:hover {
 
             background: #16a34a;
-
-        }
-
-        .secondary {
-
-            background: #1e293b;
-            color: white;
-            border: 1px solid #334155;
-
-        }
-
-        .secondary:hover {
-
-            background: #334155;
 
         }
 
@@ -242,16 +229,16 @@
         }
 
         /* =========================
-           TRAINERS
+           MEAL GRID
         ========================= */
 
-        .trainer-section {
+        .meal-section {
 
             padding: 80px 0;
 
         }
 
-        .trainer-grid {
+        .meal-grid {
 
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -259,7 +246,7 @@
 
         }
 
-        .trainer-card {
+        .meal-card {
 
             background: #1e293b;
             border-radius: 25px;
@@ -268,70 +255,102 @@
 
         }
 
-        .trainer-card:hover {
+        .meal-card:hover {
 
             transform: translateY(-6px);
 
         }
 
-        .trainer-info {
+        .meal-info {
 
             padding: 25px;
 
         }
 
-        .trainer-info h3 {
+        .meal-info h3 {
 
             margin-bottom: 10px;
 
         }
 
-        .trainer-role {
-
-            color: #22c55e;
-            margin-bottom: 15px;
-            font-weight: 600;
-
-        }
-
-        .trainer-info p {
+        .meal-info p {
 
             color: #cbd5e1;
             margin-bottom: 20px;
 
         }
 
-        .trainer-stats {
+        .meal-calories {
 
-            display: flex;
-            justify-content: space-between;
+            color: #22c55e;
+            font-weight: 700;
             margin-bottom: 20px;
 
         }
 
-        .trainer-stats div {
-
-            text-align: center;
-
-        }
-
-        .trainer-stats h4 {
-
-            color: #22c55e;
-
-        }
-
         /* =========================
-           FEATURES
+           CALCULATOR
         ========================= */
 
-        .feature-section {
+        .calculator-section {
 
             padding: 80px 0;
 
         }
 
-        .feature-grid {
+        .calculator-box {
+
+            background: #1e293b;
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 700px;
+            margin: auto;
+
+        }
+
+        .calculator-box input,
+        .calculator-box select {
+
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 12px;
+            background: #334155;
+            color: white;
+            font-size: 15px;
+            outline: none;
+
+        }
+
+        .result-box {
+
+            margin-top: 30px;
+            background: #334155;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+
+        }
+
+        .result-box h3 {
+
+            color: #22c55e;
+            margin-bottom: 10px;
+
+        }
+
+        /* =========================
+           TIPS
+        ========================= */
+
+        .tips-section {
+
+            padding: 80px 0;
+
+        }
+
+        .tips-grid {
 
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -339,7 +358,7 @@
 
         }
 
-        .feature-card {
+        .tip-card {
 
             background: #1e293b;
             padding: 35px;
@@ -348,49 +367,16 @@
 
         }
 
-        .feature-card:hover {
+        .tip-card:hover {
 
             transform: translateY(-5px);
 
         }
 
-        .feature-icon {
+        .tip-icon {
 
             font-size: 45px;
             margin-bottom: 20px;
-
-        }
-
-        /* =========================
-           TESTIMONIAL
-        ========================= */
-
-        .testimonial-section {
-
-            padding: 80px 0;
-
-        }
-
-        .testimonial-grid {
-
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-
-        }
-
-        .testimonial-card {
-
-            background: #1e293b;
-            padding: 35px;
-            border-radius: 20px;
-
-        }
-
-        .testimonial-card h4 {
-
-            margin-top: 20px;
-            color: #22c55e;
 
         }
 
@@ -474,13 +460,13 @@
 
             }
 
-            .trainer-hero-grid {
+            .nutrition-hero-grid {
 
                 grid-template-columns: 1fr;
 
             }
 
-            .trainer-hero-content h1 {
+            .nutrition-content h1 {
 
                 font-size: 40px;
 
@@ -523,8 +509,8 @@
                     Buổi tập
                 </a>
 
-                <a href="nutrition.html">
-                    Dinh dưỡng
+                <a href="trainer.html">
+                    HLV
                 </a>
 
                 <a href="premium.html">
@@ -533,6 +519,10 @@
 
                 <a href="support.html">
                     Hỗ trợ
+                </a>
+
+                <a href="settings.html">
+                    Cài đặt
                 </a>
 
             </nav>
@@ -545,47 +535,47 @@
          HERO
     ========================= -->
 
-    <section class="trainer-hero">
+    <section class="nutrition-hero">
 
-        <div class="container trainer-hero-grid">
+        <div class="container nutrition-hero-grid">
 
-            <div class="trainer-hero-content">
+            <div class="nutrition-content">
 
                 <span class="page-badge">
 
-                    PERSONAL TRAINER
+                    NUTRITION PLAN
 
                 </span>
 
                 <h1>
 
-                    Huấn luyện viên
-                    chuyên nghiệp
+                    Chế độ dinh dưỡng
+                    khoa học
 
                 </h1>
 
                 <p>
 
-                    Kết nối cùng các HLV cá nhân,
-                    xây dựng kế hoạch tập luyện,
-                    giảm cân,
-                    tăng cơ
-                    và cải thiện sức khỏe.
+                    Theo dõi calories,
+                    protein,
+                    chất béo
+                    và xây dựng meal plan
+                    phù hợp mục tiêu luyện tập.
 
                 </p>
 
-                <a href="#trainerList" class="btn primary">
+                <a href="#mealSection" class="btn primary">
 
-                    Xem HLV ngay
+                    Xem thực đơn
 
                 </a>
 
             </div>
 
-            <div class="trainer-hero-image">
+            <div class="nutrition-image">
 
-                <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop"
-                    alt="Trainer">
+                <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1200&auto=format&fit=crop"
+                    alt="Nutrition">
 
             </div>
 
@@ -594,10 +584,10 @@
     </section>
 
     <!-- =========================
-         TRAINER LIST
+         MEALS
     ========================= -->
 
-    <section class="trainer-section" id="trainerList">
+    <section class="meal-section" id="mealSection">
 
         <div class="container">
 
@@ -605,106 +595,54 @@
 
                 <span>
 
-                    TRAINERS
+                    HEALTHY MEALS
 
                 </span>
 
                 <h2>
 
-                    Đội ngũ HLV
+                    Thực đơn dinh dưỡng
 
                 </h2>
 
             </div>
 
-            <div class="trainer-grid">
+            <div class="meal-grid">
 
                 <!-- CARD -->
 
-                <div class="trainer-card">
+                <div class="meal-card">
 
-                    <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=1200&auto=format&fit=crop"
-                        alt="Trainer">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1200&auto=format&fit=crop"
+                        alt="Meal">
 
-                    <div class="trainer-info">
+                    <div class="meal-info">
 
                         <h3>
 
-                            Nguyễn Minh Khang
+                            Salad Healthy
 
                         </h3>
 
-                        <div class="trainer-role">
-
-                            Fitness Coach
-
-                        </div>
-
                         <p>
 
-                            Chuyên tăng cơ,
-                            giảm mỡ,
-                            bodybuilding.
+                            Giàu vitamin,
+                            ít calories,
+                            tốt cho giảm cân.
 
                         </p>
 
-                        <div class="trainer-stats">
+                        <div class="meal-calories">
 
-                            <div>
-
-                                <h4>
-
-                                    5+
-
-                                </h4>
-
-                                <span>
-
-                                    Năm
-
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                <h4>
-
-                                    1.2K
-
-                                </h4>
-
-                                <span>
-
-                                    Học viên
-
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                <h4>
-
-                                    ⭐4.9
-
-                                </h4>
-
-                                <span>
-
-                                    Rating
-
-                                </span>
-
-                            </div>
+                            350 Calories
 
                         </div>
 
-                        <a href="#" class="btn primary">
+                        <button class="btn primary">
 
-                            Thuê HLV
+                            Xem chi tiết
 
-                        </a>
+                        </button>
 
                     </div>
 
@@ -712,90 +650,37 @@
 
                 <!-- CARD -->
 
-                <div class="trainer-card">
+                <div class="meal-card">
 
-                    <img src="https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?q=80&w=1200&auto=format&fit=crop"
-                        alt="Trainer">
+                    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1200&auto=format&fit=crop"
+                        alt="Meal">
 
-                    <div class="trainer-info">
+                    <div class="meal-info">
 
                         <h3>
 
-                            Trần Hoàng Anh
+                            Protein Bowl
 
                         </h3>
 
-                        <div class="trainer-role">
-
-                            Yoga Trainer
-
-                        </div>
-
                         <p>
 
-                            Yoga,
-                            cải thiện vóc dáng,
-                            thiền và sức khỏe.
+                            Nhiều protein,
+                            phù hợp tăng cơ.
 
                         </p>
 
-                        <div class="trainer-stats">
+                        <div class="meal-calories">
 
-                            <div>
-
-                                <h4>
-
-                                    7+
-
-                                </h4>
-
-                                <span>
-
-                                    Năm
-
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                <h4>
-
-                                    980
-
-                                </h4>
-
-                                <span>
-
-                                    Học viên
-
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                <h4>
-
-                                    ⭐5.0
-
-                                </h4>
-
-                                <span>
-
-                                    Rating
-
-                                </span>
-
-                            </div>
+                            520 Calories
 
                         </div>
 
-                        <a href="#" class="btn primary">
+                        <button class="btn primary">
 
-                            Thuê HLV
+                            Xem chi tiết
 
-                        </a>
+                        </button>
 
                     </div>
 
@@ -803,90 +688,37 @@
 
                 <!-- CARD -->
 
-                <div class="trainer-card">
+                <div class="meal-card">
 
-                    <img src="https://images.unsplash.com/photo-1549476464-37392f717541?q=80&w=1200&auto=format&fit=crop"
-                        alt="Trainer">
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop"
+                        alt="Meal">
 
-                    <div class="trainer-info">
+                    <div class="meal-info">
 
                         <h3>
 
-                            Lê Quốc Huy
+                            Fitness Breakfast
 
                         </h3>
 
-                        <div class="trainer-role">
-
-                            Cardio Coach
-
-                        </div>
-
                         <p>
 
-                            Cardio,
-                            HIIT,
-                            giảm cân chuyên sâu.
+                            Bữa sáng đầy đủ năng lượng
+                            cho ngày mới.
 
                         </p>
 
-                        <div class="trainer-stats">
+                        <div class="meal-calories">
 
-                            <div>
-
-                                <h4>
-
-                                    4+
-
-                                </h4>
-
-                                <span>
-
-                                    Năm
-
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                <h4>
-
-                                    850
-
-                                </h4>
-
-                                <span>
-
-                                    Học viên
-
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                <h4>
-
-                                    ⭐4.8
-
-                                </h4>
-
-                                <span>
-
-                                    Rating
-
-                                </span>
-
-                            </div>
+                            430 Calories
 
                         </div>
 
-                        <a href="#" class="btn primary">
+                        <button class="btn primary">
 
-                            Thuê HLV
+                            Xem chi tiết
 
-                        </a>
+                        </button>
 
                     </div>
 
@@ -899,10 +731,10 @@
     </section>
 
     <!-- =========================
-         FEATURES
+         CALCULATOR
     ========================= -->
 
-    <section class="feature-section">
+    <section class="calculator-section">
 
         <div class="container">
 
@@ -910,105 +742,65 @@
 
                 <span>
 
-                    BENEFITS
+                    CALCULATOR
 
                 </span>
 
                 <h2>
 
-                    Vì sao chọn HLV FitTrack?
+                    Tính Calories
 
                 </h2>
 
             </div>
 
-            <div class="feature-grid">
+            <div class="calculator-box">
 
-                <div class="feature-card">
+                <input type="number" id="weight" placeholder="Cân nặng (kg)">
 
-                    <div class="feature-icon">
+                <input type="number" id="height" placeholder="Chiều cao (cm)">
 
-                        🏋️
+                <input type="number" id="age" placeholder="Tuổi">
 
-                    </div>
+                <select id="goal">
 
-                    <h3>
+                    <option value="lose">
 
-                        Kế hoạch cá nhân
+                        Giảm cân
 
-                    </h3>
+                    </option>
 
-                    <p>
+                    <option value="maintain">
 
-                        Giáo án tập luyện
-                        riêng cho từng mục tiêu.
+                        Giữ dáng
 
-                    </p>
+                    </option>
 
-                </div>
+                    <option value="gain">
 
-                <div class="feature-card">
+                        Tăng cơ
 
-                    <div class="feature-icon">
+                    </option>
 
-                        🥗
+                </select>
 
-                    </div>
+                <button class="btn primary" id="calculateBtn">
 
-                    <h3>
+                    Tính ngay
 
-                        Dinh dưỡng
+                </button>
 
-                    </h3>
-
-                    <p>
-
-                        Meal plan chuẩn khoa học.
-
-                    </p>
-
-                </div>
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-
-                        📈
-
-                    </div>
+                <div class="result-box" id="resultBox">
 
                     <h3>
 
-                        Theo dõi tiến độ
+                        Calories mỗi ngày
 
                     </h3>
 
-                    <p>
+                    <p id="resultText">
 
-                        Báo cáo kết quả
-                        và thống kê chi tiết.
-
-                    </p>
-
-                </div>
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-
-                        💬
-
-                    </div>
-
-                    <h3>
-
-                        Hỗ trợ 24/7
-
-                    </h3>
-
-                    <p>
-
-                        HLV luôn sẵn sàng hỗ trợ.
+                        0 Calories
 
                     </p>
 
@@ -1021,10 +813,10 @@
     </section>
 
     <!-- =========================
-         TESTIMONIAL
+         TIPS
     ========================= -->
 
-    <section class="testimonial-section">
+    <section class="tips-section">
 
         <div class="container">
 
@@ -1032,68 +824,107 @@
 
                 <span>
 
-                    REVIEWS
+                    HEALTH TIPS
 
                 </span>
 
                 <h2>
 
-                    Học viên nói gì?
+                    Mẹo dinh dưỡng
 
                 </h2>
 
             </div>
 
-            <div class="testimonial-grid">
+            <div class="tips-grid">
 
-                <div class="testimonial-card">
+                <div class="tip-card">
+
+                    <div class="tip-icon">
+
+                        💧
+
+                    </div>
+
+                    <h3>
+
+                        Uống đủ nước
+
+                    </h3>
 
                     <p>
 
-                        “HLV cực kỳ chuyên nghiệp,
-                        tôi giảm 10kg chỉ sau 4 tháng.”
+                        Uống tối thiểu 2 lít nước mỗi ngày.
 
                     </p>
-
-                    <h4>
-
-                        Nguyễn Văn A
-
-                    </h4>
 
                 </div>
 
-                <div class="testimonial-card">
+                <div class="tip-card">
+
+                    <div class="tip-icon">
+
+                        🥦
+
+                    </div>
+
+                    <h3>
+
+                        Ăn nhiều rau
+
+                    </h3>
 
                     <p>
 
-                        “Giáo án rất dễ theo,
-                        hỗ trợ tận tình.”
+                        Tăng vitamin
+                        và chất xơ cho cơ thể.
 
                     </p>
-
-                    <h4>
-
-                        Trần Minh B
-
-                    </h4>
 
                 </div>
 
-                <div class="testimonial-card">
+                <div class="tip-card">
+
+                    <div class="tip-icon">
+
+                        🍗
+
+                    </div>
+
+                    <h3>
+
+                        Protein đầy đủ
+
+                    </h3>
 
                     <p>
 
-                        “FitTrack giúp tôi thay đổi
-                        hoàn toàn sức khỏe.”
+                        Protein giúp phục hồi
+                        và phát triển cơ bắp.
 
                     </p>
 
-                    <h4>
+                </div>
 
-                        Lê Quốc C
+                <div class="tip-card">
 
-                    </h4>
+                    <div class="tip-icon">
+
+                        ⏰
+
+                    </div>
+
+                    <h3>
+
+                        Ăn đúng giờ
+
+                    </h3>
+
+                    <p>
+
+                        Giúp cơ thể ổn định năng lượng.
+
+                    </p>
 
                 </div>
 
@@ -1136,15 +967,21 @@
                 </h3>
 
                 <a href="index.html">
+
                     Trang chủ
+
                 </a>
 
-                <a href="workout.html">
-                    Buổi tập
+                <a href="trainer.html">
+
+                    HLV
+
                 </a>
 
                 <a href="premium.html">
+
                     Premium
+
                 </a>
 
             </div>
@@ -1158,7 +995,9 @@
                 </h3>
 
                 <a href="support.html">
+
                     Trung tâm hỗ trợ
+
                 </a>
 
             </div>
@@ -1221,6 +1060,88 @@
                 mainNav.classList.toggle(
                     "show-menu"
                 );
+
+            }
+        );
+
+        // CALCULATOR
+
+        const calculateBtn =
+            document.getElementById(
+                "calculateBtn"
+            );
+
+        calculateBtn.addEventListener(
+            "click",
+            () => {
+
+                const weight =
+                    parseFloat(
+                        document.getElementById(
+                            "weight"
+                        ).value
+                    );
+
+                const height =
+                    parseFloat(
+                        document.getElementById(
+                            "height"
+                        ).value
+                    );
+
+                const age =
+                    parseFloat(
+                        document.getElementById(
+                            "age"
+                        ).value
+                    );
+
+                const goal =
+                    document.getElementById(
+                        "goal"
+                    ).value;
+
+                if (
+                    !weight ||
+                    !height ||
+                    !age
+                ) {
+
+                    alert(
+                        "Vui lòng nhập đầy đủ thông tin"
+                    );
+
+                    return;
+
+                }
+
+                // BMR
+
+                let calories =
+                    10 * weight +
+                    6.25 * height -
+                    5 * age +
+                    5;
+
+                // GOAL
+
+                if (goal === "lose") {
+
+                    calories -= 300;
+
+                }
+
+                if (goal === "gain") {
+
+                    calories += 300;
+
+                }
+
+                document.getElementById(
+                    "resultText"
+                ).innerText =
+                    Math.floor(calories) +
+                    " Calories";
 
             }
         );

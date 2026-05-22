@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
-        FitTrack - HLV Cá Nhân
+        FitTrack - Premium
     </title>
 
     <!-- GOOGLE FONT -->
@@ -21,7 +21,6 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
-
     <!-- CSS -->
 
     <style>
@@ -48,18 +47,18 @@
 
         }
 
-        img {
-
-            width: 100%;
-            display: block;
-
-        }
-
         .container {
 
             width: 90%;
             max-width: 1200px;
             margin: auto;
+
+        }
+
+        img {
+
+            width: 100%;
+            display: block;
 
         }
 
@@ -129,13 +128,13 @@
            HERO
         ========================= */
 
-        .trainer-hero {
+        .premium-hero {
 
             padding: 80px 0;
 
         }
 
-        .trainer-hero-grid {
+        .premium-grid {
 
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -144,14 +143,14 @@
 
         }
 
-        .trainer-hero-content h1 {
+        .premium-content h1 {
 
-            font-size: 58px;
+            font-size: 60px;
             margin-bottom: 20px;
 
         }
 
-        .trainer-hero-content p {
+        .premium-content p {
 
             color: #cbd5e1;
             margin-bottom: 30px;
@@ -168,7 +167,7 @@
 
         }
 
-        .trainer-hero-image img {
+        .premium-image img {
 
             border-radius: 25px;
 
@@ -181,10 +180,12 @@
         .btn {
 
             display: inline-block;
-            padding: 14px 28px;
+            padding: 15px 30px;
             border-radius: 12px;
-            font-weight: 600;
+            font-weight: 700;
             transition: 0.3s;
+            border: none;
+            cursor: pointer;
 
         }
 
@@ -204,8 +205,8 @@
         .secondary {
 
             background: #1e293b;
-            color: white;
             border: 1px solid #334155;
+            color: white;
 
         }
 
@@ -242,86 +243,6 @@
         }
 
         /* =========================
-           TRAINERS
-        ========================= */
-
-        .trainer-section {
-
-            padding: 80px 0;
-
-        }
-
-        .trainer-grid {
-
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-
-        }
-
-        .trainer-card {
-
-            background: #1e293b;
-            border-radius: 25px;
-            overflow: hidden;
-            transition: 0.3s;
-
-        }
-
-        .trainer-card:hover {
-
-            transform: translateY(-6px);
-
-        }
-
-        .trainer-info {
-
-            padding: 25px;
-
-        }
-
-        .trainer-info h3 {
-
-            margin-bottom: 10px;
-
-        }
-
-        .trainer-role {
-
-            color: #22c55e;
-            margin-bottom: 15px;
-            font-weight: 600;
-
-        }
-
-        .trainer-info p {
-
-            color: #cbd5e1;
-            margin-bottom: 20px;
-
-        }
-
-        .trainer-stats {
-
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-
-        }
-
-        .trainer-stats div {
-
-            text-align: center;
-
-        }
-
-        .trainer-stats h4 {
-
-            color: #22c55e;
-
-        }
-
-        /* =========================
            FEATURES
         ========================= */
 
@@ -343,21 +264,134 @@
 
             background: #1e293b;
             padding: 35px;
-            border-radius: 20px;
+            border-radius: 25px;
             transition: 0.3s;
 
         }
 
         .feature-card:hover {
 
-            transform: translateY(-5px);
+            transform: translateY(-6px);
 
         }
 
         .feature-icon {
 
-            font-size: 45px;
+            font-size: 50px;
             margin-bottom: 20px;
+
+        }
+
+        /* =========================
+           PRICING
+        ========================= */
+
+        .pricing-section {
+
+            padding: 80px 0;
+
+        }
+
+        .pricing-grid {
+
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+
+        }
+
+        .pricing-card {
+
+            background: #1e293b;
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            transition: 0.3s;
+
+        }
+
+        .pricing-card:hover {
+
+            transform: translateY(-8px);
+
+        }
+
+        .popular {
+
+            border: 2px solid #22c55e;
+
+        }
+
+        .popular-tag {
+
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #22c55e;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+
+        }
+
+        .pricing-card h3 {
+
+            margin-bottom: 20px;
+            font-size: 28px;
+
+        }
+
+        .price {
+
+            font-size: 50px;
+            font-weight: 800;
+            margin-bottom: 25px;
+            color: #22c55e;
+
+        }
+
+        .pricing-card ul {
+
+            list-style: none;
+            margin-bottom: 30px;
+
+        }
+
+        .pricing-card ul li {
+
+            margin-bottom: 14px;
+            color: #cbd5e1;
+
+        }
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .premium-status {
+
+            margin-top: 40px;
+            text-align: center;
+
+        }
+
+        .status-box {
+
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 25px;
+            max-width: 600px;
+            margin: auto;
+
+        }
+
+        .status-box h3 {
+
+            margin-bottom: 15px;
+            color: #22c55e;
 
         }
 
@@ -382,8 +416,8 @@
         .testimonial-card {
 
             background: #1e293b;
+            border-radius: 25px;
             padding: 35px;
-            border-radius: 20px;
 
         }
 
@@ -474,13 +508,13 @@
 
             }
 
-            .trainer-hero-grid {
+            .premium-grid {
 
                 grid-template-columns: 1fr;
 
             }
 
-            .trainer-hero-content h1 {
+            .premium-content h1 {
 
                 font-size: 40px;
 
@@ -527,12 +561,16 @@
                     Dinh dưỡng
                 </a>
 
-                <a href="premium.html">
-                    Premium
+                <a href="trainer.html">
+                    HLV
                 </a>
 
                 <a href="support.html">
                     Hỗ trợ
+                </a>
+
+                <a href="settings.html">
+                    Cài đặt
                 </a>
 
             </nav>
@@ -545,352 +583,47 @@
          HERO
     ========================= -->
 
-    <section class="trainer-hero">
+    <section class="premium-hero">
 
-        <div class="container trainer-hero-grid">
+        <div class="container premium-grid">
 
-            <div class="trainer-hero-content">
+            <div class="premium-content">
 
                 <span class="page-badge">
 
-                    PERSONAL TRAINER
+                    FITTRACK PREMIUM
 
                 </span>
 
                 <h1>
 
-                    Huấn luyện viên
-                    chuyên nghiệp
+                    Nâng cấp trải nghiệm
+                    luyện tập
 
                 </h1>
 
                 <p>
 
-                    Kết nối cùng các HLV cá nhân,
-                    xây dựng kế hoạch tập luyện,
-                    giảm cân,
-                    tăng cơ
-                    và cải thiện sức khỏe.
+                    Mở khóa toàn bộ tính năng cao cấp,
+                    giáo án chuyên sâu,
+                    meal plan,
+                    HLV cá nhân
+                    và thống kê thông minh.
 
                 </p>
 
-                <a href="#trainerList" class="btn primary">
+                <a href="#pricing" class="btn primary">
 
-                    Xem HLV ngay
+                    Xem gói Premium
 
                 </a>
 
             </div>
 
-            <div class="trainer-hero-image">
+            <div class="premium-image">
 
                 <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop"
-                    alt="Trainer">
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- =========================
-         TRAINER LIST
-    ========================= -->
-
-    <section class="trainer-section" id="trainerList">
-
-        <div class="container">
-
-            <div class="section-title">
-
-                <span>
-
-                    TRAINERS
-
-                </span>
-
-                <h2>
-
-                    Đội ngũ HLV
-
-                </h2>
-
-            </div>
-
-            <div class="trainer-grid">
-
-                <!-- CARD -->
-
-                <div class="trainer-card">
-
-                    <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=1200&auto=format&fit=crop"
-                        alt="Trainer">
-
-                    <div class="trainer-info">
-
-                        <h3>
-
-                            Nguyễn Minh Khang
-
-                        </h3>
-
-                        <div class="trainer-role">
-
-                            Fitness Coach
-
-                        </div>
-
-                        <p>
-
-                            Chuyên tăng cơ,
-                            giảm mỡ,
-                            bodybuilding.
-
-                        </p>
-
-                        <div class="trainer-stats">
-
-                            <div>
-
-                                <h4>
-
-                                    5+
-
-                                </h4>
-
-                                <span>
-
-                                    Năm
-
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                <h4>
-
-                                    1.2K
-
-                                </h4>
-
-                                <span>
-
-                                    Học viên
-
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                <h4>
-
-                                    ⭐4.9
-
-                                </h4>
-
-                                <span>
-
-                                    Rating
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                        <a href="#" class="btn primary">
-
-                            Thuê HLV
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-                <!-- CARD -->
-
-                <div class="trainer-card">
-
-                    <img src="https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?q=80&w=1200&auto=format&fit=crop"
-                        alt="Trainer">
-
-                    <div class="trainer-info">
-
-                        <h3>
-
-                            Trần Hoàng Anh
-
-                        </h3>
-
-                        <div class="trainer-role">
-
-                            Yoga Trainer
-
-                        </div>
-
-                        <p>
-
-                            Yoga,
-                            cải thiện vóc dáng,
-                            thiền và sức khỏe.
-
-                        </p>
-
-                        <div class="trainer-stats">
-
-                            <div>
-
-                                <h4>
-
-                                    7+
-
-                                </h4>
-
-                                <span>
-
-                                    Năm
-
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                <h4>
-
-                                    980
-
-                                </h4>
-
-                                <span>
-
-                                    Học viên
-
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                <h4>
-
-                                    ⭐5.0
-
-                                </h4>
-
-                                <span>
-
-                                    Rating
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                        <a href="#" class="btn primary">
-
-                            Thuê HLV
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-                <!-- CARD -->
-
-                <div class="trainer-card">
-
-                    <img src="https://images.unsplash.com/photo-1549476464-37392f717541?q=80&w=1200&auto=format&fit=crop"
-                        alt="Trainer">
-
-                    <div class="trainer-info">
-
-                        <h3>
-
-                            Lê Quốc Huy
-
-                        </h3>
-
-                        <div class="trainer-role">
-
-                            Cardio Coach
-
-                        </div>
-
-                        <p>
-
-                            Cardio,
-                            HIIT,
-                            giảm cân chuyên sâu.
-
-                        </p>
-
-                        <div class="trainer-stats">
-
-                            <div>
-
-                                <h4>
-
-                                    4+
-
-                                </h4>
-
-                                <span>
-
-                                    Năm
-
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                <h4>
-
-                                    850
-
-                                </h4>
-
-                                <span>
-
-                                    Học viên
-
-                                </span>
-
-                            </div>
-
-                            <div>
-
-                                <h4>
-
-                                    ⭐4.8
-
-                                </h4>
-
-                                <span>
-
-                                    Rating
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                        <a href="#" class="btn primary">
-
-                            Thuê HLV
-
-                        </a>
-
-                    </div>
-
-                </div>
+                    alt="Premium">
 
             </div>
 
@@ -910,13 +643,13 @@
 
                 <span>
 
-                    BENEFITS
+                    PREMIUM FEATURES
 
                 </span>
 
                 <h2>
 
-                    Vì sao chọn HLV FitTrack?
+                    Quyền lợi thành viên
 
                 </h2>
 
@@ -934,14 +667,14 @@
 
                     <h3>
 
-                        Kế hoạch cá nhân
+                        Giáo án nâng cao
 
                     </h3>
 
                     <p>
 
-                        Giáo án tập luyện
-                        riêng cho từng mục tiêu.
+                        Hơn 500+
+                        bài tập chuyên nghiệp.
 
                     </p>
 
@@ -957,13 +690,14 @@
 
                     <h3>
 
-                        Dinh dưỡng
+                        Meal Plan riêng
 
                     </h3>
 
                     <p>
 
-                        Meal plan chuẩn khoa học.
+                        Chế độ dinh dưỡng
+                        theo mục tiêu.
 
                     </p>
 
@@ -973,20 +707,20 @@
 
                     <div class="feature-icon">
 
-                        📈
+                        📊
 
                     </div>
 
                     <h3>
+
+                        Thống kê AI
+
+                    </h3>
+
+                    <p>
 
                         Theo dõi tiến độ
-
-                    </h3>
-
-                    <p>
-
-                        Báo cáo kết quả
-                        và thống kê chi tiết.
+                        bằng biểu đồ thông minh.
 
                     </p>
 
@@ -996,19 +730,230 @@
 
                     <div class="feature-icon">
 
-                        💬
+                        👨‍🏫
 
                     </div>
 
                     <h3>
 
-                        Hỗ trợ 24/7
+                        HLV cá nhân
 
                     </h3>
 
                     <p>
 
-                        HLV luôn sẵn sàng hỗ trợ.
+                        Hỗ trợ trực tiếp
+                        từ huấn luyện viên.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         PRICING
+    ========================= -->
+
+    <section class="pricing-section" id="pricing">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <span>
+
+                    PRICING
+
+                </span>
+
+                <h2>
+
+                    Chọn gói phù hợp
+
+                </h2>
+
+            </div>
+
+            <div class="pricing-grid">
+
+                <!-- BASIC -->
+
+                <div class="pricing-card">
+
+                    <h3>
+
+                        Basic
+
+                    </h3>
+
+                    <div class="price">
+
+                        99K
+
+                    </div>
+
+                    <ul>
+
+                        <li>
+
+                            ✔ 1 tháng Premium
+
+                        </li>
+
+                        <li>
+
+                            ✔ Meal Plan cơ bản
+
+                        </li>
+
+                        <li>
+
+                            ✔ Theo dõi tiến độ
+
+                        </li>
+
+                    </ul>
+
+                    <button class="btn secondary buyBtn">
+
+                        Mua ngay
+
+                    </button>
+
+                </div>
+
+                <!-- PRO -->
+
+                <div class="pricing-card popular">
+
+                    <div class="popular-tag">
+
+                        HOT
+
+                    </div>
+
+                    <h3>
+
+                        Pro
+
+                    </h3>
+
+                    <div class="price">
+
+                        249K
+
+                    </div>
+
+                    <ul>
+
+                        <li>
+
+                            ✔ 3 tháng Premium
+
+                        </li>
+
+                        <li>
+
+                            ✔ Full giáo án
+
+                        </li>
+
+                        <li>
+
+                            ✔ HLV cá nhân
+
+                        </li>
+
+                        <li>
+
+                            ✔ Meal Plan Pro
+
+                        </li>
+
+                    </ul>
+
+                    <button class="btn primary buyBtn">
+
+                        Mua ngay
+
+                    </button>
+
+                </div>
+
+                <!-- VIP -->
+
+                <div class="pricing-card">
+
+                    <h3>
+
+                        VIP
+
+                    </h3>
+
+                    <div class="price">
+
+                        699K
+
+                    </div>
+
+                    <ul>
+
+                        <li>
+
+                            ✔ 12 tháng Premium
+
+                        </li>
+
+                        <li>
+
+                            ✔ Full toàn bộ tính năng
+
+                        </li>
+
+                        <li>
+
+                            ✔ HLV 1-1
+
+                        </li>
+
+                        <li>
+
+                            ✔ Ưu tiên hỗ trợ
+
+                        </li>
+
+                    </ul>
+
+                    <button class="btn secondary buyBtn">
+
+                        Mua ngay
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- STATUS -->
+
+            <div class="premium-status">
+
+                <div class="status-box">
+
+                    <h3>
+
+                        Trạng thái Premium
+
+                    </h3>
+
+                    <p id="premiumStatusText">
+
+                        Bạn chưa nâng cấp Premium
 
                     </p>
 
@@ -1038,7 +983,7 @@
 
                 <h2>
 
-                    Học viên nói gì?
+                    Thành viên đánh giá
 
                 </h2>
 
@@ -1050,8 +995,8 @@
 
                     <p>
 
-                        “HLV cực kỳ chuyên nghiệp,
-                        tôi giảm 10kg chỉ sau 4 tháng.”
+                        “Premium giúp tôi thay đổi
+                        hoàn toàn vóc dáng.”
 
                     </p>
 
@@ -1067,8 +1012,8 @@
 
                     <p>
 
-                        “Giáo án rất dễ theo,
-                        hỗ trợ tận tình.”
+                        “Meal Plan rất hiệu quả,
+                        dễ áp dụng.”
 
                     </p>
 
@@ -1084,8 +1029,7 @@
 
                     <p>
 
-                        “FitTrack giúp tôi thay đổi
-                        hoàn toàn sức khỏe.”
+                        “HLV hỗ trợ cực kỳ tận tâm.”
 
                     </p>
 
@@ -1136,15 +1080,21 @@
                 </h3>
 
                 <a href="index.html">
+
                     Trang chủ
+
                 </a>
 
-                <a href="workout.html">
-                    Buổi tập
+                <a href="trainer.html">
+
+                    HLV
+
                 </a>
 
-                <a href="premium.html">
-                    Premium
+                <a href="nutrition.html">
+
+                    Dinh dưỡng
+
                 </a>
 
             </div>
@@ -1158,7 +1108,9 @@
                 </h3>
 
                 <a href="support.html">
+
                     Trung tâm hỗ trợ
+
                 </a>
 
             </div>
@@ -1220,6 +1172,59 @@
 
                 mainNav.classList.toggle(
                     "show-menu"
+                );
+
+            }
+        );
+
+        // PREMIUM STATUS
+
+        const premiumStatusText =
+            document.getElementById(
+                "premiumStatusText"
+            );
+
+        const premiumData =
+            localStorage.getItem(
+                "fittrackPremium"
+            );
+
+        if (
+            premiumData === "true"
+        ) {
+
+            premiumStatusText.innerText =
+                "🎉 Bạn đang là thành viên Premium";
+
+        }
+
+        // BUY BUTTON
+
+        const buyButtons =
+            document.querySelectorAll(
+                ".buyBtn"
+            );
+
+        buyButtons.forEach(
+            btn => {
+
+                btn.addEventListener(
+                    "click",
+                    () => {
+
+                        localStorage.setItem(
+                            "fittrackPremium",
+                            "true"
+                        );
+
+                        premiumStatusText.innerText =
+                            "🎉 Bạn đã nâng cấp Premium thành công";
+
+                        alert(
+                            "Thanh toán thành công"
+                        );
+
+                    }
                 );
 
             }
