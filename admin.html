@@ -154,6 +154,7 @@
 
             font-size: 40px;
             margin-top: 15px;
+            color: #22c55e;
 
         }
 
@@ -269,6 +270,14 @@
 
         }
 
+        .empty {
+
+            text-align: center;
+            padding: 20px;
+            color: #94a3b8;
+
+        }
+
         @media(max-width:900px) {
 
             body {
@@ -320,7 +329,7 @@
             </a>
 
             <a href="#workouts">
-                🏋️ Bài tập
+                🏋️ Workout
             </a>
 
             <a href="#schedule">
@@ -482,7 +491,7 @@
 
             <h2>
 
-                🏋️ Quản lý bài tập
+                🏋️ Quản lý Workout
 
             </h2>
 
@@ -638,12 +647,20 @@
 
     <script>
 
+        // =========================
+        // SESSION STORAGE
+        // =========================
+
         const currentUser =
             JSON.parse(
-                localStorage.getItem(
+                sessionStorage.getItem(
                     "fittrackCurrentUser"
                 )
             );
+
+        // =========================
+        // CHECK ADMIN
+        // =========================
 
         if (
             !currentUser ||
@@ -659,14 +676,22 @@
 
         }
 
+        // =========================
+        // LOGOUT
+        // =========================
+
         document
             .getElementById("logoutBtn")
             .addEventListener(
                 "click",
                 () => {
 
-                    localStorage.removeItem(
+                    sessionStorage.removeItem(
                         "fittrackCurrentUser"
+                    );
+
+                    alert(
+                        "Đăng xuất thành công"
                     );
 
                     window.location.href =
@@ -674,6 +699,10 @@
 
                 }
             );
+
+        // =========================
+        // DATA
+        // =========================
 
         let users =
             JSON.parse(
@@ -703,6 +732,10 @@
                 )
             ) || [];
 
+        // =========================
+        // UPDATE STATS
+        // =========================
+
         function updateStats() {
 
             document.getElementById(
@@ -724,12 +757,15 @@
                 "totalTrainer"
             ).innerText =
                 users.filter(
-                    user => user.role === "trainer"
+                    user =>
+                        user.role === "trainer"
                 ).length;
 
         }
 
+        // =========================
         // USERS
+        // =========================
 
         function renderUsers() {
 
@@ -739,6 +775,21 @@
                 );
 
             table.innerHTML = "";
+
+            if (users.length === 0) {
+
+                table.innerHTML =
+                    `
+                    <tr>
+                        <td colspan="6" class="empty">
+                            Chưa có tài khoản
+                        </td>
+                    </tr>
+                    `;
+
+                return;
+
+            }
 
             users.forEach(
                 (user, index) => {
@@ -863,7 +914,7 @@
                 JSON.stringify(users)
             );
 
-            alert("Đã cập nhật");
+            alert("Đã cập nhật user");
 
             renderUsers();
 
@@ -891,22 +942,52 @@
                 const name =
                     document.getElementById(
                         "userName"
-                    ).value;
+                    ).value.trim();
 
                 const email =
                     document.getElementById(
                         "userEmail"
-                    ).value;
+                    ).value.trim();
 
                 const password =
                     document.getElementById(
                         "userPassword"
-                    ).value;
+                    ).value.trim();
 
                 const role =
                     document.getElementById(
                         "userRole"
                     ).value;
+
+                if (
+                    !name ||
+                    !email ||
+                    !password
+                ) {
+
+                    alert(
+                        "Vui lòng nhập đầy đủ"
+                    );
+
+                    return;
+
+                }
+
+                const checkEmail =
+                    users.find(
+                        user =>
+                            user.email === email
+                    );
+
+                if (checkEmail) {
+
+                    alert(
+                        "Email đã tồn tại"
+                    );
+
+                    return;
+
+                }
 
                 users.push({
 
@@ -922,12 +1003,26 @@
                     JSON.stringify(users)
                 );
 
+                document.getElementById(
+                    "userName"
+                ).value = "";
+
+                document.getElementById(
+                    "userEmail"
+                ).value = "";
+
+                document.getElementById(
+                    "userPassword"
+                ).value = "";
+
                 renderUsers();
 
             }
         );
 
+        // =========================
         // WORKOUT
+        // =========================
 
         function renderWorkouts() {
 
@@ -937,6 +1032,21 @@
                 );
 
             table.innerHTML = "";
+
+            if (workouts.length === 0) {
+
+                table.innerHTML =
+                    `
+                    <tr>
+                        <td colspan="4" class="empty">
+                            Chưa có workout
+                        </td>
+                    </tr>
+                    `;
+
+                return;
+
+            }
 
             workouts.forEach(
                 (workout, index) => {
@@ -1012,6 +1122,8 @@
                 }
             );
 
+            updateStats();
+
         }
 
         function saveWorkout(index) {
@@ -1030,6 +1142,8 @@
                 "fittrackWorkouts",
                 JSON.stringify(workouts)
             );
+
+            alert("Đã cập nhật workout");
 
             renderWorkouts();
 
@@ -1057,12 +1171,22 @@
                 const name =
                     document.getElementById(
                         "workoutName"
-                    ).value;
+                    ).value.trim();
 
                 const level =
                     document.getElementById(
                         "workoutLevel"
                     ).value;
+
+                if (!name) {
+
+                    alert(
+                        "Nhập tên workout"
+                    );
+
+                    return;
+
+                }
 
                 workouts.push({
 
@@ -1076,12 +1200,18 @@
                     JSON.stringify(workouts)
                 );
 
+                document.getElementById(
+                    "workoutName"
+                ).value = "";
+
                 renderWorkouts();
 
             }
         );
 
+        // =========================
         // SCHEDULE
+        // =========================
 
         function renderSchedules() {
 
@@ -1091,6 +1221,21 @@
                 );
 
             table.innerHTML = "";
+
+            if (schedules.length === 0) {
+
+                table.innerHTML =
+                    `
+                    <tr>
+                        <td colspan="5" class="empty">
+                            Chưa có lịch tập
+                        </td>
+                    </tr>
+                    `;
+
+                return;
+
+            }
 
             schedules.forEach(
                 (schedule, index) => {
@@ -1185,6 +1330,8 @@
                 JSON.stringify(schedules)
             );
 
+            alert("Đã cập nhật lịch");
+
             renderSchedules();
 
         }
@@ -1211,7 +1358,7 @@
                 const title =
                     document.getElementById(
                         "scheduleTitle"
-                    ).value;
+                    ).value.trim();
 
                 const date =
                     document.getElementById(
@@ -1222,6 +1369,20 @@
                     document.getElementById(
                         "scheduleTime"
                     ).value;
+
+                if (
+                    !title ||
+                    !date ||
+                    !time
+                ) {
+
+                    alert(
+                        "Nhập đầy đủ lịch tập"
+                    );
+
+                    return;
+
+                }
 
                 schedules.push({
 
@@ -1241,7 +1402,9 @@
             }
         );
 
+        // =========================
         // PREMIUM
+        // =========================
 
         function renderPremiums() {
 
@@ -1251,6 +1414,21 @@
                 );
 
             table.innerHTML = "";
+
+            if (premiums.length === 0) {
+
+                table.innerHTML =
+                    `
+                    <tr>
+                        <td colspan="4" class="empty">
+                            Chưa có premium
+                        </td>
+                    </tr>
+                    `;
+
+                return;
+
+            }
 
             premiums.forEach(
                 (premium, index) => {
@@ -1310,6 +1488,8 @@
                 }
             );
 
+            updateStats();
+
         }
 
         function savePremium(index) {
@@ -1328,6 +1508,8 @@
                 "fittrackPremiums",
                 JSON.stringify(premiums)
             );
+
+            alert("Đã cập nhật premium");
 
             renderPremiums();
 
@@ -1355,12 +1537,25 @@
                 const name =
                     document.getElementById(
                         "premiumName"
-                    ).value;
+                    ).value.trim();
 
                 const price =
                     document.getElementById(
                         "premiumPrice"
                     ).value;
+
+                if (
+                    !name ||
+                    !price
+                ) {
+
+                    alert(
+                        "Nhập đầy đủ premium"
+                    );
+
+                    return;
+
+                }
 
                 premiums.push({
 
@@ -1379,17 +1574,21 @@
             }
         );
 
+        // =========================
+        // START
+        // =========================
+
         renderUsers();
+
         renderWorkouts();
+
         renderSchedules();
+
         renderPremiums();
+
         updateStats();
 
     </script>
-
-    <script src="main.js"> </script>
-
-    <script src="api.js"></script>
 
 </body>
 

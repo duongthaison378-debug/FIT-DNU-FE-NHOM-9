@@ -11,8 +11,6 @@
         FitTrack - Đăng Nhập / Đăng Ký
     </title>
 
-    <!-- GOOGLE FONT -->
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -372,7 +370,7 @@
     <script>
 
         // =========================
-        // ELEMENT
+        // TAB
         // =========================
 
         const loginTab =
@@ -394,20 +392,6 @@
             document.getElementById(
                 "registerForm"
             );
-
-        const successAlert =
-            document.getElementById(
-                "successAlert"
-            );
-
-        const errorAlert =
-            document.getElementById(
-                "errorAlert"
-            );
-
-        // =========================
-        // TAB
-        // =========================
 
         loginTab.onclick = () => {
 
@@ -453,6 +437,16 @@
         // ALERT
         // =========================
 
+        const successAlert =
+            document.getElementById(
+                "successAlert"
+            );
+
+        const errorAlert =
+            document.getElementById(
+                "errorAlert"
+            );
+
         function showSuccess(message) {
 
             successAlert.style.display =
@@ -480,7 +474,7 @@
         }
 
         // =========================
-        // DEFAULT ADMIN
+        // STORAGE
         // =========================
 
         let users =
@@ -489,6 +483,10 @@
                     "fittrackUsers"
                 )
             ) || [];
+
+        // =========================
+        // ADMIN DEFAULT
+        // =========================
 
         const adminExists =
             users.find(
@@ -499,6 +497,8 @@
         if (!adminExists) {
 
             users.push({
+
+                id: Date.now(),
 
                 name: "Admin",
 
@@ -552,27 +552,38 @@
                 ) {
 
                     showError(
-                        "Vui lòng nhập đầy đủ"
+                        "Vui lòng nhập đầy đủ thông tin"
                     );
 
                     return;
 
                 }
 
-                let users =
+                if (password.length < 6) {
+
+                    showError(
+                        "Mật khẩu tối thiểu 6 ký tự"
+                    );
+
+                    return;
+
+                }
+
+                users =
                     JSON.parse(
                         localStorage.getItem(
                             "fittrackUsers"
                         )
                     ) || [];
 
-                const checkUser =
+                const emailExists =
                     users.find(
                         user =>
-                            user.email === email
+                            user.email.toLowerCase() ===
+                            email.toLowerCase()
                     );
 
-                if (checkUser) {
+                if (emailExists) {
 
                     showError(
                         "Email đã tồn tại"
@@ -584,11 +595,11 @@
 
                 const newUser = {
 
+                    id: Date.now(),
+
                     name,
                     email,
                     password,
-
-                    // MẶC ĐỊNH USER
 
                     role: "user"
 
@@ -609,6 +620,12 @@
                 );
 
                 registerForm.reset();
+
+                setTimeout(() => {
+
+                    loginTab.click();
+
+                }, 1200);
 
             }
         );
@@ -633,7 +650,7 @@
                         "loginPassword"
                     ).value.trim();
 
-                let users =
+                users =
                     JSON.parse(
                         localStorage.getItem(
                             "fittrackUsers"
@@ -645,7 +662,7 @@
 
                         u =>
 
-                            u.email === email &&
+                            u.email.toLowerCase() === email.toLowerCase() &&
                             u.password === password
 
                     );
@@ -660,12 +677,22 @@
 
                 }
 
-                localStorage.setItem(
+                // =========================
+                // SESSION UNIQUE
+                // =========================
 
+                const sessionId =
+                    "session_" +
+                    Date.now();
+
+                sessionStorage.setItem(
+                    "fittrackSessionId",
+                    sessionId
+                );
+
+                sessionStorage.setItem(
                     "fittrackCurrentUser",
-
                     JSON.stringify(user)
-
                 );
 
                 showSuccess(
@@ -673,12 +700,10 @@
                 );
 
                 // =========================
-                // PHÂN QUYỀN
+                // REDIRECT
                 // =========================
 
                 setTimeout(() => {
-
-                    // ADMIN
 
                     if (
                         user.role === "admin"
@@ -689,8 +714,6 @@
 
                     }
 
-                    // TRAINER
-
                     else if (
                         user.role === "trainer"
                     ) {
@@ -699,8 +722,6 @@
                             "trainer.html";
 
                     }
-
-                    // USER
 
                     else {
 
@@ -715,10 +736,6 @@
         );
 
     </script>
-
-    <script src="main.js"> </script>
-    
-    <script src="api.js"></script>
 
 </body>
 

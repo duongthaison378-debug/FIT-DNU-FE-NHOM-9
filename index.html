@@ -11,12 +11,6 @@
         FitTrack - Trang Chủ
     </title>
 
-    <!-- GOOGLE FONT -->
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -35,16 +29,6 @@
             background: #0f172a;
             color: white;
             line-height: 1.6;
-
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-
-        }
-
-        main {
-
-            flex: 1;
 
         }
 
@@ -86,8 +70,8 @@
         .header-inner {
 
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
             padding: 18px 0;
 
         }
@@ -95,7 +79,7 @@
         .brand {
 
             color: #22c55e;
-            font-size: 30px;
+            font-size: 32px;
             font-weight: 800;
 
         }
@@ -115,13 +99,13 @@
 
             display: flex;
             gap: 20px;
+            align-items: center;
 
         }
 
         .main-nav a {
 
             color: white;
-            font-size: 15px;
             transition: 0.3s;
 
         }
@@ -129,6 +113,33 @@
         .main-nav a:hover {
 
             color: #22c55e;
+
+        }
+
+        .user-box {
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+        }
+
+        .logout-btn {
+
+            background: #ef4444;
+            border: none;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+
+        }
+
+        .logout-btn:hover {
+
+            background: #dc2626;
 
         }
 
@@ -179,6 +190,7 @@
 
             display: flex;
             gap: 20px;
+            flex-wrap: wrap;
 
         }
 
@@ -187,10 +199,6 @@
             border-radius: 25px;
 
         }
-
-        /* =========================
-           BUTTON
-        ========================= */
 
         .btn {
 
@@ -217,9 +225,9 @@
 
         .secondary {
 
+            background: #1e293b;
             border: 1px solid #334155;
             color: white;
-            background: #1e293b;
 
         }
 
@@ -230,10 +238,13 @@
         }
 
         /* =========================
-           FEATURES
+           SECTION
         ========================= */
 
-        .feature-section {
+        .feature-section,
+        .stats-section,
+        .premium-section,
+        .testimonial-section {
 
             padding: 80px 0;
 
@@ -261,26 +272,55 @@
 
         }
 
-        .feature-grid {
+        .feature-grid,
+        .stats-grid,
+        .testimonial-grid {
 
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 25px;
 
         }
 
-        .feature-card {
+        .feature-grid {
+
+            grid-template-columns:
+                repeat(auto-fit,
+                    minmax(250px, 1fr));
+
+        }
+
+        .stats-grid {
+
+            grid-template-columns:
+                repeat(auto-fit,
+                    minmax(220px, 1fr));
+
+        }
+
+        .testimonial-grid {
+
+            grid-template-columns:
+                repeat(auto-fit,
+                    minmax(280px, 1fr));
+
+        }
+
+        .feature-card,
+        .stats-card,
+        .testimonial-card {
 
             background: #1e293b;
             padding: 35px;
-            border-radius: 20px;
+            border-radius: 22px;
             transition: 0.3s;
 
         }
 
-        .feature-card:hover {
+        .feature-card:hover,
+        .stats-card:hover,
+        .testimonial-card:hover {
 
-            transform: translateY(-6px);
+            transform: translateY(-5px);
 
         }
 
@@ -291,50 +331,16 @@
 
         }
 
-        .feature-card h3 {
-
-            margin-bottom: 15px;
-
-        }
-
-        .feature-card p {
-
-            color: #cbd5e1;
-
-        }
-
-        /* =========================
-           STATS
-        ========================= */
-
-        .stats-section {
-
-            padding: 80px 0;
-
-        }
-
-        .stats-grid {
-
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 25px;
-
-        }
-
         .stats-card {
 
-            background: #1e293b;
-            border-radius: 20px;
-            padding: 40px;
             text-align: center;
 
         }
 
         .stats-card h2 {
 
-            color: #22c55e;
             font-size: 50px;
-            margin-bottom: 10px;
+            color: #22c55e;
 
         }
 
@@ -342,20 +348,14 @@
            PREMIUM
         ========================= */
 
-        .premium-section {
-
-            padding: 80px 0;
-
-        }
-
         .premium-box {
 
             background: linear-gradient(135deg,
                     #22c55e,
                     #16a34a);
 
-            border-radius: 30px;
             padding: 60px;
+            border-radius: 30px;
             text-align: center;
 
         }
@@ -367,43 +367,19 @@
 
         }
 
-        .premium-box p {
-
-            max-width: 700px;
-            margin: auto;
-            margin-bottom: 30px;
-
-        }
-
         /* =========================
            TESTIMONIAL
         ========================= */
 
-        .testimonial-section {
+        .testimonial-card p {
 
-            padding: 80px 0;
-
-        }
-
-        .testimonial-grid {
-
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-
-        }
-
-        .testimonial-card {
-
-            background: #1e293b;
-            padding: 35px;
-            border-radius: 20px;
+            color: #cbd5e1;
+            margin-bottom: 20px;
 
         }
 
         .testimonial-card h4 {
 
-            margin-top: 20px;
             color: #22c55e;
 
         }
@@ -415,14 +391,17 @@
         .site-footer {
 
             background: #111827;
-            margin-top: auto;
+            margin-top: 80px;
 
         }
 
         .footer-inner {
 
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns:
+                repeat(auto-fit,
+                    minmax(220px, 1fr));
+
             gap: 30px;
             padding: 60px 0;
 
@@ -461,7 +440,7 @@
            MOBILE
         ========================= */
 
-        @media(max-width: 900px) {
+        @media(max-width:900px) {
 
             .menu-toggle {
 
@@ -507,253 +486,472 @@
 
 <body>
 
-    <main>
+    <!-- HEADER -->
 
-        <!-- HEADER -->
+    <header class="site-header">
 
-        <header class="site-header">
+        <div class="container header-inner">
 
-            <div class="container header-inner">
+            <a href="index.html" class="brand">
 
-                <a href="index.html" class="brand">
+                FitTrack
 
-                    FitTrack
+            </a>
 
+            <button class="menu-toggle" id="menuToggle">
+
+                ☰
+
+            </button>
+
+            <nav class="main-nav" id="mainNav">
+
+                <a href="index.html">
+                    Trang chủ
                 </a>
 
-                <button class="menu-toggle" id="menuToggle">
+                <a href="signup.html" id="loginMenu">
+                    Đăng nhập
+                </a>
 
-                    ☰
+                <a href="workout.html" id="workoutMenu" style="display:none;">
+                    Buổi tập
+                </a>
 
-                </button>
+                <a href="schedule.html" id="scheduleMenu" style="display:none;">
+                    Lịch tập
+                </a>
 
-                <nav class="main-nav" id="mainNav">
+                <a href="nutrition.html" id="nutritionMenu" style="display:none;">
+                    Dinh dưỡng
+                </a>
 
-                    <a href="index.html">
-                        Trang chủ
+                <a href="trainer.html" id="trainerMenu" style="display:none;">
+                    HLV
+                </a>
+
+                <a href="progress.html" id="progressMenu" style="display:none;">
+                    Tiến độ
+                </a>
+
+                <a href="premium.html" id="premiumMenu" style="display:none;">
+                    Premium
+                </a>
+
+                <a href="support.html">
+                    Hỗ trợ
+                </a>
+
+                <a href="settings.html" id="settingsMenu" style="display:none;">
+                    Cài đặt
+                </a>
+
+                <a href="admin.html" id="adminMenu" style="display:none;">
+                    Quản trị
+                </a>
+
+                <div class="user-box" id="userBox" style="display:none;">
+
+                    <span id="userName"></span>
+
+                    <button class="logout-btn" id="logoutBtn">
+
+                        Đăng xuất
+
+                    </button>
+
+                </div>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+    <!-- HERO -->
+
+    <section class="hero-section">
+
+        <div class="container hero-grid">
+
+            <div class="hero-content">
+
+                <span class="page-badge">
+
+                    FITNESS MANAGEMENT
+
+                </span>
+
+                <h1>
+
+                    Quản lý luyện tập hiện đại cùng FitTrack
+
+                </h1>
+
+                <p>
+
+                    Theo dõi tiến độ,
+                    quản lý lịch tập,
+                    dinh dưỡng và huấn luyện viên chuyên nghiệp.
+
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="signup.html" class="btn primary">
+
+                        Bắt đầu ngay
+
                     </a>
 
-                    <a href="signup.html">
-                        Đăng nhập
+                    <a href="premium.html" class="btn secondary">
+
+                        Xem Premium
+
                     </a>
 
-                    <a href="workout.html">
-                        Buổi tập
-                    </a>
-
-                    <a href="schedule.html">
-                        Lịch tập
-                    </a>
-
-                    <a href="nutrition.html">
-                        Dinh dưỡng
-                    </a>
-
-                    <a href="trainer.html">
-                        HLV
-                    </a>
-
-                    <a href="progress.html">
-                        Tiến độ
-                    </a>
-
-                    <a href="premium.html">
-                        Premium
-                    </a>
-
-                    <a href="support.html">
-                        Hỗ trợ
-                    </a>
-
-                </nav>
+                </div>
 
             </div>
 
-        </header>
+            <div class="hero-image">
 
-        <!-- HERO -->
+                <img
+                    src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop">
 
-        <section class="hero-section">
+            </div>
 
-            <div class="container hero-grid">
+        </div>
 
-                <div class="hero-content">
+    </section>
 
-                    <span class="page-badge">
+    <!-- FEATURES -->
 
-                        FITNESS MANAGEMENT
+    <section class="feature-section">
 
-                    </span>
+        <div class="container">
 
-                    <h1>
+            <div class="section-title">
 
-                        Quản lý luyện tập
-                        hiện đại cùng FitTrack
+                <span>
 
-                    </h1>
+                    FEATURES
+
+                </span>
+
+                <h2>
+
+                    Tính năng nổi bật
+
+                </h2>
+
+            </div>
+
+            <div class="feature-grid">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+
+                        🏋️
+
+                    </div>
+
+                    <h3>
+
+                        Workout
+
+                    </h3>
 
                     <p>
 
-                        Theo dõi tiến độ,
-                        quản lý dinh dưỡng,
-                        lịch tập,
-                        HLV cá nhân
-                        và nâng cấp Premium.
+                        Quản lý bài tập chuyên nghiệp.
 
                     </p>
 
-                    <div class="hero-buttons">
+                </div>
 
-                        <a href="signup.html" class="btn primary">
+                <div class="feature-card">
 
-                            Bắt đầu ngay
+                    <div class="feature-icon">
 
-                        </a>
-
-                        <a href="premium.html" class="btn secondary">
-
-                            Xem Premium
-
-                        </a>
+                        📅
 
                     </div>
 
+                    <h3>
+
+                        Schedule
+
+                    </h3>
+
+                    <p>
+
+                        Theo dõi lịch tập dễ dàng.
+
+                    </p>
+
                 </div>
 
-                <div class="hero-image">
+                <div class="feature-card">
 
-                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop"
-                        alt="Fitness">
+                    <div class="feature-icon">
+
+                        🥗
+
+                    </div>
+
+                    <h3>
+
+                        Nutrition
+
+                    </h3>
+
+                    <p>
+
+                        Meal plan khoa học.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+
+                        📈
+
+                    </div>
+
+                    <h3>
+
+                        Progress
+
+                    </h3>
+
+                    <p>
+
+                        Theo dõi tiến độ luyện tập.
+
+                    </p>
 
                 </div>
 
             </div>
 
-        </section>
+        </div>
 
-        <!-- FEATURES -->
+    </section>
 
-        <section class="feature-section">
+    <!-- STATS -->
 
-            <div class="container">
+    <section class="stats-section">
 
-                <div class="section-title">
+        <div class="container">
 
-                    <span>
+            <div class="section-title">
 
-                        FEATURES
+                <span>
 
-                    </span>
+                    STATS
+
+                </span>
+
+                <h2>
+
+                    Thành tích FitTrack
+
+                </h2>
+
+            </div>
+
+            <div class="stats-grid">
+
+                <div class="stats-card">
 
                     <h2>
 
-                        Tính năng nổi bật
+                        10K+
 
                     </h2>
 
+                    <p>
+
+                        Người dùng
+
+                    </p>
+
                 </div>
 
-                <div class="feature-grid">
+                <div class="stats-card">
 
-                    <div class="feature-card">
+                    <h2>
 
-                        <div class="feature-icon">
+                        500+
 
-                            🏋️
+                    </h2>
 
-                        </div>
+                    <p>
 
-                        <h3>
+                        Workout
 
-                            Quản lý bài tập
+                    </p>
 
-                        </h3>
+                </div>
 
-                        <p>
+                <div class="stats-card">
 
-                            Tạo lịch tập
-                            và quản lý bài tập cá nhân.
+                    <h2>
 
-                        </p>
+                        120+
 
-                    </div>
+                    </h2>
 
-                    <div class="feature-card">
+                    <p>
 
-                        <div class="feature-icon">
+                        Huấn luyện viên
 
-                            🥗
+                    </p>
 
-                        </div>
+                </div>
 
-                        <h3>
+                <div class="stats-card">
 
-                            Dinh dưỡng
+                    <h2>
 
-                        </h3>
+                        98%
 
-                        <p>
+                    </h2>
 
-                            Meal plan thông minh
-                            và calories tracker.
+                    <p>
 
-                        </p>
+                        Hài lòng
 
-                    </div>
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">
-
-                            👨‍🏫
-
-                        </div>
-
-                        <h3>
-
-                            HLV cá nhân
-
-                        </h3>
-
-                        <p>
-
-                            Kết nối huấn luyện viên
-                            chuyên nghiệp.
-
-                        </p>
-
-                    </div>
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">
-
-                            📈
-
-                        </div>
-
-                        <h3>
-
-                            Theo dõi tiến độ
-
-                        </h3>
-
-                        <p>
-
-                            Biểu đồ và báo cáo
-                            luyện tập chi tiết.
-
-                        </p>
-
-                    </div>
+                    </p>
 
                 </div>
 
             </div>
 
-        </section>
+        </div>
 
-    </main>
+    </section>
+
+    <!-- PREMIUM -->
+
+    <section class="premium-section">
+
+        <div class="container">
+
+            <div class="premium-box">
+
+                <h2>
+
+                    Nâng cấp Premium
+
+                </h2>
+
+                <p>
+
+                    Mở khóa toàn bộ workout,
+                    huấn luyện viên VIP,
+                    meal plan nâng cao
+                    và theo dõi tiến độ chuyên sâu.
+
+                </p>
+
+                <br>
+
+                <a href="premium.html" class="btn secondary">
+
+                    Xem gói Premium
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- TESTIMONIAL -->
+
+    <section class="testimonial-section">
+
+        <div class="container">
+
+            <div class="section-title">
+
+                <span>
+
+                    REVIEW
+
+                </span>
+
+                <h2>
+
+                    Người dùng nói gì?
+
+                </h2>
+
+            </div>
+
+            <div class="testimonial-grid">
+
+                <div class="testimonial-card">
+
+                    <p>
+
+                        “Ứng dụng cực kỳ dễ dùng,
+                        giúp mình theo dõi lịch tập rất tốt.”
+
+                    </p>
+
+                    <h4>
+
+                        - Nguyễn Minh
+
+                    </h4>
+
+                </div>
+
+                <div class="testimonial-card">
+
+                    <p>
+
+                        “Workout và meal plan rất chuyên nghiệp.”
+
+                    </p>
+
+                    <h4>
+
+                        - Trần Hoàng
+
+                    </h4>
+
+                </div>
+
+                <div class="testimonial-card">
+
+                    <p>
+
+                        “Admin dashboard quản lý rất tiện.”
+
+                    </p>
+
+                    <h4>
+
+                        - Lê Huy
+
+                    </h4>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
 
     <!-- FOOTER -->
 
@@ -789,8 +987,8 @@
                     Trang chủ
                 </a>
 
-                <a href="workout.html">
-                    Buổi tập
+                <a href="trainer.html">
+                    HLV
                 </a>
 
                 <a href="premium.html">
@@ -839,13 +1037,20 @@
 
         <div class="footer-bottom">
 
-            © 2026 FitTrack. All Rights Reserved.
+            © 2026 FitTrack.
+            All Rights Reserved.
 
         </div>
 
     </footer>
 
+    <!-- SCRIPT -->
+
     <script>
+
+        // =========================
+        // MENU MOBILE
+        // =========================
 
         const menuToggle =
             document.getElementById(
@@ -864,6 +1069,147 @@
                 mainNav.classList.toggle(
                     "show-menu"
                 );
+
+            }
+        );
+
+        // =========================
+        // CHECK LOGIN
+        // =========================
+
+        const currentUser =
+            JSON.parse(
+                sessionStorage.getItem(
+                    "fittrackCurrentUser"
+                )
+            );
+
+        const loginMenu =
+            document.getElementById(
+                "loginMenu"
+            );
+
+        const workoutMenu =
+            document.getElementById(
+                "workoutMenu"
+            );
+
+        const scheduleMenu =
+            document.getElementById(
+                "scheduleMenu"
+            );
+
+        const nutritionMenu =
+            document.getElementById(
+                "nutritionMenu"
+            );
+
+        const trainerMenu =
+            document.getElementById(
+                "trainerMenu"
+            );
+
+        const progressMenu =
+            document.getElementById(
+                "progressMenu"
+            );
+
+        const premiumMenu =
+            document.getElementById(
+                "premiumMenu"
+            );
+
+        const settingsMenu =
+            document.getElementById(
+                "settingsMenu"
+            );
+
+        const adminMenu =
+            document.getElementById(
+                "adminMenu"
+            );
+
+        const userBox =
+            document.getElementById(
+                "userBox"
+            );
+
+        const userName =
+            document.getElementById(
+                "userName"
+            );
+
+        // =========================
+        // SHOW MENU WHEN LOGIN
+        // =========================
+
+        if (currentUser) {
+
+            loginMenu.style.display =
+                "none";
+
+            workoutMenu.style.display =
+                "block";
+
+            scheduleMenu.style.display =
+                "block";
+
+            nutritionMenu.style.display =
+                "block";
+
+            trainerMenu.style.display =
+                "block";
+
+            progressMenu.style.display =
+                "block";
+
+            premiumMenu.style.display =
+                "block";
+
+            settingsMenu.style.display =
+                "block";
+
+            userBox.style.display =
+                "flex";
+
+            userName.innerText =
+                "👋 " + currentUser.name;
+
+            // =========================
+            // ADMIN
+            // =========================
+
+            if (
+                currentUser.role === "admin"
+            ) {
+
+                adminMenu.style.display =
+                    "block";
+
+            }
+
+        }
+
+        // =========================
+        // LOGOUT
+        // =========================
+
+        document.getElementById(
+            "logoutBtn"
+        ).addEventListener(
+            "click",
+            () => {
+
+                sessionStorage.removeItem(
+                    "fittrackCurrentUser"
+                );
+
+                alert(
+                    "Đăng xuất thành công"
+                );
+
+                window.location.href =
+                    "index.html";
 
             }
         );
