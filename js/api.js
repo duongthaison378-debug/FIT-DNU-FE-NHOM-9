@@ -1,43 +1,21 @@
-<<<<<<< HEAD
 /* =========================================
    FITTRACK API.JS
+========================================= */
+
+/* =========================================
+   MOCKAPI URL
 ========================================= */
 
 const API_BASE_URL =
-    "https://jsonplaceholder.typicode.com";
+    "https://69f9a93bc509a40d3aa2f648.mockapi.io/api/v1";
 
 /* =========================================
-   API CLASS
+   API RESOURCE CLASS
 ========================================= */
-
-class APIResource{
-
-=======
-<<<<<<< HEAD
-/* =========================================
-   FITTRACK API.JS
-========================================= */
-=======
-// <<<<<<< HEAD
 
 class APIResource {
-  constructor(resourceName) {
-    this.resourceName = resourceName;
-    this.storageKey = `fittrack_${resourceName}`;
-  }
->>>>>>> bd0f2e60372e16c10e1317ac2494898e0b270600
 
-const API_BASE_URL =
-    "https://jsonplaceholder.typicode.com";
-
-/* =========================================
-   API CLASS
-========================================= */
-
-class APIResource{
-
->>>>>>> ebf787379a51bedf9f618bf2160cafe79046ff22
-    constructor(resourceName){
+    constructor(resourceName) {
 
         this.resourceName =
             resourceName;
@@ -51,45 +29,34 @@ class APIResource{
        GET ALL
     ===================================== */
 
-    async getAll(){
+    async getAll() {
 
-        try{
+        try {
 
             const response =
                 await fetch(
                     this.baseUrl
                 );
 
-            if(
-                !response.ok
-            ){
+            if (!response.ok) {
 
                 throw new Error(
-
-                    `Không thể lấy dữ liệu ${this.resourceName}`
-
+                    `Không thể tải ${this.resourceName}`
                 );
 
             }
 
-            const data =
-                await response.json();
-
-            console.log(
-
-                `Danh sách ${this.resourceName}:`,
-                data
-
-            );
-
-            return data;
+            return await response.json();
 
         }
-        catch(error){
+        catch (error) {
 
             console.error(
-                error.message
+                "GET ALL ERROR:",
+                error
             );
+
+            return [];
 
         }
 
@@ -99,45 +66,34 @@ class APIResource{
        GET BY ID
     ===================================== */
 
-    async getById(id){
+    async getById(id) {
 
-        try{
+        try {
 
             const response =
                 await fetch(
-
                     `${this.baseUrl}/${id}`
-
                 );
 
-            if(
-                !response.ok
-            ){
+            if (!response.ok) {
 
                 throw new Error(
-
-                    `Không tìm thấy ${this.resourceName}`
-
+                    `Không tìm thấy dữ liệu`
                 );
 
             }
 
-            const data =
-                await response.json();
-
-            console.log(
-                `${this.resourceName} ID ${id}:`,
-                data
-            );
-
-            return data;
+            return await response.json();
 
         }
-        catch(error){
+        catch (error) {
 
             console.error(
-                error.message
+                "GET BY ID ERROR:",
+                error
             );
+
+            return null;
 
         }
 
@@ -147,62 +103,48 @@ class APIResource{
        CREATE
     ===================================== */
 
-    async create(data){
+    async create(data) {
 
-        try{
+        try {
 
             const response =
                 await fetch(
-
                     this.baseUrl,
-
                     {
+                        method: "POST",
 
-                        method:"POST",
-
-                        headers:{
+                        headers: {
 
                             "Content-Type":
                                 "application/json"
 
                         },
 
-                        body:JSON.stringify(
-                            data
-                        )
+                        body:
+                            JSON.stringify(data)
 
                     }
-
                 );
 
-            if(
-                !response.ok
-            ){
+            if (!response.ok) {
 
                 throw new Error(
-
-                    `Không thể thêm ${this.resourceName}`
-
+                    `Không thể thêm dữ liệu`
                 );
 
             }
 
-            const result =
-                await response.json();
-
-            console.log(
-                "Tạo thành công:",
-                result
-            );
-
-            return result;
+            return await response.json();
 
         }
-        catch(error){
+        catch (error) {
 
             console.error(
-                error.message
+                "CREATE ERROR:",
+                error
             );
+
+            return null;
 
         }
 
@@ -212,62 +154,48 @@ class APIResource{
        UPDATE
     ===================================== */
 
-    async update(id,data){
+    async update(id, data) {
 
-        try{
+        try {
 
             const response =
                 await fetch(
-
                     `${this.baseUrl}/${id}`,
-
                     {
+                        method: "PUT",
 
-                        method:"PUT",
-
-                        headers:{
+                        headers: {
 
                             "Content-Type":
                                 "application/json"
 
                         },
 
-                        body:JSON.stringify(
-                            data
-                        )
+                        body:
+                            JSON.stringify(data)
 
                     }
-
                 );
 
-            if(
-                !response.ok
-            ){
+            if (!response.ok) {
 
                 throw new Error(
-
-                    `Không thể cập nhật ${this.resourceName}`
-
+                    `Không thể cập nhật`
                 );
 
             }
 
-            const result =
-                await response.json();
-
-            console.log(
-                "Cập nhật thành công:",
-                result
-            );
-
-            return result;
+            return await response.json();
 
         }
-        catch(error){
+        catch (error) {
 
             console.error(
-                error.message
+                "UPDATE ERROR:",
+                error
             );
+
+            return null;
 
         }
 
@@ -277,949 +205,146 @@ class APIResource{
        DELETE
     ===================================== */
 
-    async delete(id){
+    async delete(id) {
 
-        try{
+        try {
 
             const response =
                 await fetch(
-
                     `${this.baseUrl}/${id}`,
-
                     {
-
-                        method:"DELETE"
-
+                        method: "DELETE"
                     }
-
                 );
 
-            if(
-                !response.ok
-            ){
+            if (!response.ok) {
 
                 throw new Error(
-
-                    `Không thể xóa ${this.resourceName}`
-
+                    `Không thể xóa`
                 );
 
             }
-
-            console.log(
-
-                `Đã xóa ${this.resourceName} ID ${id}`
-
-            );
 
             return true;
 
         }
-        catch(error){
+        catch (error) {
 
             console.error(
-                error.message
+                "DELETE ERROR:",
+                error
             );
+
+            return false;
 
         }
 
     }
 
 }
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> ebf787379a51bedf9f618bf2160cafe79046ff22
 
 /* =========================================
-   USERS API
+   WORKOUT API
 ========================================= */
 
-const usersAPI =
+const fittrackAPI =
     new APIResource(
-        "users"
+        "FitTrack_1"
     );
 
 /* =========================================
-   POSTS API
+   USER API
 ========================================= */
 
-const postsAPI =
+const userAPI =
     new APIResource(
-        "posts"
+        "Users"
     );
 
 /* =========================================
-   COMMENTS API
+   TRAINER API
 ========================================= */
 
-const commentsAPI =
+const trainerAPI =
     new APIResource(
-        "comments"
+        "Trainers"
     );
 
 /* =========================================
-   TODOS API
+   REGISTER USER
 ========================================= */
 
-const todosAPI =
-    new APIResource(
-        "todos"
-    );
-
-/* =========================================
-   EXAMPLE FUNCTIONS
-========================================= */
-
-/* =====================================
-   LOAD USERS
-===================================== */
-
-async function loadUsers(){
+async function registerUser(userData) {
 
     const users =
-        await usersAPI.getAll();
+        await userAPI.getAll();
 
-    const usersContainer =
-        document.getElementById(
-            "usersContainer"
-        );
+    const existed =
+        users.find(user =>
 
-    if(
-        usersContainer
-    ){
-
-        usersContainer.innerHTML = "";
-
-        users.slice(0,6).forEach(
-            user=>{
-
-                usersContainer.innerHTML += `
-
-                    <div class="feature-card">
-
-                        <h3>
-
-                            ${user.name}
-
-                        </h3>
-
-                        <p>
-
-                            📧 ${user.email}
-
-                        </p>
-
-                        <p>
-
-                            📞 ${user.phone}
-
-                        </p>
-
-                        <p>
-
-                            🌐 ${user.website}
-
-                        </p>
-
-                    </div>
-
-                `;
-
-            }
-        );
-
-    }
-
-}
-
-/* =====================================
-   LOAD POSTS
-===================================== */
-
-async function loadPosts(){
-
-    const posts =
-        await postsAPI.getAll();
-
-    const postContainer =
-        document.getElementById(
-            "postContainer"
-        );
-
-    if(
-        postContainer
-    ){
-
-        postContainer.innerHTML = "";
-
-        posts.slice(0,6).forEach(
-            post=>{
-
-                postContainer.innerHTML += `
-
-                    <div class="feature-card">
-
-                        <h3>
-
-                            ${post.title}
-
-                        </h3>
-
-                        <p>
-
-                            ${post.body}
-
-                        </p>
-
-                    </div>
-
-                `;
-
-            }
-        );
-
-    }
-
-}
-
-/* =====================================
-   LOAD TODOS
-===================================== */
-
-async function loadTodos(){
-
-    const todos =
-        await todosAPI.getAll();
-
-    const todoContainer =
-        document.getElementById(
-            "todoContainer"
-        );
-
-    if(
-        todoContainer
-    ){
-
-        todoContainer.innerHTML = "";
-
-        todos.slice(0,8).forEach(
-            todo=>{
-
-                todoContainer.innerHTML += `
-
-                    <div class="feature-card">
-
-                        <h3>
-
-                            ${todo.title}
-
-                        </h3>
-
-                        <p>
-
-                            Status:
-                            ${
-                                todo.completed
-
-                                ?
-
-                                "✅ Completed"
-
-                                :
-
-                                "❌ Pending"
-                            }
-
-                        </p>
-
-                    </div>
-
-                `;
-
-            }
-        );
-
-    }
-
-}
-
-/* =========================================
-   CREATE DEMO USER
-========================================= */
-
-async function createDemoUser(){
-
-    const newUser = {
-
-        name:"FitTrack User",
-
-        username:"fittrack",
-
-        email:"fittrack@gmail.com"
-
-    };
-
-    const result =
-        await usersAPI.create(
-            newUser
-        );
-
-    console.log(
-        "User mới:",
-        result
-    );
-
-}
-
-/* =========================================
-   UPDATE DEMO USER
-========================================= */
-
-async function updateDemoUser(){
-
-    const updatedUser = {
-
-        name:"Updated FitTrack",
-
-        email:"updated@gmail.com"
-
-    };
-
-    const result =
-        await usersAPI.update(
-
-            1,
-            updatedUser
+            user.email ===
+            userData.email
 
         );
 
-    console.log(
-        result
-    );
+    if (existed) {
 
-}
-
-/* =========================================
-   DELETE DEMO USER
-========================================= */
-
-async function deleteDemoUser(){
-
-    await usersAPI.delete(
-        1
-    );
-
-}
-
-/* =========================================
-   WEATHER API
-========================================= */
-
-async function loadWeather(){
-
-    const weatherBox =
-        document.getElementById(
-            "weatherBox"
+        alert(
+            "❌ Email đã tồn tại"
         );
 
-    if(
-        weatherBox
-    ){
-
-        weatherBox.innerHTML = `
-
-            <div class="feature-card">
-
-                <h3>
-
-                    🌤 Hồ Chí Minh
-
-                </h3>
-
-                <p>
-
-                    Nhiệt độ:
-                    31°C
-
-                </p>
-
-                <p>
-
-                    Độ ẩm:
-                    72%
-
-                </p>
-
-                <p>
-
-                    Trạng thái:
-                    Có mây
-
-                </p>
-
-            </div>
-
-        `;
+        return false;
 
     }
 
-}
-
-/* =========================================
-   BMI API MOCK
-========================================= */
-
-function calculateBMI(weight,height){
-
-    const bmi = (
-
-        weight /
-
-        (
-            (height / 100)
-            *
-            (height / 100)
-        )
-
-    ).toFixed(1);
-
-    let status = "";
-
-    if(
-        bmi < 18.5
-    ){
-
-        status = "Gầy";
-
-    }
-    else if(
-        bmi < 25
-    ){
-
-        status = "Bình thường";
-
-    }
-    else if(
-        bmi < 30
-    ){
-
-        status = "Thừa cân";
-
-    }
-    else{
-
-        status = "Béo phì";
-
-    }
-
-    return {
-
-        bmi,
-        status
-
-    };
-
-}
-
-/* =========================================
-   WORKOUT API MOCK
-========================================= */
-
-function saveWorkoutAPI(workout){
-
-    let workouts =
-        JSON.parse(
-
-            localStorage.getItem(
-                "fittrackWorkouts"
-            )
-
-        ) || [];
-
-    workouts.push(
-        workout
-    );
-
-    localStorage.setItem(
-
-        "fittrackWorkouts",
-
-        JSON.stringify(
-            workouts
-        )
-
-    );
-
-}
-
-/* =========================================
-   GET WORKOUTS
-========================================= */
-
-function getWorkoutsAPI(){
-
-    return JSON.parse(
-
-        localStorage.getItem(
-            "fittrackWorkouts"
-        )
-
-    ) || [];
-
-}
-
-/* =========================================
-   SAVE SCHEDULE
-========================================= */
-
-function saveScheduleAPI(schedule){
-
-    let schedules =
-        JSON.parse(
-
-            localStorage.getItem(
-                "fittrackSchedules"
-            )
-
-        ) || [];
-
-    schedules.push(
-        schedule
-    );
-
-    localStorage.setItem(
-
-        "fittrackSchedules",
-
-        JSON.stringify(
-            schedules
-        )
-
-    );
-
-}
-
-/* =========================================
-   GET SCHEDULES
-========================================= */
-
-function getSchedulesAPI(){
-
-    return JSON.parse(
-
-        localStorage.getItem(
-            "fittrackSchedules"
-        )
-
-    ) || [];
-
-}
-
-/* =========================================
-   PREMIUM API MOCK
-========================================= */
-
-function activatePremium(){
-
-    localStorage.setItem(
-        "fittrackPremium",
-        "true"
-    );
-
-    alert(
-        "⭐ Premium Activated"
-    );
-
-}
-
-/* =========================================
-   AUTH API MOCK
-========================================= */
-
-function login(email,password){
-
-    const user = {
-
-        email,
-        password
-
-    };
-
-    localStorage.setItem(
-
-        "fittrackCurrentUser",
-
-        JSON.stringify(
-            user
-        )
-
-    );
-
-    return true;
-
-}
-
-/* =========================================
-   LOGOUT API
-========================================= */
-
-function logout(){
-
-    localStorage.removeItem(
-        "fittrackCurrentUser"
-    );
-
-    window.location.href =
-        "index.html";
-
-}
-
-/* =========================================
-   AUTO LOAD
-========================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    ()=>{
-
-        loadUsers();
-
-        loadPosts();
-
-        loadTodos();
-
-        loadWeather();
-
-    }
-);
-
-/* =========================================
-   READY
-========================================= */
-
-console.log(
-    "FitTrack API Ready"
-);
-// =========================================
-// FITTRACK API.JS
-// =========================================
-
-// =========================================
-// LOCAL STORAGE API
-// =========================================
-
-class FitTrackAPI {
-
-    // =====================================
-    // GET DATA
-    // =====================================
-
-    static getData(key) {
-
-        return JSON.parse(
-
-            localStorage.getItem(key)
-
-        ) || [];
-
-    }
-
-    // =====================================
-    // SAVE DATA
-    // =====================================
-
-    static saveData(
-        key,
-        data
-    ) {
-
-        localStorage.setItem(
-
-            key,
-
-            JSON.stringify(data)
-
+    const created =
+        await userAPI.create(
+            userData
         );
 
-    }
+    if (created) {
 
-    // =====================================
-    // ADD ITEM
-    // =====================================
-
-    static addItem(
-        key,
-        item
-    ) {
-
-        const data =
-            this.getData(key);
-
-        data.push(item);
-
-        this.saveData(
-            key,
-            data
+        alert(
+            "✅ Đăng ký thành công"
         );
 
-    }
-
-    // =====================================
-    // DELETE ITEM
-    // =====================================
-
-    static deleteItem(
-        key,
-        index
-    ) {
-
-        const data =
-            this.getData(key);
-
-        data.splice(index, 1);
-
-        this.saveData(
-            key,
-            data
-        );
+        return true;
 
     }
 
-    // =====================================
-    // UPDATE ITEM
-    // =====================================
-
-    static updateItem(
-        key,
-        index,
-        newData
-    ) {
-
-        const data =
-            this.getData(key);
-
-        data[index] =
-            newData;
-
-        this.saveData(
-            key,
-            data
-        );
-
-    }
+    return false;
 
 }
 
-// =========================================
-// USERS API
-// =========================================
+/* =========================================
+   LOGIN USER
+========================================= */
 
-function getUsers() {
-
-    return FitTrackAPI.getData(
-        "fittrackUsers"
-    );
-
-}
-
-function addUser(user) {
-
-    FitTrackAPI.addItem(
-        "fittrackUsers",
-        user
-    );
-
-}
-
-function deleteUserAPI(index) {
-
-    FitTrackAPI.deleteItem(
-        "fittrackUsers",
-        index
-    );
-
-}
-
-// =========================================
-// WORKOUT API
-// =========================================
-
-function getWorkouts() {
-
-    return FitTrackAPI.getData(
-        "fittrackWorkouts"
-    );
-
-}
-
-function addWorkout(workout) {
-
-    FitTrackAPI.addItem(
-        "fittrackWorkouts",
-        workout
-    );
-
-}
-
-function deleteWorkoutAPI(index) {
-
-    FitTrackAPI.deleteItem(
-        "fittrackWorkouts",
-        index
-    );
-
-}
-
-// =========================================
-// PREMIUM API
-// =========================================
-
-function getPremiums() {
-
-    return FitTrackAPI.getData(
-        "fittrackPremiums"
-    );
-
-}
-
-function addPremium(premium) {
-
-    FitTrackAPI.addItem(
-        "fittrackPremiums",
-        premium
-    );
-
-}
-
-function deletePremiumAPI(index) {
-
-    FitTrackAPI.deleteItem(
-        "fittrackPremiums",
-        index
-    );
-
-}
-
-// =========================================
-// POSTS API
-// =========================================
-
-function getPosts() {
-
-    return FitTrackAPI.getData(
-        "fittrackPosts"
-    );
-
-}
-
-function addPost(post) {
-
-    FitTrackAPI.addItem(
-        "fittrackPosts",
-        post
-    );
-
-}
-
-function deletePostAPI(index) {
-
-    FitTrackAPI.deleteItem(
-        "fittrackPosts",
-        index
-    );
-
-}
-
-// =========================================
-// SCHEDULE API
-// =========================================
-
-function getSchedules() {
-
-    return FitTrackAPI.getData(
-        "fittrackSchedules"
-    );
-
-}
-
-function addSchedule(schedule) {
-
-    FitTrackAPI.addItem(
-        "fittrackSchedules",
-        schedule
-    );
-
-}
-
-function deleteScheduleAPI(index) {
-
-    FitTrackAPI.deleteItem(
-        "fittrackSchedules",
-        index
-    );
-
-}
-
-// =========================================
-// TRAINER API
-// =========================================
-
-function getTrainers() {
-
-    return FitTrackAPI.getData(
-        "fittrackTrainers"
-    );
-
-}
-
-function addTrainer(trainer) {
-
-    FitTrackAPI.addItem(
-        "fittrackTrainers",
-        trainer
-    );
-
-}
-
-function deleteTrainerAPI(index) {
-
-    FitTrackAPI.deleteItem(
-        "fittrackTrainers",
-        index
-    );
-
-}
-
-// =========================================
-// LOGIN API
-// =========================================
-
-function loginUser(
+async function loginUser(
     email,
     password
 ) {
 
     const users =
-        getUsers();
+        await userAPI.getAll();
 
     const foundUser =
-        users.find(
-            user =>
+        users.find(user =>
 
-                user.email === email &&
-                user.password === password
+            user.email === email &&
+            user.password === password
+
         );
 
-    if (
-        foundUser
-    ) {
+    if (foundUser) {
 
         localStorage.setItem(
 
             "fittrackCurrentUser",
 
-            JSON.stringify(foundUser)
+            JSON.stringify(
+                foundUser
+            )
 
         );
 
@@ -1231,114 +356,192 @@ function loginUser(
 
 }
 
-// =========================================
-// REGISTER API
-// =========================================
+/* =========================================
+   LOGOUT USER
+========================================= */
 
-function registerUser(
-    user
-) {
+function logoutUser() {
 
-    const users =
-        getUsers();
-
-    const emailExists =
-        users.some(
-            item =>
-                item.email === user.email
-        );
-
-    if (
-        emailExists
-    ) {
-
-        return false;
-
-    }
-
-    users.push(user);
-
-    FitTrackAPI.saveData(
-        "fittrackUsers",
-        users
+    localStorage.removeItem(
+        "fittrackCurrentUser"
     );
 
-    return true;
+    window.location.href =
+        "index.html";
 
 }
 
-// =========================================
-// PREMIUM STATUS
-// =========================================
+/* =========================================
+   GET CURRENT USER
+========================================= */
+
+function getCurrentUser() {
+
+    return JSON.parse(
+
+        localStorage.getItem(
+            "fittrackCurrentUser"
+        )
+
+    );
+
+}
+
+/* =========================================
+   PREMIUM
+========================================= */
 
 function activatePremium() {
 
     localStorage.setItem(
 
         "fittrackPremium",
-
         "true"
 
     );
 
-}
-
-function deactivatePremium() {
-
-    localStorage.setItem(
-
-        "fittrackPremium",
-
-        "false"
-
-    );
-
-}
-
-// =========================================
-// CLEAR DATABASE
-// =========================================
-
-function clearFitTrackDatabase() {
-
-    localStorage.removeItem(
-        "fittrackUsers"
-    );
-
-    localStorage.removeItem(
-        "fittrackWorkouts"
-    );
-
-    localStorage.removeItem(
-        "fittrackPremiums"
-    );
-
-    localStorage.removeItem(
-        "fittrackPosts"
-    );
-
-    localStorage.removeItem(
-        "fittrackSchedules"
-    );
-
-    localStorage.removeItem(
-        "fittrackTrainers"
-    );
-
-    localStorage.removeItem(
-        "fittrackCurrentUser"
-    );
-
     alert(
-        "Đã xóa toàn bộ dữ liệu"
+        "⭐ Premium Activated"
     );
 
-<<<<<<< HEAD
 }
-=======
+
+/* =========================================
+   CHECK PREMIUM
+========================================= */
+
+function isPremium() {
+
+    return localStorage.getItem(
+        "fittrackPremium"
+    ) === "true";
+
 }
-=======
-// =======
-// >>>>>>> 6d5b315397e7b2d76a698e4c303ad22564bad900
->>>>>>> bd0f2e60372e16c10e1317ac2494898e0b270600
->>>>>>> ebf787379a51bedf9f618bf2160cafe79046ff22
+
+/* =========================================
+   HIRE TRAINER
+========================================= */
+
+async function hireTrainer(
+    trainerName,
+    packageName
+) {
+
+    const currentUser =
+        getCurrentUser();
+
+    if (!currentUser) {
+
+        alert(
+            "⚠ Vui lòng đăng nhập"
+        );
+
+        return false;
+
+    }
+
+    const hireData = {
+
+        user:
+            currentUser.email,
+
+        trainer:
+            trainerName,
+
+        package:
+            packageName,
+
+        createdAt:
+            new Date()
+                .toISOString()
+
+    };
+
+    const result =
+        await trainerAPI.create(
+            hireData
+        );
+
+    if (result) {
+
+        alert(
+            `✅ Đã thuê HLV ${trainerName}`
+        );
+
+        return true;
+
+    }
+
+    return false;
+
+}
+
+/* =========================================
+   LOAD TRAINER DATA
+========================================= */
+
+async function loadTrainerData() {
+
+    const data =
+        await trainerAPI.getAll();
+
+    const container =
+        document.getElementById(
+            "trainerContainer"
+        );
+
+    if (!container) {
+
+        return;
+
+    }
+
+    container.innerHTML = "";
+
+    data.forEach(item => {
+
+        container.innerHTML += `
+
+            <div class="trainer-card">
+
+                <h3>
+
+                    👨‍🏫 ${item.trainer}
+
+                </h3>
+
+                <p>
+
+                    👤 User:
+                    ${item.user}
+
+                </p>
+
+                <p>
+
+                    📦 Gói:
+                    ${item.package}
+
+                </p>
+
+                <p>
+
+                    🕒 ${item.createdAt}
+
+                </p>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+/* =========================================
+   READY
+========================================= */
+
+console.log(
+    "✅ FITTRACK API CONNECTED SUCCESSFULLY"
+);

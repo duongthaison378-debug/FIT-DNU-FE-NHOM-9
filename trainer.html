@@ -7,9 +7,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>
-        FitTrack - HLV Cá Nhân
-    </title>
+    <title>FitTrack - HLV Cá Nhân</title>
 
     <!-- GOOGLE FONT -->
 
@@ -20,47 +18,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css">
-
-    <!-- CSS -->
-
     <style>
         * {
-
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
 
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-
             font-family: "Inter", sans-serif;
             background: #0f172a;
             color: white;
             line-height: 1.6;
-
+            overflow-x: hidden;
         }
 
         a {
-
             text-decoration: none;
-
         }
 
         img {
-
             width: 100%;
             display: block;
-
         }
 
         .container {
-
             width: 90%;
             max-width: 1200px;
             margin: auto;
-
         }
 
         /* =========================
@@ -68,61 +57,66 @@
         ========================= */
 
         .site-header {
-
             width: 100%;
-            background: #111827;
+            background: rgba(17, 24, 39, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1e293b;
             position: sticky;
             top: 0;
             z-index: 999;
-
         }
 
         .header-inner {
-
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 18px 0;
-
         }
 
         .brand {
-
             color: #22c55e;
-            font-size: 30px;
+            font-size: 32px;
             font-weight: 800;
-
         }
 
         .menu-toggle {
-
             display: none;
             background: none;
             border: none;
             color: white;
             font-size: 32px;
             cursor: pointer;
-
         }
 
         .main-nav {
-
             display: flex;
-            gap: 20px;
-
+            gap: 25px;
         }
 
         .main-nav a {
-
             color: white;
+            font-weight: 500;
             transition: 0.3s;
+            position: relative;
+        }
 
+        .main-nav a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            background: #22c55e;
+            left: 0;
+            bottom: -6px;
+            transition: 0.3s;
+        }
+
+        .main-nav a:hover::after {
+            width: 100%;
         }
 
         .main-nav a:hover {
-
             color: #22c55e;
-
         }
 
         /* =========================
@@ -130,48 +124,42 @@
         ========================= */
 
         .trainer-hero {
-
-            padding: 80px 0;
-
+            padding: 100px 0;
         }
 
         .trainer-hero-grid {
-
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 50px;
+            gap: 60px;
             align-items: center;
-
-        }
-
-        .trainer-hero-content h1 {
-
-            font-size: 58px;
-            margin-bottom: 20px;
-
-        }
-
-        .trainer-hero-content p {
-
-            color: #cbd5e1;
-            margin-bottom: 30px;
-
         }
 
         .page-badge {
-
             background: #22c55e;
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 999px;
             font-size: 13px;
             font-weight: 700;
+            display: inline-block;
+        }
 
+        .trainer-hero-content h1 {
+            font-size: 64px;
+            line-height: 1.1;
+            margin: 25px 0;
+        }
+
+        .trainer-hero-content p {
+            color: #cbd5e1;
+            font-size: 18px;
+            margin-bottom: 35px;
         }
 
         .trainer-hero-image img {
-
-            border-radius: 25px;
-
+            height: 520px;
+            object-fit: cover;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
         /* =========================
@@ -179,40 +167,21 @@
         ========================= */
 
         .btn {
-
             display: inline-block;
             padding: 14px 28px;
-            border-radius: 12px;
+            border-radius: 14px;
             font-weight: 600;
             transition: 0.3s;
-
         }
 
         .primary {
-
             background: #22c55e;
             color: white;
-
         }
 
         .primary:hover {
-
             background: #16a34a;
-
-        }
-
-        .secondary {
-
-            background: #1e293b;
-            color: white;
-            border: 1px solid #334155;
-
-        }
-
-        .secondary:hover {
-
-            background: #334155;
-
+            transform: translateY(-3px);
         }
 
         /* =========================
@@ -220,25 +189,20 @@
         ========================= */
 
         .section-title {
-
             text-align: center;
-            margin-bottom: 50px;
-
+            margin-bottom: 60px;
         }
 
         .section-title span {
-
             color: #22c55e;
             font-size: 14px;
             font-weight: 700;
-
+            letter-spacing: 1px;
         }
 
         .section-title h2 {
-
-            font-size: 42px;
-            margin-top: 10px;
-
+            font-size: 44px;
+            margin-top: 12px;
         }
 
         /* =========================
@@ -246,79 +210,75 @@
         ========================= */
 
         .trainer-section {
-
-            padding: 80px 0;
-
+            padding: 100px 0;
         }
 
         .trainer-grid {
-
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
         }
 
         .trainer-card {
-
             background: #1e293b;
             border-radius: 25px;
             overflow: hidden;
-            transition: 0.3s;
-
+            transition: 0.35s;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
         }
 
         .trainer-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+        }
 
-            transform: translateY(-6px);
-
+        .trainer-card img {
+            height: 320px;
+            object-fit: cover;
         }
 
         .trainer-info {
-
-            padding: 25px;
-
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
 
         .trainer-info h3 {
-
+            font-size: 25px;
             margin-bottom: 10px;
-
         }
 
         .trainer-role {
-
             color: #22c55e;
-            margin-bottom: 15px;
             font-weight: 600;
-
+            margin-bottom: 16px;
         }
 
         .trainer-info p {
-
             color: #cbd5e1;
-            margin-bottom: 20px;
-
+            margin-bottom: 25px;
+            flex: 1;
         }
 
         .trainer-stats {
-
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
-
+            background: #0f172a;
+            padding: 18px;
+            border-radius: 18px;
+            margin-bottom: 25px;
         }
 
         .trainer-stats div {
-
             text-align: center;
-
         }
 
         .trainer-stats h4 {
-
             color: #22c55e;
-
+            font-size: 22px;
         }
 
         /* =========================
@@ -326,39 +286,31 @@
         ========================= */
 
         .feature-section {
-
-            padding: 80px 0;
-
+            padding: 100px 0;
         }
 
         .feature-grid {
-
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 25px;
-
         }
 
         .feature-card {
-
             background: #1e293b;
             padding: 35px;
-            border-radius: 20px;
+            border-radius: 24px;
+            border: 1px solid #334155;
             transition: 0.3s;
-
         }
 
         .feature-card:hover {
-
-            transform: translateY(-5px);
-
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
         }
 
         .feature-icon {
-
-            font-size: 45px;
+            font-size: 48px;
             margin-bottom: 20px;
-
         }
 
         /* =========================
@@ -366,32 +318,34 @@
         ========================= */
 
         .testimonial-section {
-
-            padding: 80px 0;
-
+            padding: 100px 0;
         }
 
         .testimonial-grid {
-
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
-
         }
 
         .testimonial-card {
-
             background: #1e293b;
             padding: 35px;
-            border-radius: 20px;
+            border-radius: 24px;
+            border: 1px solid #334155;
+            transition: 0.3s;
+        }
 
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .testimonial-card p {
+            color: #cbd5e1;
         }
 
         .testimonial-card h4 {
-
             margin-top: 20px;
             color: #22c55e;
-
         }
 
         /* =========================
@@ -399,48 +353,38 @@
         ========================= */
 
         .site-footer {
-
             background: #111827;
-            margin-top: 80px;
-
+            margin-top: 100px;
+            border-top: 1px solid #1e293b;
         }
 
         .footer-inner {
-
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 30px;
-            padding: 60px 0;
-
+            padding: 70px 0;
         }
 
         .footer-section h3 {
-
             margin-bottom: 20px;
-
         }
 
         .footer-section a {
-
             display: block;
             margin-bottom: 10px;
             color: #cbd5e1;
-
+            transition: 0.3s;
         }
 
         .footer-section a:hover {
-
             color: #22c55e;
-
         }
 
         .footer-bottom {
-
             border-top: 1px solid #1e293b;
             text-align: center;
             padding: 20px;
             color: #94a3b8;
-
         }
 
         /* =========================
@@ -450,42 +394,56 @@
         @media(max-width:900px) {
 
             .menu-toggle {
-
                 display: block;
-
             }
 
             .main-nav {
-
                 position: absolute;
-                top: 80px;
-                right: 0;
+                top: 85px;
+                right: 20px;
                 background: #111827;
-                width: 280px;
-                flex-direction: column;
+                width: 260px;
                 padding: 20px;
+                flex-direction: column;
+                border-radius: 20px;
+                border: 1px solid #334155;
                 display: none;
-
             }
 
             .main-nav.show-menu {
-
                 display: flex;
-
             }
 
             .trainer-hero-grid {
-
                 grid-template-columns: 1fr;
-
             }
 
             .trainer-hero-content h1 {
-
-                font-size: 40px;
-
+                font-size: 44px;
             }
 
+            .trainer-hero-image img {
+                height: 420px;
+            }
+        }
+
+        @media(max-width:600px) {
+
+            .trainer-hero {
+                padding: 70px 0;
+            }
+
+            .trainer-hero-content h1 {
+                font-size: 36px;
+            }
+
+            .section-title h2 {
+                font-size: 34px;
+            }
+
+            .trainer-card img {
+                height: 280px;
+            }
         }
     </style>
 
@@ -502,15 +460,11 @@
         <div class="container header-inner">
 
             <a href="index.html" class="brand">
-
                 FitTrack
-
             </a>
 
             <button class="menu-toggle" id="menuToggle">
-
                 ☰
-
             </button>
 
             <nav class="main-nav" id="mainNav">
@@ -552,32 +506,24 @@
             <div class="trainer-hero-content">
 
                 <span class="page-badge">
-
                     PERSONAL TRAINER
-
                 </span>
 
                 <h1>
-
                     Huấn luyện viên
                     chuyên nghiệp
-
                 </h1>
 
                 <p>
-
                     Kết nối cùng các HLV cá nhân,
                     xây dựng kế hoạch tập luyện,
                     giảm cân,
                     tăng cơ
                     và cải thiện sức khỏe.
-
                 </p>
 
                 <a href="#trainerList" class="btn primary">
-
                     Xem HLV ngay
-
                 </a>
 
             </div>
@@ -594,7 +540,7 @@
     </section>
 
     <!-- =========================
-         TRAINER LIST
+         TRAINERS
     ========================= -->
 
     <section class="trainer-section" id="trainerList">
@@ -603,23 +549,15 @@
 
             <div class="section-title">
 
-                <span>
+                <span>TRAINERS</span>
 
-                    TRAINERS
-
-                </span>
-
-                <h2>
-
-                    Đội ngũ HLV
-
-                </h2>
+                <h2>Đội ngũ HLV</h2>
 
             </div>
 
             <div class="trainer-grid">
 
-                <!-- CARD -->
+                <!-- CARD 1 -->
 
                 <div class="trainer-card">
 
@@ -628,89 +566,46 @@
 
                     <div class="trainer-info">
 
-                        <h3>
-
-                            Nguyễn Minh Khang
-
-                        </h3>
+                        <h3>Nguyễn Minh Khang</h3>
 
                         <div class="trainer-role">
-
                             Fitness Coach
-
                         </div>
 
                         <p>
-
                             Chuyên tăng cơ,
                             giảm mỡ,
                             bodybuilding.
-
                         </p>
 
                         <div class="trainer-stats">
 
                             <div>
-
-                                <h4>
-
-                                    5+
-
-                                </h4>
-
-                                <span>
-
-                                    Năm
-
-                                </span>
-
+                                <h4>5+</h4>
+                                <span>Năm</span>
                             </div>
 
                             <div>
-
-                                <h4>
-
-                                    1.2K
-
-                                </h4>
-
-                                <span>
-
-                                    Học viên
-
-                                </span>
-
+                                <h4>1.2K</h4>
+                                <span>Học viên</span>
                             </div>
 
                             <div>
-
-                                <h4>
-
-                                    ⭐4.9
-
-                                </h4>
-
-                                <span>
-
-                                    Rating
-
-                                </span>
-
+                                <h4>⭐4.9</h4>
+                                <span>Rating</span>
                             </div>
 
                         </div>
 
                         <a href="#" class="btn primary">
-
                             Thuê HLV
-
                         </a>
 
                     </div>
 
                 </div>
 
-                <!-- CARD -->
+                <!-- CARD 2 -->
 
                 <div class="trainer-card">
 
@@ -719,89 +614,46 @@
 
                     <div class="trainer-info">
 
-                        <h3>
-
-                            Trần Hoàng Anh
-
-                        </h3>
+                        <h3>Trần Hoàng Anh</h3>
 
                         <div class="trainer-role">
-
                             Yoga Trainer
-
                         </div>
 
                         <p>
-
                             Yoga,
                             cải thiện vóc dáng,
                             thiền và sức khỏe.
-
                         </p>
 
                         <div class="trainer-stats">
 
                             <div>
-
-                                <h4>
-
-                                    7+
-
-                                </h4>
-
-                                <span>
-
-                                    Năm
-
-                                </span>
-
+                                <h4>7+</h4>
+                                <span>Năm</span>
                             </div>
 
                             <div>
-
-                                <h4>
-
-                                    980
-
-                                </h4>
-
-                                <span>
-
-                                    Học viên
-
-                                </span>
-
+                                <h4>980</h4>
+                                <span>Học viên</span>
                             </div>
 
                             <div>
-
-                                <h4>
-
-                                    ⭐5.0
-
-                                </h4>
-
-                                <span>
-
-                                    Rating
-
-                                </span>
-
+                                <h4>⭐5.0</h4>
+                                <span>Rating</span>
                             </div>
 
                         </div>
 
                         <a href="#" class="btn primary">
-
                             Thuê HLV
-
                         </a>
 
                     </div>
 
                 </div>
 
-                <!-- CARD -->
+                <!-- CARD 3 -->
 
                 <div class="trainer-card">
 
@@ -810,82 +662,39 @@
 
                     <div class="trainer-info">
 
-                        <h3>
-
-                            Lê Quốc Huy
-
-                        </h3>
+                        <h3>Lê Quốc Huy</h3>
 
                         <div class="trainer-role">
-
                             Cardio Coach
-
                         </div>
 
                         <p>
-
                             Cardio,
                             HIIT,
                             giảm cân chuyên sâu.
-
                         </p>
 
                         <div class="trainer-stats">
 
                             <div>
-
-                                <h4>
-
-                                    4+
-
-                                </h4>
-
-                                <span>
-
-                                    Năm
-
-                                </span>
-
+                                <h4>4+</h4>
+                                <span>Năm</span>
                             </div>
 
                             <div>
-
-                                <h4>
-
-                                    850
-
-                                </h4>
-
-                                <span>
-
-                                    Học viên
-
-                                </span>
-
+                                <h4>850</h4>
+                                <span>Học viên</span>
                             </div>
 
                             <div>
-
-                                <h4>
-
-                                    ⭐4.8
-
-                                </h4>
-
-                                <span>
-
-                                    Rating
-
-                                </span>
-
+                                <h4>⭐4.8</h4>
+                                <span>Rating</span>
                             </div>
 
                         </div>
 
                         <a href="#" class="btn primary">
-
                             Thuê HLV
-
                         </a>
 
                     </div>
@@ -908,17 +717,9 @@
 
             <div class="section-title">
 
-                <span>
+                <span>BENEFITS</span>
 
-                    BENEFITS
-
-                </span>
-
-                <h2>
-
-                    Vì sao chọn HLV FitTrack?
-
-                </h2>
+                <h2>Vì sao chọn HLV FitTrack?</h2>
 
             </div>
 
@@ -927,22 +728,14 @@
                 <div class="feature-card">
 
                     <div class="feature-icon">
-
                         🏋️
-
                     </div>
 
-                    <h3>
-
-                        Kế hoạch cá nhân
-
-                    </h3>
+                    <h3>Kế hoạch cá nhân</h3>
 
                     <p>
-
                         Giáo án tập luyện
                         riêng cho từng mục tiêu.
-
                     </p>
 
                 </div>
@@ -950,21 +743,13 @@
                 <div class="feature-card">
 
                     <div class="feature-icon">
-
                         🥗
-
                     </div>
 
-                    <h3>
-
-                        Dinh dưỡng
-
-                    </h3>
+                    <h3>Dinh dưỡng</h3>
 
                     <p>
-
                         Meal plan chuẩn khoa học.
-
                     </p>
 
                 </div>
@@ -972,22 +757,14 @@
                 <div class="feature-card">
 
                     <div class="feature-icon">
-
                         📈
-
                     </div>
 
-                    <h3>
-
-                        Theo dõi tiến độ
-
-                    </h3>
+                    <h3>Theo dõi tiến độ</h3>
 
                     <p>
-
                         Báo cáo kết quả
                         và thống kê chi tiết.
-
                     </p>
 
                 </div>
@@ -995,21 +772,13 @@
                 <div class="feature-card">
 
                     <div class="feature-icon">
-
                         💬
-
                     </div>
 
-                    <h3>
-
-                        Hỗ trợ 24/7
-
-                    </h3>
+                    <h3>Hỗ trợ 24/7</h3>
 
                     <p>
-
                         HLV luôn sẵn sàng hỗ trợ.
-
                     </p>
 
                 </div>
@@ -1030,17 +799,9 @@
 
             <div class="section-title">
 
-                <span>
+                <span>REVIEWS</span>
 
-                    REVIEWS
-
-                </span>
-
-                <h2>
-
-                    Học viên nói gì?
-
-                </h2>
+                <h2>Học viên nói gì?</h2>
 
             </div>
 
@@ -1049,51 +810,33 @@
                 <div class="testimonial-card">
 
                     <p>
-
                         “HLV cực kỳ chuyên nghiệp,
                         tôi giảm 10kg chỉ sau 4 tháng.”
-
                     </p>
 
-                    <h4>
-
-                        Nguyễn Văn A
-
-                    </h4>
+                    <h4>Nguyễn Văn A</h4>
 
                 </div>
 
                 <div class="testimonial-card">
 
                     <p>
-
                         “Giáo án rất dễ theo,
                         hỗ trợ tận tình.”
-
                     </p>
 
-                    <h4>
-
-                        Trần Minh B
-
-                    </h4>
+                    <h4>Trần Minh B</h4>
 
                 </div>
 
                 <div class="testimonial-card">
 
                     <p>
-
                         “FitTrack giúp tôi thay đổi
                         hoàn toàn sức khỏe.”
-
                     </p>
 
-                    <h4>
-
-                        Lê Quốc C
-
-                    </h4>
+                    <h4>Lê Quốc C</h4>
 
                 </div>
 
@@ -1113,27 +856,17 @@
 
             <div class="footer-section">
 
-                <h3>
-
-                    FitTrack
-
-                </h3>
+                <h3>FitTrack</h3>
 
                 <p>
-
                     Fitness Management System
-
                 </p>
 
             </div>
 
             <div class="footer-section">
 
-                <h3>
-
-                    Liên kết
-
-                </h3>
+                <h3>Liên kết</h3>
 
                 <a href="index.html">
                     Trang chủ
@@ -1151,11 +884,7 @@
 
             <div class="footer-section">
 
-                <h3>
-
-                    Hỗ trợ
-
-                </h3>
+                <h3>Hỗ trợ</h3>
 
                 <a href="support.html">
                     Trung tâm hỗ trợ
@@ -1165,23 +894,11 @@
 
             <div class="footer-section">
 
-                <h3>
+                <h3>Liên hệ</h3>
 
-                    Liên hệ
+                <p>📞 0283 510 6868</p>
 
-                </h3>
-
-                <p>
-
-                    📞 0283 510 6868
-
-                </p>
-
-                <p>
-
-                    ✉ support@fittrack.com
-
-                </p>
+                <p>✉ support@fittrack.com</p>
 
             </div>
 
@@ -1227,10 +944,6 @@
 
     </script>
 
-    <script src="main.js"> </script>
-    
-    <script src="api.js"></script>
-    
 </body>
 
 </html>
