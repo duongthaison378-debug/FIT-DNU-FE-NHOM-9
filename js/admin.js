@@ -413,21 +413,13 @@ const FitTrackAdmin = {
       let actionBtn = '';
       if (w.status === 'Đã duyệt') {
         actionBtn = `
-<<<<<<< HEAD
           <button class="btn btn-sm btn-outline-warning border-warning-subtle flex-grow-1 rounded-3 text-warning py-1.5 fw-semibold" onclick="FitTrackAdmin.toggleWorkoutStatus('${w.workoutId}', 'Chờ duyệt')">
-=======
-          <button class="btn btn-sm btn-outline-warning border-warning-subtle w-100 rounded-3 text-warning py-1.5 fw-semibold" onclick="FitTrackAdmin.toggleWorkoutStatus('${w.workoutId}', 'Chờ duyệt')">
->>>>>>> a1391e9eb925559d09ed6b53f560b255c34e1ba5
             <i class="bi bi-arrow-counterclockwise me-1"></i> Hủy duyệt
           </button>
         `;
       } else {
         actionBtn = `
-<<<<<<< HEAD
           <button class="btn btn-sm btn-indigo flex-grow-1 rounded-3 py-1.5 text-white fw-semibold" onclick="FitTrackAdmin.toggleWorkoutStatus('${w.workoutId}', 'Đã duyệt')">
-=======
-          <button class="btn btn-sm btn-indigo w-100 rounded-3 py-1.5 text-white fw-semibold" onclick="FitTrackAdmin.toggleWorkoutStatus('${w.workoutId}', 'Đã duyệt')">
->>>>>>> a1391e9eb925559d09ed6b53f560b255c34e1ba5
             <i class="bi bi-patch-check-fill me-1"></i> Duyệt buổi
           </button>
         `;
@@ -442,7 +434,6 @@ const FitTrackAdmin = {
         <td><i class="bi bi-stopwatch text-info me-1"></i>${w.duration} phút</td>
         <td class="fw-bold text-danger"><i class="bi bi-fire me-1"></i>${w.totalCalories} kcal</td>
         <td>${statusBadge}</td>
-<<<<<<< HEAD
         <td class="text-center">
           <div class="d-flex gap-2 align-items-center justify-content-center">
             ${actionBtn}
@@ -451,9 +442,6 @@ const FitTrackAdmin = {
             </button>
           </div>
         </td>
-=======
-        <td class="text-center">${actionBtn}</td>
->>>>>>> a1391e9eb925559d09ed6b53f560b255c34e1ba5
       `;
       tbody.appendChild(tr);
     });
@@ -722,7 +710,6 @@ const FitTrackAdmin = {
     } finally {
       UTILS.hideSpinner();
     }
-<<<<<<< HEAD
   },
 
   async handleAdminDeleteWorkout(workoutId) {
@@ -754,8 +741,6 @@ const FitTrackAdmin = {
     } finally {
       UTILS.hideSpinner();
     }
-=======
->>>>>>> a1391e9eb925559d09ed6b53f560b255c34e1ba5
   }
 };
 
