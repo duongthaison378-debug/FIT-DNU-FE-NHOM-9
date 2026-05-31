@@ -1,1595 +1,407 @@
+<!--
+  Project: FitTrack - Developed by Nhom 9
+-->
 <!DOCTYPE html>
-<html lang="vi">
-
+<html lang="vi" data-bs-theme="dark">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitTrack - Quản trị Danh mục bài tập mẫu</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS via CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>
-        FitTrack Admin Dashboard
-    </title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-
-    <style>
-        * {
-
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-
+  <!-- SECURITY SHIELD - IMMEDIATE REDIRECT GUARD -->
+  <script>
+    (function() {
+      const savedUserStr = localStorage.getItem('fittrack_user');
+      let isAdmin = false;
+      if (savedUserStr) {
+        try {
+          const user = JSON.parse(savedUserStr);
+          if (user && user.role === 'admin') {
+            isAdmin = true;
+          }
+        } catch (e) {
+          console.error(e);
         }
-
-        body {
-
-            font-family: "Inter", sans-serif;
-            background: #0f172a;
-            color: white;
-            display: flex;
-            min-height: 100vh;
-
-        }
-
-        a {
-
-            text-decoration: none;
-
-        }
-
-        button {
-
-            cursor: pointer;
-
-        }
-
-        .sidebar {
-
-            width: 280px;
-            background: #111827;
-            padding: 30px 20px;
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            overflow-y: auto;
-
-        }
-
-        .logo {
-
-            font-size: 32px;
-            font-weight: 800;
-            color: #22c55e;
-            margin-bottom: 40px;
-
-        }
-
-        .menu {
-
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-
-        }
-
-        .menu a {
-
-            color: white;
-            padding: 16px;
-            border-radius: 14px;
-            transition: 0.3s;
-            background: #1e293b;
-
-        }
-
-        .menu a:hover {
-
-            background: #22c55e;
-
-        }
-
-        .main {
-
-            margin-left: 280px;
-            width: calc(100% - 280px);
-            padding: 30px;
-
-        }
-
-        .topbar {
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-
-        }
-
-        .topbar h1 {
-
-            font-size: 35px;
-
-        }
-
-        .logout-btn {
-
-            padding: 12px 24px;
-            border: none;
-            border-radius: 12px;
-            background: #ef4444;
-            color: white;
-            font-weight: 700;
-
-        }
-
-        .logout-btn:hover {
-
-            background: #dc2626;
-
-        }
-
-        .stats-grid {
-
-            display: grid;
-            grid-template-columns:
-                repeat(auto-fit, minmax(220px, 1fr));
-
-            gap: 25px;
-            margin-bottom: 40px;
-
-        }
-
-        .stats-card {
-
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 20px;
-
-        }
-
-        .stats-card h2 {
-
-            font-size: 40px;
-            margin-top: 15px;
-            color: #22c55e;
-
-        }
-
-        .stats-card p {
-
-            color: #cbd5e1;
-
-        }
-
-        .section {
-
-            background: #1e293b;
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 35px;
-
-        }
-
-        .section h2 {
-
-            margin-bottom: 25px;
-            font-size: 28px;
-
-        }
-
-        table {
-
-            width: 100%;
-            border-collapse: collapse;
-
-        }
-
-        table th {
-
-            background: #334155;
-            padding: 16px;
-            text-align: left;
-
-        }
-
-        table td {
-
-            padding: 16px;
-            border-bottom: 1px solid #334155;
-
-        }
-
-        .form-grid {
-
-            display: grid;
-            grid-template-columns:
-                repeat(auto-fit, minmax(220px, 1fr));
-
-            gap: 20px;
-            margin-bottom: 25px;
-
-        }
-
-        .form-grid input,
-        .form-grid select {
-
-            padding: 16px;
-            border: none;
-            border-radius: 12px;
-            background: #334155;
-            color: white;
-
-        }
-
-        .btn {
-
-            padding: 12px 18px;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-weight: 700;
-
-        }
-
-        .btn-green {
-
-            background: #22c55e;
-
-        }
-
-        .btn-blue {
-
-            background: #3b82f6;
-
-        }
-
-        .btn-red {
-
-            background: #ef4444;
-
-        }
-
-        .action-buttons {
-
-            display: flex;
-            gap: 10px;
-
-        }
-
-        .table-input {
-
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
-            background: #334155;
-            color: white;
-
-        }
-
-        .empty {
-
-            text-align: center;
-            padding: 20px;
-            color: #94a3b8;
-
-        }
-
-        @media(max-width:900px) {
-
-            body {
-
-                flex-direction: column;
-
-            }
-
-            .sidebar {
-
-                width: 100%;
-                position: relative;
-                height: auto;
-
-            }
-
-            .main {
-
-                margin-left: 0;
-                width: 100%;
-
-            }
-
-        }
-    </style>
-
+      }
+      
+      if (!isAdmin) {
+        alert('Cảnh báo bảo mật: Bạn không có quyền truy cập khu vực Quản trị viên! Hệ thống sẽ chuyển hướng về trang chủ.');
+        window.location.replace('index.html');
+      }
+    })();
+  </script>
+
+  <!-- FitTrack Premium Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-    <!-- SIDEBAR -->
+  <!-- ==========================================
+       GLOBAL LOADER SPINNER
+       ========================================== -->
+  <div id="globalSpinner" class="d-none">
+    <div class="text-center">
+      <div class="spinner-border text-primary" style="width: 3.5rem; height: 3.5rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3 text-primary fw-semibold tracking-wide">Đang xử lý dữ liệu...</p>
+    </div>
+  </div>
 
-    <aside class="sidebar">
+  <!-- ==========================================
+       ADMIN HEADER / NAVBAR
+       ========================================== -->
+  <nav class="navbar navbar-expand-lg border-bottom border-secondary-subtle py-3 glass-card rounded-0">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <i class="bi bi-shield-fill-check text-primary fs-3"></i>
+        <span class="fs-4 fw-extrabold tracking-tight text-primary">FitTrack <span class="text-white fs-6">Admin</span></span>
+      </a>
 
-        <div class="logo">
+      <!-- Display copyright on UI as requested -->
+      <div class="d-none d-md-flex align-items-center ms-3">
+        <span class="copyright-badge">
+          <i class="bi bi-c-circle me-1"></i> Project: FitTrack - Developed by Nhom 9
+        </span>
+      </div>
 
-            FitTrack
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        </div>
-
-        <nav class="menu">
-
-            <a href="#dashboard">
-                📊 Dashboard
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto align-items-center gap-3 mt-3 mt-lg-0">
+          
+          <li class="nav-item">
+            <a class="nav-link btn btn-outline-secondary px-3 py-1.5 rounded-pill text-body d-flex align-items-center gap-2" href="index.html">
+              <i class="bi bi-arrow-left"></i> Quay lại Dashboard
             </a>
+          </li>
 
-            <a href="#users">
-                👤 Người dùng
-            </a>
-
-            <a href="#workouts">
-                🏋️ Workout
-            </a>
-
-            <a href="#schedule">
-                📅 Lịch tập
-            </a>
-
-            <a href="#premium">
-                ⭐ Premium
-            </a>
-
-        </nav>
-
-    </aside>
-
-    <!-- MAIN -->
-
-    <main class="main">
-
-        <div class="topbar">
-
-            <h1>
-
-                Admin Dashboard
-
-            </h1>
-
-            <button class="logout-btn" id="logoutBtn">
-
-                🚪 Đăng xuất
-
+          <!-- Theme Toggle Switcher -->
+          <li class="nav-item">
+            <button class="btn btn-link nav-link p-2" id="btnThemeToggle" title="Đổi giao diện">
+              <i id="themeIcon" class="bi bi-moon-stars-fill text-warning fs-5"></i>
             </button>
+          </li>
 
+          <!-- Admin Profile Detail -->
+          <li class="nav-item d-flex align-items-center gap-3 bg-secondary bg-opacity-10 py-1 px-3 rounded-pill">
+            <i class="bi bi-person-circle fs-5 text-primary"></i>
+            <div class="text-start">
+              <div class="fw-bold fs-7 leading-none" id="adminHeaderFullName">Admin</div>
+              <span class="text-muted small" style="font-size: 0.65rem;">Quản Trị Hệ Thống</span>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       MAIN CONTAINER
+       ========================================== -->
+  <main class="container py-5">
+    
+    <div class="d-flex d-md-none justify-content-center mb-4">
+      <span class="copyright-badge">
+        <i class="bi bi-c-circle me-1"></i> Project: FitTrack - Developed by Nhom 9
+      </span>
+    </div>
+
+    <!-- MAIN PANEL -->
+    <div class="glass-card p-5 animate-slide-in">
+      
+      <!-- Admin Workspace Navigation Tabs -->
+      <ul class="nav nav-tabs mb-5" id="adminTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active fw-semibold text-primary" id="exercises-tab" data-bs-toggle="tab" data-bs-target="#exercises-pane" type="button" role="tab" aria-controls="exercises-pane" aria-selected="true">
+            <i class="bi bi-collection-play-fill me-2"></i>Danh mục bài tập mẫu
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-semibold text-primary" id="students-tab" data-bs-toggle="tab" data-bs-target="#students-pane" type="button" role="tab" aria-controls="students-pane" aria-selected="false">
+            <i class="bi bi-people-fill me-2"></i>Quản lý Tài khoản & Duyệt tập
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="adminTabsContent">
+        
+        <!-- TAB PANE 1: MASTER EXERCISE CRUD -->
+        <div class="tab-pane fade show active" id="exercises-pane" role="tabpanel" aria-labelledby="exercises-tab">
+          <div class="row align-items-center justify-content-between g-3 mb-4">
+            <div class="col-md-8">
+              <h3 class="mb-1 text-primary"><i class="bi bi-folder-fill me-2"></i>Danh mục bài tập mẫu</h3>
+              <p class="text-body-secondary mb-0">Quản lý, thêm mới, điều chỉnh lượng tiêu thụ Calo mặc định của từng bộ môn cho toàn thể người dùng.</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+              <button class="btn btn-indigo px-4 py-2.5 rounded-3 d-flex align-items-center gap-2 ms-md-auto" onclick="FitTrackAdmin.openAddModal()">
+                <i class="bi bi-plus-lg"></i> Thêm bài tập mới
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col" style="width: 80px;">Mã số</th>
+                  <th scope="col">Tên bài tập mẫu</th>
+                  <th scope="col">Nhóm cơ tác động</th>
+                  <th scope="col">Định mức Calo / phút</th>
+                  <th scope="col" class="d-none d-lg-table-cell" style="max-width: 300px;">Mô tả chi tiết</th>
+                  <th scope="col" class="text-center" style="width: 150px;">Hành động</th>
+                </tr>
+              </thead>
+              <tbody id="adminExercisesTableBody">
+                <!-- Dynamically populated -->
+                <tr>
+                  <td colspan="6" class="text-center py-4 text-body-secondary">Đang tải danh sách bài tập mẫu từ MockAPI...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <!-- STATS -->
+        <!-- TAB PANE 2: ACCOUNT MANAGEMENT & SESSION APPROVALS -->
+        <div class="tab-pane fade" id="students-pane" role="tabpanel" aria-labelledby="students-tab">
+          <div class="row g-4">
+            
+            <!-- Left column: Account directory -->
+            <div class="col-lg-4 border-end border-secondary-subtle pe-lg-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-people me-2 text-primary"></i>Danh sách Tài khoản</h5>
+                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-10" id="studentCountBadge">0</span>
+              </div>
+              
+              <!-- Search bar inside left column to look up users -->
+              <div class="input-group mb-3">
+                <span class="input-group-text bg-secondary-subtle border-secondary-subtle"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control" id="searchStudentInput" placeholder="Tìm tên hoặc tài khoản...">
+              </div>
+              
+              <div class="list-group list-group-flush overflow-y-auto" style="max-height: 480px; gap: 8px;" id="adminStudentsList">
+                <!-- Dynamically populated user items -->
+                <div class="text-center text-muted py-3">Đang tải danh sách tài khoản...</div>
+              </div>
+            </div>
 
-        <section class="stats-grid" id="dashboard">
+            <!-- Right column: Selected User Details Workspace -->
+            <div class="col-lg-8 ps-lg-4">
+              
+              <!-- No account selected default messaging -->
+              <div id="noStudentSelectedMsg" class="h-100 d-flex flex-column align-items-center justify-content-center py-5 text-center text-body-secondary">
+                <i class="bi bi-person-bounding-box display-1 text-primary opacity-25 mb-3"></i>
+                <h5 class="fw-bold">Chưa lựa chọn tài khoản</h5>
+                <p class="small text-muted mb-0">Vui lòng nhấp vào một tài khoản ở danh sách bên trái để kiểm tra phân quyền và duyệt nhật ký.</p>
+              </div>
 
-            <div class="stats-card">
+              <!-- Interactive details workspace -->
+              <div id="studentDetailsWorkspace" class="d-none animate-slide-in">
+                
+                <!-- Account details card -->
+                <div class="d-flex justify-content-between align-items-center pb-3 border-bottom border-secondary-subtle mb-4 flex-wrap gap-2">
+                  <div>
+                    <h4 class="mb-0 text-success fw-bold" id="selectedStudentName">Nguyễn Văn A</h4>
+                    <p class="small text-muted mb-0">Tên đăng nhập: <strong id="selectedStudentUsername">student01</strong></p>
+                  </div>
+                </div>
 
-                <p>
-                    Tổng User
-                </p>
+                <!-- PRIVILEGE AUTHORIZATION CONTROL PANEL -->
+                <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-3 mb-4">
+                  <div class="row align-items-center g-3">
+                    <div class="col-sm-6">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-shield-lock text-primary fs-3"></i>
+                        <div>
+                          <div class="small text-muted fw-semibold">Quyền hạn hiện tại</div>
+                          <span class="badge bg-primary text-white fw-bold fs-7 mt-1" id="selectedUserRoleBadge">Học viên</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 text-sm-end">
+                      <div id="roleActionContainer">
+                        <!-- Promote/Demote action buttons -->
+                      </div>
+                    </div>
+                  </div>
+                <!-- WORKOUT PACKAGE CONTROL PANEL -->
+                <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-3 mb-4 d-none" id="packageControlPanel">
+                  <div class="row align-items-center g-3">
+                    <div class="col-sm-6">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-tag-fill text-success fs-3"></i>
+                        <div>
+                          <div class="small text-muted fw-semibold">Gói tập dịch vụ</div>
+                          <div id="packageStatusContainer" class="mt-1">
+                            <!-- Package badges -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 text-sm-end">
+                      <div id="packageActionContainer">
+                        <!-- Package action buttons -->
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Admin Manual Package Override Controls -->
+                  <div class="border-top border-secondary-subtle mt-3 pt-3">
+                    <div class="row g-2 align-items-center">
+                      <div class="col-sm-8">
+                        <div class="input-group input-group-sm">
+                          <label class="input-group-text bg-secondary-subtle text-muted" for="adminDirectPackageSelect">Đổi trực tiếp gói</label>
+                          <select class="form-select" id="adminDirectPackageSelect">
+                            <option value="Starter">Starter (Miễn phí)</option>
+                            <option value="Pro">FitPro (399.000đ/tháng)</option>
+                            <option value="VIP">VIP Coach (999.000đ/tháng)</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-4 text-sm-end">
+                        <button class="btn btn-sm btn-outline-info w-100 py-1.5 fw-semibold" onclick="FitTrackAdmin.handleAdminChangePackage()">
+                          Cập nhật gói
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-                <h2 id="totalUsers">
-                    0
-                </h2>
+                <!-- WORKOUT LOGS SUB-WORKSPACE -->
+                <div id="workoutsLogWorkspace">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-journal-text me-2 text-success"></i>Nhật ký tập luyện</h5>
+                    <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-10 py-1.5 px-2.5" id="selectedStudentStats">0 buổi tập</span>
+                  </div>
+                  
+                  <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                      <thead class="table-light">
+                        <tr>
+                          <th scope="col">Ngày tập</th>
+                          <th scope="col">Bài tập</th>
+                          <th scope="col">Thời lượng</th>
+                          <th scope="col">Calo tiêu hao</th>
+                          <th scope="col">Trạng thái</th>
+                          <th scope="col" class="text-center" style="width: 180px;">Thao tác duyệt</th>
+                        </tr>
+                      </thead>
+                      <tbody id="adminStudentWorkoutsTableBody">
+                        <!-- Dynamically populated workouts list -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Administrator info placeholder (shown when user is Admin) -->
+                <div id="adminUserAlertPlaceholder" class="card border border-info-subtle rounded-3 p-4 bg-info bg-opacity-10 text-center d-none">
+                  <i class="bi bi-shield-fill text-info display-5 mb-2"></i>
+                  <h6 class="fw-bold text-info">Tài khoản Quản trị viên</h6>
+                  <p class="small text-body-secondary mb-0">Tài khoản này có vai trò Admin và không có nhật ký cá nhân cần duyệt tập.</p>
+                </div>
+
+              </div>
 
             </div>
 
-            <div class="stats-card">
+          </div>
+        </div>
 
-                <p>
-                    Workout
-                </p>
+      </div>
 
-                <h2 id="totalWorkouts">
-                    0
-                </h2>
+    </div>
 
+  </main>
+
+  <!-- ==========================================
+       CRUD EXERCISE MODAL (ADD / EDIT FORM)
+       ========================================== -->
+  <div class="modal fade" id="exerciseCrudModal" tabindex="-1" aria-labelledby="exerciseCrudModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-card shadow-2xl">
+        <div class="modal-header border-bottom border-secondary-subtle">
+          <h5 class="modal-title fs-5" id="exerciseCrudModalLabel"><i class="bi bi-pencil-square text-primary me-2"></i>Thông tin bài tập mẫu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form id="formExerciseCrud">
+            
+            <!-- Hidden input to store active ID during edit states -->
+            <input type="hidden" id="crudExerciseId" value="">
+
+            <!-- Exercise Name -->
+            <div class="mb-3">
+              <label for="crudExerciseName" class="form-label small fw-bold">Tên bài tập mẫu</label>
+              <input type="text" class="form-control" id="crudExerciseName" placeholder="Ví dụ: Chạy bộ ngoài trời, Hít đất cơ bản..." required>
             </div>
 
-            <div class="stats-card">
-
-                <p>
-                    Premium
-                </p>
-
-                <h2 id="totalPremium">
-                    0
-                </h2>
-
+            <!-- Muscle Group selection and Calorie definition -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="crudMuscleGroup" class="form-label small fw-bold">Nhóm cơ tác động</label>
+                <input type="text" class="form-control" id="crudMuscleGroup" placeholder="Ví dụ: Đùi, Ngực, Bụng..." required>
+              </div>
+              <div class="col-md-6">
+                <label for="crudCaloriesPerMinute" class="form-label small fw-bold">Số Calo tiêu hao / phút</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" id="crudCaloriesPerMinute" min="1" max="100" placeholder="Ví dụ: 8" required>
+                  <span class="input-group-text bg-secondary-subtle">kcal</span>
+                </div>
+              </div>
             </div>
 
-            <div class="stats-card">
-
-                <p>
-                    Trainer
-                </p>
-
-                <h2 id="totalTrainer">
-                    0
-                </h2>
-
+            <!-- Description -->
+            <div class="mb-4">
+              <label for="crudDescription" class="form-label small fw-bold">Mô tả bài tập</label>
+              <textarea class="form-control" id="crudDescription" rows="3" placeholder="Mô tả kỹ thuật tập luyện cơ bản và ích lợi sức khỏe..."></textarea>
             </div>
 
-        </section>
-
-        <!-- USERS -->
-
-        <section class="section" id="users">
-
-            <h2>
-
-                👤 Quản lý tài khoản
-
-            </h2>
-
-            <div class="form-grid">
-
-                <input type="text" id="userName" placeholder="Tên">
-
-                <input type="email" id="userEmail" placeholder="Email">
-
-                <input type="password" id="userPassword" placeholder="Mật khẩu">
-
-                <select id="userRole">
-
-                    <option value="user">
-                        User
-                    </option>
-
-                    <option value="trainer">
-                        Trainer
-                    </option>
-
-                    <option value="admin">
-                        Admin
-                    </option>
-
-                </select>
-
-                <button class="btn btn-green" id="addUserBtn">
-
-                    Thêm tài khoản
-
-                </button>
-
-            </div>
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>STT</th>
-                        <th>Tên</th>
-                        <th>Email</th>
-                        <th>Mật khẩu</th>
-                        <th>Quyền</th>
-                        <th>Action</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="usersTable">
-
-                </tbody>
-
-            </table>
-
-        </section>
-
-        <!-- WORKOUT -->
-
-        <section class="section" id="workouts">
-
-            <h2>
-
-                🏋️ Quản lý Workout
-
-            </h2>
-
-            <div class="form-grid">
-
-                <input type="text" id="workoutName" placeholder="Tên bài tập">
-
-                <select id="workoutLevel">
-
-                    <option value="Beginner">
-                        Beginner
-                    </option>
-
-                    <option value="Intermediate">
-                        Intermediate
-                    </option>
-
-                    <option value="Advanced">
-                        Advanced
-                    </option>
-
-                </select>
-
-                <button class="btn btn-green" id="addWorkoutBtn">
-
-                    Thêm Workout
-
-                </button>
-
-            </div>
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>STT</th>
-                        <th>Tên bài tập</th>
-                        <th>Level</th>
-                        <th>Action</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="workoutTable">
-
-                </tbody>
-
-            </table>
-
-        </section>
-
-        <!-- SCHEDULE -->
-
-        <section class="section" id="schedule">
-
-            <h2>
-
-                📅 Quản lý lịch tập
-
-            </h2>
-
-            <div class="form-grid">
-
-                <input type="text" id="scheduleTitle" placeholder="Tiêu đề">
-
-                <input type="date" id="scheduleDate">
-
-                <input type="time" id="scheduleTime">
-
-                <button class="btn btn-green" id="addScheduleBtn">
-
-                    Thêm lịch tập
-
-                </button>
-
-            </div>
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>STT</th>
-                        <th>Tiêu đề</th>
-                        <th>Ngày</th>
-                        <th>Giờ</th>
-                        <th>Action</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="scheduleTable">
-
-                </tbody>
-
-            </table>
-
-        </section>
-
-        <!-- PREMIUM -->
-
-        <section class="section" id="premium">
-
-            <h2>
-
-                ⭐ Quản lý Premium
-
-            </h2>
-
-            <div class="form-grid">
-
-                <input type="text" id="premiumName" placeholder="Tên gói">
-
-                <input type="number" id="premiumPrice" placeholder="Giá">
-
-                <button class="btn btn-green" id="addPremiumBtn">
-
-                    Thêm Premium
-
-                </button>
-
-            </div>
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>STT</th>
-                        <th>Gói</th>
-                        <th>Giá</th>
-                        <th>Action</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="premiumTable">
-
-                </tbody>
-
-            </table>
-
-        </section>
-
-    </main>
-
-    <script>
-
-        // =========================
-        // SESSION STORAGE
-        // =========================
-
-        const currentUser =
-            JSON.parse(
-                sessionStorage.getItem(
-                    "fittrackCurrentUser"
-                )
-            );
-
-        // =========================
-        // CHECK ADMIN
-        // =========================
-
-        if (
-            !currentUser ||
-            currentUser.role !== "admin"
-        ) {
-
-            alert(
-                "Chỉ admin mới truy cập được"
-            );
-
-            window.location.href =
-                "index.html";
-
-        }
-
-        // =========================
-        // LOGOUT
-        // =========================
-
-        document
-            .getElementById("logoutBtn")
-            .addEventListener(
-                "click",
-                () => {
-
-                    sessionStorage.removeItem(
-                        "fittrackCurrentUser"
-                    );
-
-                    alert(
-                        "Đăng xuất thành công"
-                    );
-
-                    window.location.href =
-                        "index.html";
-
-                }
-            );
-
-        // =========================
-        // DATA
-        // =========================
-
-        let users =
-            JSON.parse(
-                localStorage.getItem(
-                    "fittrackUsers"
-                )
-            ) || [];
-
-        let workouts =
-            JSON.parse(
-                localStorage.getItem(
-                    "fittrackWorkouts"
-                )
-            ) || [];
-
-        let schedules =
-            JSON.parse(
-                localStorage.getItem(
-                    "fittrackSchedules"
-                )
-            ) || [];
-
-        let premiums =
-            JSON.parse(
-                localStorage.getItem(
-                    "fittrackPremiums"
-                )
-            ) || [];
-
-        // =========================
-        // UPDATE STATS
-        // =========================
-
-        function updateStats() {
-
-            document.getElementById(
-                "totalUsers"
-            ).innerText =
-                users.length;
-
-            document.getElementById(
-                "totalWorkouts"
-            ).innerText =
-                workouts.length;
-
-            document.getElementById(
-                "totalPremium"
-            ).innerText =
-                premiums.length;
-
-            document.getElementById(
-                "totalTrainer"
-            ).innerText =
-                users.filter(
-                    user =>
-                        user.role === "trainer"
-                ).length;
-
-        }
-
-        // =========================
-        // USERS
-        // =========================
-
-        function renderUsers() {
-
-            const table =
-                document.getElementById(
-                    "usersTable"
-                );
-
-            table.innerHTML = "";
-
-            if (users.length === 0) {
-
-                table.innerHTML =
-                    `
-                    <tr>
-                        <td colspan="6" class="empty">
-                            Chưa có tài khoản
-                        </td>
-                    </tr>
-                    `;
-
-                return;
-
-            }
-
-            users.forEach(
-                (user, index) => {
-
-                    table.innerHTML += `
-
-                    <tr>
-
-                        <td>${index + 1}</td>
-
-                        <td>
-
-                            <input
-                            class="table-input"
-                            id="name-${index}"
-                            value="${user.name}">
-
-                        </td>
-
-                        <td>
-
-                            <input
-                            class="table-input"
-                            id="email-${index}"
-                            value="${user.email}">
-
-                        </td>
-
-                        <td>
-
-                            <input
-                            class="table-input"
-                            id="password-${index}"
-                            value="${user.password}">
-
-                        </td>
-
-                        <td>
-
-                            <select
-                            class="table-input"
-                            id="role-${index}">
-
-                                <option value="user"
-                                ${user.role === "user" ? "selected" : ""}>
-                                User
-                                </option>
-
-                                <option value="trainer"
-                                ${user.role === "trainer" ? "selected" : ""}>
-                                Trainer
-                                </option>
-
-                                <option value="admin"
-                                ${user.role === "admin" ? "selected" : ""}>
-                                Admin
-                                </option>
-
-                            </select>
-
-                        </td>
-
-                        <td>
-
-                            <div class="action-buttons">
-
-                                <button
-                                class="btn btn-blue"
-                                onclick="saveUser(${index})">
-
-                                    Lưu
-
-                                </button>
-
-                                <button
-                                class="btn btn-red"
-                                onclick="deleteUser(${index})">
-
-                                    Xóa
-
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-                    `;
-
-                }
-            );
-
-            updateStats();
-
-        }
-
-        function saveUser(index) {
-
-            users[index].name =
-                document.getElementById(
-                    `name-${index}`
-                ).value;
-
-            users[index].email =
-                document.getElementById(
-                    `email-${index}`
-                ).value;
-
-            users[index].password =
-                document.getElementById(
-                    `password-${index}`
-                ).value;
-
-            users[index].role =
-                document.getElementById(
-                    `role-${index}`
-                ).value;
-
-            localStorage.setItem(
-                "fittrackUsers",
-                JSON.stringify(users)
-            );
-
-            alert("Đã cập nhật user");
-
-            renderUsers();
-
-        }
-
-        function deleteUser(index) {
-
-            users.splice(index, 1);
-
-            localStorage.setItem(
-                "fittrackUsers",
-                JSON.stringify(users)
-            );
-
-            renderUsers();
-
-        }
-
-        document.getElementById(
-            "addUserBtn"
-        ).addEventListener(
-            "click",
-            () => {
-
-                const name =
-                    document.getElementById(
-                        "userName"
-                    ).value.trim();
-
-                const email =
-                    document.getElementById(
-                        "userEmail"
-                    ).value.trim();
-
-                const password =
-                    document.getElementById(
-                        "userPassword"
-                    ).value.trim();
-
-                const role =
-                    document.getElementById(
-                        "userRole"
-                    ).value;
-
-                if (
-                    !name ||
-                    !email ||
-                    !password
-                ) {
-
-                    alert(
-                        "Vui lòng nhập đầy đủ"
-                    );
-
-                    return;
-
-                }
-
-                const checkEmail =
-                    users.find(
-                        user =>
-                            user.email === email
-                    );
-
-                if (checkEmail) {
-
-                    alert(
-                        "Email đã tồn tại"
-                    );
-
-                    return;
-
-                }
-
-                users.push({
-
-                    name,
-                    email,
-                    password,
-                    role
-
-                });
-
-                localStorage.setItem(
-                    "fittrackUsers",
-                    JSON.stringify(users)
-                );
-
-                document.getElementById(
-                    "userName"
-                ).value = "";
-
-                document.getElementById(
-                    "userEmail"
-                ).value = "";
-
-                document.getElementById(
-                    "userPassword"
-                ).value = "";
-
-                renderUsers();
-
-            }
-        );
-
-        // =========================
-        // WORKOUT
-        // =========================
-
-        function renderWorkouts() {
-
-            const table =
-                document.getElementById(
-                    "workoutTable"
-                );
-
-            table.innerHTML = "";
-
-            if (workouts.length === 0) {
-
-                table.innerHTML =
-                    `
-                    <tr>
-                        <td colspan="4" class="empty">
-                            Chưa có workout
-                        </td>
-                    </tr>
-                    `;
-
-                return;
-
-            }
-
-            workouts.forEach(
-                (workout, index) => {
-
-                    table.innerHTML += `
-
-                    <tr>
-
-                        <td>${index + 1}</td>
-
-                        <td>
-
-                            <input
-                            class="table-input"
-                            id="workout-name-${index}"
-                            value="${workout.name}">
-
-                        </td>
-
-                        <td>
-
-                            <select
-                            class="table-input"
-                            id="workout-level-${index}">
-
-                                <option value="Beginner"
-                                ${workout.level === "Beginner" ? "selected" : ""}>
-                                Beginner
-                                </option>
-
-                                <option value="Intermediate"
-                                ${workout.level === "Intermediate" ? "selected" : ""}>
-                                Intermediate
-                                </option>
-
-                                <option value="Advanced"
-                                ${workout.level === "Advanced" ? "selected" : ""}>
-                                Advanced
-                                </option>
-
-                            </select>
-
-                        </td>
-
-                        <td>
-
-                            <div class="action-buttons">
-
-                                <button
-                                class="btn btn-blue"
-                                onclick="saveWorkout(${index})">
-
-                                    Lưu
-
-                                </button>
-
-                                <button
-                                class="btn btn-red"
-                                onclick="deleteWorkout(${index})">
-
-                                    Xóa
-
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-                    `;
-
-                }
-            );
-
-            updateStats();
-
-        }
-
-        function saveWorkout(index) {
-
-            workouts[index].name =
-                document.getElementById(
-                    `workout-name-${index}`
-                ).value;
-
-            workouts[index].level =
-                document.getElementById(
-                    `workout-level-${index}`
-                ).value;
-
-            localStorage.setItem(
-                "fittrackWorkouts",
-                JSON.stringify(workouts)
-            );
-
-            alert("Đã cập nhật workout");
-
-            renderWorkouts();
-
-        }
-
-        function deleteWorkout(index) {
-
-            workouts.splice(index, 1);
-
-            localStorage.setItem(
-                "fittrackWorkouts",
-                JSON.stringify(workouts)
-            );
-
-            renderWorkouts();
-
-        }
-
-        document.getElementById(
-            "addWorkoutBtn"
-        ).addEventListener(
-            "click",
-            () => {
-
-                const name =
-                    document.getElementById(
-                        "workoutName"
-                    ).value.trim();
-
-                const level =
-                    document.getElementById(
-                        "workoutLevel"
-                    ).value;
-
-                if (!name) {
-
-                    alert(
-                        "Nhập tên workout"
-                    );
-
-                    return;
-
-                }
-
-                workouts.push({
-
-                    name,
-                    level
-
-                });
-
-                localStorage.setItem(
-                    "fittrackWorkouts",
-                    JSON.stringify(workouts)
-                );
-
-                document.getElementById(
-                    "workoutName"
-                ).value = "";
-
-                renderWorkouts();
-
-            }
-        );
-
-        // =========================
-        // SCHEDULE
-        // =========================
-
-        function renderSchedules() {
-
-            const table =
-                document.getElementById(
-                    "scheduleTable"
-                );
-
-            table.innerHTML = "";
-
-            if (schedules.length === 0) {
-
-                table.innerHTML =
-                    `
-                    <tr>
-                        <td colspan="5" class="empty">
-                            Chưa có lịch tập
-                        </td>
-                    </tr>
-                    `;
-
-                return;
-
-            }
-
-            schedules.forEach(
-                (schedule, index) => {
-
-                    table.innerHTML += `
-
-                    <tr>
-
-                        <td>${index + 1}</td>
-
-                        <td>
-
-                            <input
-                            class="table-input"
-                            id="schedule-title-${index}"
-                            value="${schedule.title}">
-
-                        </td>
-
-                        <td>
-
-                            <input
-                            type="date"
-                            class="table-input"
-                            id="schedule-date-${index}"
-                            value="${schedule.date}">
-
-                        </td>
-
-                        <td>
-
-                            <input
-                            type="time"
-                            class="table-input"
-                            id="schedule-time-${index}"
-                            value="${schedule.time}">
-
-                        </td>
-
-                        <td>
-
-                            <div class="action-buttons">
-
-                                <button
-                                class="btn btn-blue"
-                                onclick="saveSchedule(${index})">
-
-                                    Lưu
-
-                                </button>
-
-                                <button
-                                class="btn btn-red"
-                                onclick="deleteSchedule(${index})">
-
-                                    Xóa
-
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-                    `;
-
-                }
-            );
-
-        }
-
-        function saveSchedule(index) {
-
-            schedules[index].title =
-                document.getElementById(
-                    `schedule-title-${index}`
-                ).value;
-
-            schedules[index].date =
-                document.getElementById(
-                    `schedule-date-${index}`
-                ).value;
-
-            schedules[index].time =
-                document.getElementById(
-                    `schedule-time-${index}`
-                ).value;
-
-            localStorage.setItem(
-                "fittrackSchedules",
-                JSON.stringify(schedules)
-            );
-
-            alert("Đã cập nhật lịch");
-
-            renderSchedules();
-
-        }
-
-        function deleteSchedule(index) {
-
-            schedules.splice(index, 1);
-
-            localStorage.setItem(
-                "fittrackSchedules",
-                JSON.stringify(schedules)
-            );
-
-            renderSchedules();
-
-        }
-
-        document.getElementById(
-            "addScheduleBtn"
-        ).addEventListener(
-            "click",
-            () => {
-
-                const title =
-                    document.getElementById(
-                        "scheduleTitle"
-                    ).value.trim();
-
-                const date =
-                    document.getElementById(
-                        "scheduleDate"
-                    ).value;
-
-                const time =
-                    document.getElementById(
-                        "scheduleTime"
-                    ).value;
-
-                if (
-                    !title ||
-                    !date ||
-                    !time
-                ) {
-
-                    alert(
-                        "Nhập đầy đủ lịch tập"
-                    );
-
-                    return;
-
-                }
-
-                schedules.push({
-
-                    title,
-                    date,
-                    time
-
-                });
-
-                localStorage.setItem(
-                    "fittrackSchedules",
-                    JSON.stringify(schedules)
-                );
-
-                renderSchedules();
-
-            }
-        );
-
-        // =========================
-        // PREMIUM
-        // =========================
-
-        function renderPremiums() {
-
-            const table =
-                document.getElementById(
-                    "premiumTable"
-                );
-
-            table.innerHTML = "";
-
-            if (premiums.length === 0) {
-
-                table.innerHTML =
-                    `
-                    <tr>
-                        <td colspan="4" class="empty">
-                            Chưa có premium
-                        </td>
-                    </tr>
-                    `;
-
-                return;
-
-            }
-
-            premiums.forEach(
-                (premium, index) => {
-
-                    table.innerHTML += `
-
-                    <tr>
-
-                        <td>${index + 1}</td>
-
-                        <td>
-
-                            <input
-                            class="table-input"
-                            id="premium-name-${index}"
-                            value="${premium.name}">
-
-                        </td>
-
-                        <td>
-
-                            <input
-                            class="table-input"
-                            id="premium-price-${index}"
-                            value="${premium.price}">
-
-                        </td>
-
-                        <td>
-
-                            <div class="action-buttons">
-
-                                <button
-                                class="btn btn-blue"
-                                onclick="savePremium(${index})">
-
-                                    Lưu
-
-                                </button>
-
-                                <button
-                                class="btn btn-red"
-                                onclick="deletePremium(${index})">
-
-                                    Xóa
-
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-                    `;
-
-                }
-            );
-
-            updateStats();
-
-        }
-
-        function savePremium(index) {
-
-            premiums[index].name =
-                document.getElementById(
-                    `premium-name-${index}`
-                ).value;
-
-            premiums[index].price =
-                document.getElementById(
-                    `premium-price-${index}`
-                ).value;
-
-            localStorage.setItem(
-                "fittrackPremiums",
-                JSON.stringify(premiums)
-            );
-
-            alert("Đã cập nhật premium");
-
-            renderPremiums();
-
-        }
-
-        function deletePremium(index) {
-
-            premiums.splice(index, 1);
-
-            localStorage.setItem(
-                "fittrackPremiums",
-                JSON.stringify(premiums)
-            );
-
-            renderPremiums();
-
-        }
-
-        document.getElementById(
-            "addPremiumBtn"
-        ).addEventListener(
-            "click",
-            () => {
-
-                const name =
-                    document.getElementById(
-                        "premiumName"
-                    ).value.trim();
-
-                const price =
-                    document.getElementById(
-                        "premiumPrice"
-                    ).value;
-
-                if (
-                    !name ||
-                    !price
-                ) {
-
-                    alert(
-                        "Nhập đầy đủ premium"
-                    );
-
-                    return;
-
-                }
-
-                premiums.push({
-
-                    name,
-                    price
-
-                });
-
-                localStorage.setItem(
-                    "fittrackPremiums",
-                    JSON.stringify(premiums)
-                );
-
-                renderPremiums();
-
-            }
-        );
-
-        // =========================
-        // START
-        // =========================
-
-        renderUsers();
-
-        renderWorkouts();
-
-        renderSchedules();
-
-        renderPremiums();
-
-        updateStats();
-
-    </script>
-
+            <button type="submit" class="btn btn-indigo w-100 py-2.5 text-white">Lưu Thay Đổi Danh Mục <i class="bi bi-save-fill ms-1"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <footer class="py-4 mt-auto">
+    <div class="container text-center">
+      <div class="row justify-content-between align-items-center g-3">
+        <div class="col-md-6 text-md-start">
+          <p class="mb-0 text-body-secondary">
+            &copy; 2026 <strong>FitTrack</strong>. Quản trị hệ thống danh mục.
+          </p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <span class="text-body-secondary fw-semibold">
+            Project: FitTrack - Developed by Nhom 9
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 Bundle JS via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- FitTrack Custom JS Modules -->
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/admin.js"></script>
 </body>
-
 </html>

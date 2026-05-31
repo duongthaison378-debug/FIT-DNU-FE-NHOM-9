@@ -1,1221 +1,959 @@
+<!--
+  Project: FitTrack - Developed by Nhom 9
+-->
 <!DOCTYPE html>
-<html lang="vi">
-
+<html lang="vi" data-bs-theme="dark">
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>
-        FitTrack - Trang Chủ
-    </title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-
-    <style>
-        * {
-
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-
-        }
-
-        body {
-
-            font-family: "Inter", sans-serif;
-            background: #0f172a;
-            color: white;
-            line-height: 1.6;
-
-        }
-
-        a {
-
-            text-decoration: none;
-
-        }
-
-        img {
-
-            width: 100%;
-            display: block;
-
-        }
-
-        .container {
-
-            width: 90%;
-            max-width: 1200px;
-            margin: auto;
-
-        }
-
-        /* =========================
-           HEADER
-        ========================= */
-
-        .site-header {
-
-            width: 100%;
-            background: #111827;
-            position: sticky;
-            top: 0;
-            z-index: 999;
-
-        }
-
-        .header-inner {
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 0;
-
-        }
-
-        .brand {
-
-            color: #22c55e;
-            font-size: 32px;
-            font-weight: 800;
-
-        }
-
-        .menu-toggle {
-
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 32px;
-            cursor: pointer;
-
-        }
-
-        .main-nav {
-
-            display: flex;
-            gap: 20px;
-            align-items: center;
-
-        }
-
-        .main-nav a {
-
-            color: white;
-            transition: 0.3s;
-
-        }
-
-        .main-nav a:hover {
-
-            color: #22c55e;
-
-        }
-
-        .user-box {
-
-            display: flex;
-            align-items: center;
-            gap: 12px;
-
-        }
-
-        .logout-btn {
-
-            background: #ef4444;
-            border: none;
-            color: white;
-            padding: 10px 18px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-
-        }
-
-        .logout-btn:hover {
-
-            background: #dc2626;
-
-        }
-
-        /* =========================
-           HERO
-        ========================= */
-
-        .hero-section {
-
-            padding: 90px 0;
-
-        }
-
-        .hero-grid {
-
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 50px;
-            align-items: center;
-
-        }
-
-        .page-badge {
-
-            background: #22c55e;
-            padding: 8px 16px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 700;
-
-        }
-
-        .hero-content h1 {
-
-            font-size: 60px;
-            margin: 25px 0;
-
-        }
-
-        .hero-content p {
-
-            color: #cbd5e1;
-            margin-bottom: 30px;
-
-        }
-
-        .hero-buttons {
-
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-
-        }
-
-        .hero-image img {
-
-            border-radius: 25px;
-
-        }
-
-        .btn {
-
-            display: inline-block;
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: 0.3s;
-
-        }
-
-        .primary {
-
-            background: #22c55e;
-            color: white;
-
-        }
-
-        .primary:hover {
-
-            background: #16a34a;
-
-        }
-
-        .secondary {
-
-            background: #1e293b;
-            border: 1px solid #334155;
-            color: white;
-
-        }
-
-        .secondary:hover {
-
-            background: #334155;
-
-        }
-
-        /* =========================
-           SECTION
-        ========================= */
-
-        .feature-section,
-        .stats-section,
-        .premium-section,
-        .testimonial-section {
-
-            padding: 80px 0;
-
-        }
-
-        .section-title {
-
-            text-align: center;
-            margin-bottom: 50px;
-
-        }
-
-        .section-title span {
-
-            color: #22c55e;
-            font-size: 14px;
-            font-weight: 700;
-
-        }
-
-        .section-title h2 {
-
-            font-size: 42px;
-            margin-top: 10px;
-
-        }
-
-        .feature-grid,
-        .stats-grid,
-        .testimonial-grid {
-
-            display: grid;
-            gap: 25px;
-
-        }
-
-        .feature-grid {
-
-            grid-template-columns:
-                repeat(auto-fit,
-                    minmax(250px, 1fr));
-
-        }
-
-        .stats-grid {
-
-            grid-template-columns:
-                repeat(auto-fit,
-                    minmax(220px, 1fr));
-
-        }
-
-        .testimonial-grid {
-
-            grid-template-columns:
-                repeat(auto-fit,
-                    minmax(280px, 1fr));
-
-        }
-
-        .feature-card,
-        .stats-card,
-        .testimonial-card {
-
-            background: #1e293b;
-            padding: 35px;
-            border-radius: 22px;
-            transition: 0.3s;
-
-        }
-
-        .feature-card:hover,
-        .stats-card:hover,
-        .testimonial-card:hover {
-
-            transform: translateY(-5px);
-
-        }
-
-        .feature-icon {
-
-            font-size: 45px;
-            margin-bottom: 20px;
-
-        }
-
-        .stats-card {
-
-            text-align: center;
-
-        }
-
-        .stats-card h2 {
-
-            font-size: 50px;
-            color: #22c55e;
-
-        }
-
-        /* =========================
-           PREMIUM
-        ========================= */
-
-        .premium-box {
-
-            background: linear-gradient(135deg,
-                    #22c55e,
-                    #16a34a);
-
-            padding: 60px;
-            border-radius: 30px;
-            text-align: center;
-
-        }
-
-        .premium-box h2 {
-
-            font-size: 48px;
-            margin-bottom: 20px;
-
-        }
-
-        /* =========================
-           TESTIMONIAL
-        ========================= */
-
-        .testimonial-card p {
-
-            color: #cbd5e1;
-            margin-bottom: 20px;
-
-        }
-
-        .testimonial-card h4 {
-
-            color: #22c55e;
-
-        }
-
-        /* =========================
-           FOOTER
-        ========================= */
-
-        .site-footer {
-
-            background: #111827;
-            margin-top: 80px;
-
-        }
-
-        .footer-inner {
-
-            display: grid;
-            grid-template-columns:
-                repeat(auto-fit,
-                    minmax(220px, 1fr));
-
-            gap: 30px;
-            padding: 60px 0;
-
-        }
-
-        .footer-section h3 {
-
-            margin-bottom: 20px;
-
-        }
-
-        .footer-section a {
-
-            display: block;
-            margin-bottom: 10px;
-            color: #cbd5e1;
-
-        }
-
-        .footer-section a:hover {
-
-            color: #22c55e;
-
-        }
-
-        .footer-bottom {
-
-            border-top: 1px solid #1e293b;
-            text-align: center;
-            padding: 20px;
-            color: #94a3b8;
-
-        }
-
-        /* =========================
-           MOBILE
-        ========================= */
-
-        @media(max-width:900px) {
-
-            .menu-toggle {
-
-                display: block;
-
-            }
-
-            .main-nav {
-
-                position: absolute;
-                top: 80px;
-                right: 0;
-                width: 280px;
-                background: #111827;
-                flex-direction: column;
-                padding: 20px;
-                display: none;
-
-            }
-
-            .main-nav.show-menu {
-
-                display: flex;
-
-            }
-
-            .hero-grid {
-
-                grid-template-columns: 1fr;
-
-            }
-
-            .hero-content h1 {
-
-                font-size: 42px;
-
-            }
-
-        }
-    </style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitTrack - Nhật ký tập luyện & Theo dõi sức khỏe cá nhân</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS via CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+  <!-- FitTrack Premium Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-    <!-- HEADER -->
+  <!-- ==========================================
+       GLOBAL LOADER SPINNER
+       ========================================== -->
+  <div id="globalSpinner" class="d-none">
+    <div class="text-center">
+      <div class="spinner-border text-info" style="width: 3.5rem; height: 3.5rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3 text-info fw-semibold tracking-wide">Đang xử lý dữ liệu...</p>
+    </div>
+  </div>
 
-    <header class="site-header">
+  <!-- ==========================================
+       APP HEADER / NAVBAR
+       ========================================== -->
+  <nav class="navbar navbar-expand-lg border-bottom border-secondary-subtle py-3 glass-card rounded-0">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <i class="bi bi-heart-pulse-fill text-success fs-3"></i>
+        <span class="fs-4 fw-extrabold tracking-tight">Fit<span class="text-success">Track</span></span>
+      </a>
 
-        <div class="container header-inner">
+      <!-- Display copyright on UI as requested -->
+      <div class="d-none d-md-flex align-items-center ms-3">
+        <span class="copyright-badge">
+          <i class="bi bi-c-circle me-1"></i> Project: FitTrack - Developed by Nhom 9
+        </span>
+      </div>
 
-            <a href="index.html" class="brand">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-                FitTrack
-
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2 gap-lg-3 ms-lg-4" style="font-family: var(--font-heading);">
+          <li class="nav-item">
+            <a class="nav-link fw-semibold text-body opacity-75" href="#">Trang chủ</a>
+          </li>
+          <li class="nav-item d-none" id="navJournalLink">
+            <a class="nav-link fw-semibold text-body opacity-75" href="#workoutHistorySection">Nhật ký</a>
+          </li>
+          <li class="nav-item" id="navPackagesLink">
+            <a class="nav-link fw-semibold text-body opacity-75" href="#packagesSection">Gói tập</a>
+          </li>
+          <li class="nav-item" id="navNutritionLink">
+            <a class="nav-link fw-semibold text-body opacity-75" href="#nutritionSection">Dinh dưỡng</a>
+          </li>
+          <li class="nav-item" id="navSupportLink">
+            <a class="nav-link fw-semibold text-body opacity-75" href="#supportSection">Hỗ trợ</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto align-items-center gap-3 mt-3 mt-lg-0">
+          
+          <!-- Admin Dashboard Redirect Link (visible if admin) -->
+          <li class="nav-item d-none" id="adminMenuLink">
+            <a class="nav-link btn btn-outline-info border-info-subtle px-3 py-1.5 rounded-pill text-info d-flex align-items-center gap-2" href="admin.html">
+              <i class="bi bi-shield-lock-fill"></i> Quản trị Admin
             </a>
+          </li>
 
-            <button class="menu-toggle" id="menuToggle">
-
-                ☰
-
+          <!-- Theme Toggle Switcher -->
+          <li class="nav-item">
+            <button class="btn btn-link nav-link p-2" id="btnThemeToggle" title="Đổi giao diện">
+              <i id="themeIcon" class="bi bi-moon-stars-fill text-warning fs-5"></i>
             </button>
+          </li>
 
-            <nav class="main-nav" id="mainNav">
+          <!-- Guest State Control Actions -->
+          <li class="nav-item d-flex gap-2" id="guestActions">
+            <button class="btn btn-outline-secondary px-3 rounded-3" data-bs-toggle="modal" data-bs-target="#authModal" onclick="switchAuthTab('login')">Đăng Nhập</button>
+            <button class="btn btn-gradient px-3 rounded-3 text-dark" data-bs-toggle="modal" data-bs-target="#authModal" onclick="switchAuthTab('register')">Đăng Ký</button>
+          </li>
 
-                <a href="index.html">
-                    Trang chủ
-                </a>
+          <!-- Authenticated State Profile Widget -->
+          <li class="nav-item d-none align-items-center gap-3" id="userProfileWidget">
+            <div class="text-end d-none d-sm-block">
+              <div class="fw-bold fs-6" id="headerFullName">Họ và tên</div>
+              <span class="badge bg-secondary-subtle text-secondary fw-semibold" id="headerRole">Thành viên</span>
+            </div>
+            <button class="btn btn-outline-secondary px-3 py-2 rounded-3" id="btnSettings" data-bs-toggle="modal" data-bs-target="#settingsModal" title="Cài đặt tài khoản">
+              <i class="bi bi-gear-fill"></i>
+            </button>
+            <button class="btn btn-outline-danger px-3 py-2 rounded-3" id="btnLogout" title="Đăng xuất">
+              <i class="bi bi-box-arrow-right"></i>
+            </button>
+          </li>
 
-                <a href="signup.html" id="loginMenu">
-                    Đăng nhập
-                </a>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-                <a href="workout.html" id="workoutMenu" style="display:none;">
-                    Buổi tập
-                </a>
+  <!-- ==========================================
+       MAIN CONTAINER
+       ========================================== -->
+  <main class="container py-5">
+    
+    <!-- AUTHOR INFO ALERT BLOCK FOR SMALL VIEWPORTS -->
+    <div class="d-flex d-md-none justify-content-center mb-4">
+      <span class="copyright-badge">
+        <i class="bi bi-c-circle me-1"></i> Project: FitTrack - Developed by Nhom 9
+      </span>
+    </div>
 
-                <a href="schedule.html" id="scheduleMenu" style="display:none;">
-                    Lịch tập
-                </a>
+    <!-- ==========================================
+         ANONYMOUS INTRO VIEW (GUEST SCREEN)
+         ========================================== -->
+    <section id="anonymousView" class="py-5 text-center">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+          <div class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fs-7 mb-3 fw-bold border border-success border-opacity-25">
+            <i class="bi bi-activity me-1"></i> Sức Khỏe Là Vàng - Kỷ Luật Là Chìa Khóa
+          </div>
+          <h1 class="display-4 fw-extrabold text-gradient-title mb-3" style="font-family: var(--font-heading);">
+            Theo Dõi Tập Luyện,<br>Kiến Tạo Vóc Dáng Ước Mơ
+          </h1>
+          <p class="lead text-body-secondary fs-5 mb-5 px-lg-4">
+            FitTrack đồng hành cùng bạn ghi nhật ký thể thao hàng ngày, tự động đo đạc calo tiêu thụ, tổng hợp số liệu khoa học với biểu đồ tiến độ sinh động giúp bạn kiên trì mỗi ngày.
+          </p>
+          <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
+            <button class="btn btn-gradient btn-lg px-4 py-3 rounded-3" data-bs-toggle="modal" data-bs-target="#authModal" onclick="switchAuthTab('register')">
+              Bắt đầu hoàn toàn miễn phí <i class="bi bi-arrow-right ms-2"></i>
+            </button>
+            <button class="btn btn-outline-secondary btn-lg px-4 py-3 rounded-3" data-bs-toggle="modal" data-bs-target="#authModal" onclick="switchAuthTab('login')">
+              Đăng nhập tài khoản
+            </button>
+          </div>
+        </div>
+      </div>
 
-                <a href="nutrition.html" id="nutritionMenu" style="display:none;">
-                    Dinh dưỡng
-                </a>
+      <!-- Feature grid in landing page -->
+      <div class="row g-4 mt-5 text-start justify-content-center">
+        <div class="col-md-4">
+          <div class="glass-card p-4 h-100">
+            <div class="stat-badge mb-3">
+              <i class="bi bi-journal-check"></i>
+            </div>
+            <h4 class="mb-2">Ghi nhận tức thì</h4>
+            <p class="text-body-secondary mb-0">Nhập thời lượng tập, hệ thống tự động quy đổi lượng calo tiêu hao chính xác cho hàng chục môn thể thao master.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-card p-4 h-100">
+            <div class="stat-badge mb-3 text-info bg-info bg-opacity-10">
+              <i class="bi bi-bar-chart-line-fill text-info"></i>
+            </div>
+            <h4 class="mb-2">Biểu đồ tiến độ</h4>
+            <p class="text-body-secondary mb-0">Biểu đồ CSS hiện đại giúp bạn cập nhật ngay lượng năng lượng giải phóng theo tuần để có hướng điều chỉnh kịp thời.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-card p-4 h-100">
+            <div class="stat-badge mb-3 text-warning bg-warning bg-opacity-10">
+              <i class="bi bi-shield-check text-warning"></i>
+            </div>
+            <h4 class="mb-2">Bảo mật & Đơn giản</h4>
+            <p class="text-body-secondary mb-0">Hệ thống đồng bộ cơ sở dữ liệu MockAPI tin cậy, thao tác giao diện bất đồng bộ mượt mà cùng giao diện Dark Mode bảo vệ mắt.</p>
+          </div>
+        </div>
+      </div>
 
-                <a href="trainer.html" id="trainerMenu" style="display:none;">
-                    HLV
-                </a>
+      <!-- ==========================================
+           WORKOUT PACKAGES SECTION (#packagesSection)
+           ========================================== -->
+      <section class="mt-5 pt-4 text-start" id="packagesSection">
+        <div class="text-center mb-5">
+          <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fs-7 mb-2 fw-bold">
+            <i class="bi bi-tag-fill me-1"></i> Bảng giá Gói tập dịch vụ
+          </span>
+          <h3 class="display-6 fw-extrabold mb-2">Lựa chọn gói tập phù hợp</h3>
+          <p class="text-body-secondary small mx-auto" style="max-width: 600px;">
+            Tăng tốc tiến độ nâng cao sức khỏe cá nhân cùng các gói tập độc quyền tích hợp huấn luyện viên 1-1 và dinh dưỡng tối ưu.
+          </p>
+        </div>
 
-                <a href="progress.html" id="progressMenu" style="display:none;">
-                    Tiến độ
-                </a>
+        <div class="row g-4 justify-content-center">
+          <!-- Starter Package -->
+          <div class="col-md-4">
+            <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-10 px-2.5 py-1.5 fw-bold">Starter</span>
+                  <span class="text-muted small">Cơ bản</span>
+                </div>
+                <h4 class="display-6 fw-bold mb-2">199.000 <span class="fs-6 fw-normal text-muted">đ / tháng</span></h4>
+                <p class="small text-body-secondary mb-4">Gói khởi động cho người mới bắt đầu thiết lập thói quen rèn luyện sức khỏe.</p>
+                
+                <ul class="list-unstyled d-flex flex-column gap-2 mb-4 fs-7 text-body-secondary">
+                  <li><i class="bi bi-check-circle-fill text-success me-2"></i> Ghi nhận nhật ký tập luyện</li>
+                  <li><i class="bi bi-check-circle-fill text-success me-2"></i> Xem master bài tập cơ bản</li>
+                  <li><i class="bi bi-check-circle-fill text-success me-2"></i> Đồ thị tuần tiêu hao calo</li>
+                  <li class="text-muted"><i class="bi bi-dash-circle text-muted me-2"></i> Chế độ ăn uống VIP</li>
+                  <li class="text-muted"><i class="bi bi-dash-circle text-muted me-2"></i> Huấn luyện viên cá nhân</li>
+                </ul>
+              </div>
+              <button class="btn btn-outline-success w-100 rounded-3 py-2 fw-semibold" onclick="FitTrackApp.handleSelectPackage('Starter')">Kích hoạt miễn phí</button>
+            </div>
+          </div>
 
-                <a href="premium.html" id="premiumMenu" style="display:none;">
-                    Premium
-                </a>
+          <!-- Pro Package -->
+          <div class="col-md-4">
+            <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between border-success shadow-lg" style="background: linear-gradient(135deg, rgba(25, 135, 84, 0.08) 0%, rgba(20, 26, 38, 0.6) 100%);">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-success text-white px-2.5 py-1.5 fw-bold">FitPro</span>
+                  <span class="text-success small fw-bold">Khuyên dùng</span>
+                </div>
+                <h4 class="display-6 fw-bold mb-2 text-success">399.000 <span class="fs-6 fw-normal text-muted">đ / tháng</span></h4>
+                <p class="small text-body-secondary mb-4">Gói tối ưu hóa tiến trình dành cho người luyện tập nghiêm túc.</p>
+                
+                <ul class="list-unstyled d-flex flex-column gap-2 mb-4 fs-7 text-body-secondary">
+                  <li><i class="bi bi-check-circle-fill text-success me-2"></i> Toàn bộ tính năng gói Starter</li>
+                  <li><i class="bi bi-check-circle-fill text-success me-2"></i> Danh mục bài tập nâng cao</li>
+                  <li><i class="bi bi-check-circle-fill text-success me-2"></i> Gợi ý cẩm nang dinh dưỡng Pro</li>
+                  <li><i class="bi bi-check-circle-fill text-success me-2"></i> Đồ thị đo lường BMR/TDEE</li>
+                  <li class="text-muted"><i class="bi bi-dash-circle text-muted me-2"></i> Huấn luyện viên cá nhân</li>
+                </ul>
+              </div>
+              <button class="btn btn-gradient w-100 rounded-3 py-2 fw-semibold text-dark" onclick="FitTrackApp.handleSelectPackage('Pro')">Đăng ký ngay</button>
+            </div>
+          </div>
 
-                <a href="support.html">
-                    Hỗ trợ
-                </a>
+          <!-- VIP Personal Trainer Package -->
+          <div class="col-md-4">
+            <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-info text-white px-2.5 py-1.5 fw-bold">VIP Coach</span>
+                  <span class="text-info small fw-bold">1-on-1</span>
+                </div>
+                <h4 class="display-6 fw-bold mb-2 text-info">999.000 <span class="fs-6 fw-normal text-muted">đ / tháng</span></h4>
+                <p class="small text-body-secondary mb-4">Gói đẳng cấp đi kèm HLV cá nhân đồng hành sát sao mỗi buổi tập.</p>
+                
+                <ul class="list-unstyled d-flex flex-column gap-2 mb-4 fs-7 text-body-secondary">
+                  <li><i class="bi bi-check-circle-fill text-success me-2"></i> Huấn luyện viên cá nhân 1-1</li>
+                  <li><i class="bi bi-check-circle-fill text-success me-2"></i> Thiết kế giáo án tập luyện riêng</li>
+                  <li><i class="bi bi-check-circle-fill text-success me-2"></i> Đo đạc phân tích thể trạng tuần</li>
+                  <li><i class="bi bi-check-circle-fill text-success me-2"></i> Thiết kế thực đơn ăn kiêng VIP</li>
+                  <li><i class="bi bi-check-circle-fill text-success me-2"></i> Hỗ trợ giải đáp khẩn cấp 24/7</li>
+                </ul>
+              </div>
+              <button class="btn btn-outline-info w-100 rounded-3 py-2 fw-semibold text-info" onclick="FitTrackApp.handleSelectPackage('VIP')">Liên hệ HLV riêng</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <a href="settings.html" id="settingsMenu" style="display:none;">
-                    Cài đặt
-                </a>
+      <!-- ==========================================
+           NUTRITION ADVISORY SECTION (#nutritionSection)
+           ========================================== -->
+      <section class="mt-5 pt-4 text-start" id="nutritionSection">
+        <div class="text-center mb-5">
+          <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill fs-7 mb-2 fw-bold">
+            <i class="bi bi-apple me-1"></i> Thực đơn dinh dưỡng đa lượng
+          </span>
+          <h3 class="display-6 fw-extrabold mb-2">Cân bằng dưỡng chất cơ thể</h3>
+          <p class="text-body-secondary small mx-auto" style="max-width: 600px;">
+            Tập luyện chỉ chiếm 30% kết quả, 70% còn lại quyết định bởi dinh dưỡng. Hãy chọn chế độ ăn khoa học phù hợp với mục tiêu thể hình của bạn.
+          </p>
+        </div>
 
-                <a href="admin.html" id="adminMenu" style="display:none;">
-                    Quản trị
-                </a>
+        <div class="row g-4">
+          <!-- Fat Loss Card -->
+          <div class="col-lg-4">
+            <div class="glass-card p-4 h-100">
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <div class="stat-badge bg-warning bg-opacity-10 text-warning" style="width: 36px; height: 36px; font-size: 1rem;">
+                  <i class="bi bi-arrow-down-circle-fill"></i>
+                </div>
+                <h5 class="mb-0 fw-bold">Chế độ Giảm mỡ (Fat Loss)</h5>
+              </div>
+              <p class="small text-body-secondary mb-3">Tập trung vào thâm hụt calo lành mạnh, kiểm soát carbohydrate tinh chế và tăng lượng xơ.</p>
+              
+              <div class="p-3 bg-secondary bg-opacity-10 rounded-3 mb-3">
+                <div class="d-flex justify-content-between mb-1 small fw-semibold">
+                  <span>Protein (Đạm)</span>
+                  <span class="text-success">40%</span>
+                </div>
+                <div class="progress mb-2" style="height: 6px;">
+                  <div class="progress-bar bg-success" style="width: 40%"></div>
+                </div>
+                <div class="d-flex justify-content-between mb-1 small fw-semibold">
+                  <span>Carbs (Đường bột)</span>
+                  <span class="text-info">30%</span>
+                </div>
+                <div class="progress mb-2" style="height: 6px;">
+                  <div class="progress-bar bg-info" style="width: 30%"></div>
+                </div>
+                <div class="d-flex justify-content-between mb-1 small fw-semibold">
+                  <span>Fats (Chất béo)</span>
+                  <span class="text-warning">30%</span>
+                </div>
+                <div class="progress" style="height: 6px;">
+                  <div class="progress-bar bg-warning" style="width: 30%"></div>
+                </div>
+              </div>
 
-                <div class="user-box" id="userBox" style="display:none;">
+              <div class="fs-7 text-body-secondary">
+                <strong>Thực phẩm khuyên dùng:</strong> Ức gà, thịt bò nạc, cá hồi, bông cải xanh, khoai lang, yến mạch, lòng trắng trứng.
+              </div>
+            </div>
+          </div>
 
-                    <span id="userName"></span>
+          <!-- Muscle Gain Card -->
+          <div class="col-lg-4">
+            <div class="glass-card p-4 h-100" style="background: linear-gradient(135deg, rgba(13, 202, 240, 0.08) 0%, rgba(20, 26, 38, 0.6) 100%);">
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <div class="stat-badge bg-info bg-opacity-10 text-info" style="width: 36px; height: 36px; font-size: 1rem;">
+                  <i class="bi bi-arrow-up-circle-fill"></i>
+                </div>
+                <h5 class="mb-0 fw-bold">Chế độ Tăng cơ (Lean Bulk)</h5>
+              </div>
+              <p class="small text-body-secondary mb-3">Bổ sung thặng dư năng lượng nhẹ, cung cấp dồi dào protein để tổng hợp và hồi phục mô cơ.</p>
+              
+              <div class="p-3 bg-secondary bg-opacity-10 rounded-3 mb-3">
+                <div class="d-flex justify-content-between mb-1 small fw-semibold">
+                  <span>Protein (Đạm)</span>
+                  <span class="text-success">35%</span>
+                </div>
+                <div class="progress mb-2" style="height: 6px;">
+                  <div class="progress-bar bg-success" style="width: 35%"></div>
+                </div>
+                <div class="d-flex justify-content-between mb-1 small fw-semibold">
+                  <span>Carbs (Đường bột)</span>
+                  <span class="text-info">45%</span>
+                </div>
+                <div class="progress mb-2" style="height: 6px;">
+                  <div class="progress-bar bg-info" style="width: 45%"></div>
+                </div>
+                <div class="d-flex justify-content-between mb-1 small fw-semibold">
+                  <span>Fats (Chất béo)</span>
+                  <span class="text-warning">20%</span>
+                </div>
+                <div class="progress" style="height: 6px;">
+                  <div class="progress-bar bg-warning" style="width: 20%"></div>
+                </div>
+              </div>
 
-                    <button class="logout-btn" id="logoutBtn">
+              <div class="fs-7 text-body-secondary">
+                <strong>Thực phẩm khuyên dùng:</strong> Trứng gà nguyên quả, ức bò, cá thu, cơm gạo tẻ, chuối chín, bơ đậu phộng, các loại hạt dinh dưỡng.
+              </div>
+            </div>
+          </div>
 
-                        Đăng xuất
+          <!-- Balanced Diet Card -->
+          <div class="col-lg-4">
+            <div class="glass-card p-4 h-100">
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <div class="stat-badge bg-success bg-opacity-10 text-success" style="width: 36px; height: 36px; font-size: 1rem;">
+                  <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <h5 class="mb-0 fw-bold">Chế độ Duy trì (Balanced)</h5>
+              </div>
+              <p class="small text-body-secondary mb-3">Cân đối hoàn hảo năng lượng đầu vào và ra, duy trì cân nặng và tăng hệ miễn dịch khỏe mạnh.</p>
+              
+              <div class="p-3 bg-secondary bg-opacity-10 rounded-3 mb-3">
+                <div class="d-flex justify-content-between mb-1 small fw-semibold">
+                  <span>Protein (Đạm)</span>
+                  <span class="text-success">30%</span>
+                </div>
+                <div class="progress mb-2" style="height: 6px;">
+                  <div class="progress-bar bg-success" style="width: 30%"></div>
+                </div>
+                <div class="d-flex justify-content-between mb-1 small fw-semibold">
+                  <span>Carbs (Đường bột)</span>
+                  <span class="text-info">40%</span>
+                </div>
+                <div class="progress mb-2" style="height: 6px;">
+                  <div class="progress-bar bg-info" style="width: 40%"></div>
+                </div>
+                <div class="d-flex justify-content-between mb-1 small fw-semibold">
+                  <span>Fats (Chất béo)</span>
+                  <span class="text-warning">30%</span>
+                </div>
+                <div class="progress" style="height: 6px;">
+                  <div class="progress-bar bg-warning" style="width: 30%"></div>
+                </div>
+              </div>
 
+              <div class="fs-7 text-body-secondary">
+                <strong>Thực phẩm khuyên dùng:</strong> Hải sản các loại, ức heo nạc, gạo lứt, bơ sáp, dầu ô-liu, trái cây tươi họ cam quýt, sữa chua không đường.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           HELP & SUPPORT FAQ CENTER
+           ========================================== -->
+      <section class="mt-5 text-start" id="supportSection">
+        <div class="row g-4">
+          
+          <!-- FAQ Accordion column -->
+          <div class="col-lg-7">
+            <div class="glass-card p-4 h-100">
+              <h4 class="mb-4 fs-5"><i class="bi bi-question-circle-fill text-success me-2"></i>Câu hỏi thường gặp (FAQ)</h4>
+              
+              <div class="accordion accordion-flush" id="supportAccordion">
+                
+                <!-- Question 1 -->
+                <div class="accordion-item bg-transparent">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed bg-transparent fw-semibold text-body" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1" aria-expanded="false" aria-controls="faq-1">
+                      Làm thế nào để ghi nhật ký tập luyện?
                     </button>
-
-                </div>
-
-            </nav>
-
-        </div>
-
-    </header>
-
-    <!-- HERO -->
-
-    <section class="hero-section">
-
-        <div class="container hero-grid">
-
-            <div class="hero-content">
-
-                <span class="page-badge">
-
-                    FITNESS MANAGEMENT
-
-                </span>
-
-                <h1>
-
-                    Quản lý luyện tập hiện đại cùng FitTrack
-
-                </h1>
-
-                <p>
-
-                    Theo dõi tiến độ,
-                    quản lý lịch tập,
-                    dinh dưỡng và huấn luyện viên chuyên nghiệp.
-
-                </p>
-
-                <div class="hero-buttons">
-
-                    <a href="signup.html" class="btn primary">
-
-                        Bắt đầu ngay
-
-                    </a>
-
-                    <a href="premium.html" class="btn secondary">
-
-                        Xem Premium
-
-                    </a>
-
-                </div>
-
-            </div>
-
-            <div class="hero-image">
-
-                <img
-                    src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop">
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- FEATURES -->
-
-    <section class="feature-section">
-
-        <div class="container">
-
-            <div class="section-title">
-
-                <span>
-
-                    FEATURES
-
-                </span>
-
-                <h2>
-
-                    Tính năng nổi bật
-
-                </h2>
-
-            </div>
-
-            <div class="feature-grid">
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-
-                        🏋️
-
+                  </h2>
+                  <div id="faq-1" class="accordion-collapse collapse" data-bs-parent="#supportAccordion">
+                    <div class="accordion-body text-body-secondary small">
+                      Nhập vào nút <strong>"Ghi nhận buổi tập hôm nay"</strong> ở góc trên bên phải dashboard, chọn môn thể thao trong danh sách mẫu, chọn ngày tập, điền thời lượng tập luyện (phút) và ghi chú nếu có. Hệ thống sẽ tự động tính toán chính xác lượng calo tiêu thụ và đồng bộ hóa lên máy chủ.
                     </div>
-
-                    <h3>
-
-                        Workout
-
-                    </h3>
-
-                    <p>
-
-                        Quản lý bài tập chuyên nghiệp.
-
-                    </p>
-
+                  </div>
                 </div>
 
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-
-                        📅
-
+                <!-- Question 2 -->
+                <div class="accordion-item bg-transparent">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed bg-transparent fw-semibold text-body" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2" aria-expanded="false" aria-controls="faq-2">
+                      Tại sao trạng thái buổi tập lại ghi là "Chờ duyệt"?
+                    </button>
+                  </h2>
+                  <div id="faq-2" class="accordion-collapse collapse" data-bs-parent="#supportAccordion">
+                    <div class="accordion-body text-body-secondary small">
+                      Mọi buổi tập được ghi nhận bởi Học viên sẽ có trạng thái mặc định là <strong>"Chờ duyệt"</strong>. Giảng viên / Quản trị viên hệ thống sẽ xem xét nhật ký tập luyện của bạn trong phân ban Quản trị và chuyển đổi sang trạng thái <strong>"Đã duyệt"</strong> sau khi xác thực độ tin cậy.
                     </div>
-
-                    <h3>
-
-                        Schedule
-
-                    </h3>
-
-                    <p>
-
-                        Theo dõi lịch tập dễ dàng.
-
-                    </p>
-
+                  </div>
                 </div>
 
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-
-                        🥗
-
+                <!-- Question 3 -->
+                <div class="accordion-item bg-transparent">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed bg-transparent fw-semibold text-body" type="button" data-bs-toggle="collapse" data-bs-target="#faq-3" aria-expanded="false" aria-controls="faq-3">
+                      Làm thế nào để thay đổi mật khẩu hoặc họ tên?
+                    </button>
+                  </h2>
+                  <div id="faq-3" class="accordion-collapse collapse" data-bs-parent="#supportAccordion">
+                    <div class="accordion-body text-body-secondary small">
+                      Nhấp chọn biểu tượng <strong>Cài đặt (bánh răng)</strong> bên cạnh nút Đăng xuất trên thanh điều hướng đầu trang để mở hộp thoại quản trị tài khoản cá nhân. Tại đây bạn có thể cập nhật Họ và tên hiển thị và thay đổi Mật khẩu bảo mật mới.
                     </div>
-
-                    <h3>
-
-                        Nutrition
-
-                    </h3>
-
-                    <p>
-
-                        Meal plan khoa học.
-
-                    </p>
-
+                  </div>
                 </div>
 
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-
-                        📈
-
-                    </div>
-
-                    <h3>
-
-                        Progress
-
-                    </h3>
-
-                    <p>
-
-                        Theo dõi tiến độ luyện tập.
-
-                    </p>
-
-                </div>
-
+              </div>
             </div>
+          </div>
 
-        </div>
+          <!-- Support Info Desk column -->
+          <div class="col-lg-5">
+            <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between">
+              <div>
+                <h4 class="mb-3 fs-5"><i class="bi bi-headset text-success me-2"></i>Tổng đài Hỗ trợ Học viên</h4>
+                <p class="small text-body-secondary leading-relaxed mb-4">
+                  Nếu bạn gặp bất kỳ sự cố kỹ thuật nào trong quá trình ghi nhận nhật ký tập luyện, đồng bộ hóa chỉ số sức khỏe MockAPI hoặc mất mật khẩu, vui lòng liên hệ ngay với chúng tôi:
+                </p>
+                
+                <div class="d-flex flex-column gap-3">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="stat-badge bg-success bg-opacity-10 text-success" style="width: 40px; height: 40px; font-size: 1.1rem;">
+                      <i class="bi bi-telephone-fill"></i>
+                    </div>
+                    <div>
+                      <div class="small text-muted">Hotline 24/7</div>
+                      <a href="tel:1900-FIT-TRACK" class="fw-bold text-success text-decoration-none">1900-FIT-TRACK (1900-348-872)</a>
+                    </div>
+                  </div>
 
-    </section>
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="stat-badge bg-info bg-opacity-10 text-info" style="width: 40px; height: 40px; font-size: 1.1rem;">
+                      <i class="bi bi-envelope-at-fill"></i>
+                    </div>
+                    <div>
+                      <div class="small text-muted">Email hỗ trợ kỹ thuật</div>
+                      <a href="mailto:support@fittrack.nhom9.vn" class="fw-bold text-info text-decoration-none">support@fittrack.nhom9.vn</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-    <!-- STATS -->
-
-    <section class="stats-section">
-
-        <div class="container">
-
-            <div class="section-title">
-
-                <span>
-
-                    STATS
-
+              <div class="mt-4 pt-3 border-top border-secondary-subtle">
+                <span class="small text-body-secondary d-block text-center">
+                  Đội ngũ kỹ thuật <strong>Nhom 9</strong> luôn sẵn lòng hỗ trợ 24/7.
                 </span>
-
-                <h2>
-
-                    Thành tích FitTrack
-
-                </h2>
-
+              </div>
             </div>
-
-            <div class="stats-grid">
-
-                <div class="stats-card">
-
-                    <h2>
-
-                        10K+
-
-                    </h2>
-
-                    <p>
-
-                        Người dùng
-
-                    </p>
-
-                </div>
-
-                <div class="stats-card">
-
-                    <h2>
-
-                        500+
-
-                    </h2>
-
-                    <p>
-
-                        Workout
-
-                    </p>
-
-                </div>
-
-                <div class="stats-card">
-
-                    <h2>
-
-                        120+
-
-                    </h2>
-
-                    <p>
-
-                        Huấn luyện viên
-
-                    </p>
-
-                </div>
-
-                <div class="stats-card">
-
-                    <h2>
-
-                        98%
-
-                    </h2>
-
-                    <p>
-
-                        Hài lòng
-
-                    </p>
-
-                </div>
-
-            </div>
+          </div>
 
         </div>
+      </section>
+    </section>
+
+    <!-- ==========================================
+         AUTHENTICATED DASHBOARD (USER SCREEN)
+         ========================================== -->
+    <section id="dashboardView" class="d-none animate-slide-in">
+      
+      <!-- Welcome user header row -->
+      <div class="row align-items-center mb-5 g-3">
+        <div class="col-md-8">
+          <h2 class="h1 mb-1">Thực đơn Sức Khỏe của <span class="text-success" id="welcomeUserFullName">User</span></h2>
+          <p class="text-body-secondary mb-0">Hôm nay bạn đã sẵn sàng đốt cháy mỡ thừa và nâng cao nhịp tim chưa?</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <button class="btn btn-gradient px-4 py-2.5 rounded-3 d-flex align-items-center gap-2 ms-md-auto text-dark" data-bs-toggle="modal" data-bs-target="#workoutModal">
+            <i class="bi bi-plus-circle-fill"></i> Ghi nhận buổi tập hôm nay
+          </button>
+        </div>
+      </div>
+
+      <!-- ANALYTICS CARDS (SECTION 1) -->
+      <div class="row g-4 mb-5">
+        <div class="col-md-4">
+          <div class="glass-card p-4 d-flex align-items-center gap-3">
+            <div class="stat-badge bg-primary bg-opacity-10 text-primary">
+              <i class="bi bi-calendar3"></i>
+            </div>
+            <div>
+              <div class="text-body-secondary small fw-semibold">Tổng số buổi tập</div>
+              <h3 class="display-6 fw-bold mb-0 text-primary" id="statTotalWorkouts">0</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-card p-4 d-flex align-items-center gap-3">
+            <div class="stat-badge bg-info bg-opacity-10 text-info">
+              <i class="bi bi-clock-history"></i>
+            </div>
+            <div>
+              <div class="text-body-secondary small fw-semibold">Tổng thời gian tập</div>
+              <h3 class="display-6 fw-bold mb-0 text-info" id="statTotalDuration">0 <span class="fs-5">phút</span></h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-card p-4 d-flex align-items-center gap-3">
+            <div class="stat-badge bg-danger bg-opacity-10 text-danger">
+              <i class="bi bi-fire"></i>
+            </div>
+            <div>
+              <div class="text-body-secondary small fw-semibold">Calo tiêu hao tích lũy</div>
+              <h3 class="display-6 fw-bold mb-0 text-danger" id="statTotalCalories">0 <span class="fs-5">kcal</span></h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEKLY PROGRESS CHART (SECTION 2) & RECENT ACTIVITY SUMMARY -->
+      <div class="row g-4 mb-5">
+        
+        <!-- CSS PROGRESS CHART -->
+        <div class="col-lg-7">
+          <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h4 class="mb-0 fs-5"><i class="bi bi-bar-chart-steps text-success me-2"></i>Biểu đồ tiêu hao Calo tuần này</h4>
+              <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 py-1.5 px-2.5" id="chartWeekRange">Thứ 2 - Chủ Nhật</span>
+            </div>
+            
+            <!-- Pure CSS Chart layout -->
+            <div class="chart-container" id="cssProgressChart">
+              <!-- Monday -->
+              <div class="chart-column">
+                <div class="chart-tooltip" id="tooltip-mon">0 kcal</div>
+                <div class="chart-bar-outer">
+                  <div class="chart-bar-inner" id="bar-mon" style="height: 0%;"></div>
+                </div>
+                <div class="chart-label">T2</div>
+              </div>
+              <!-- Tuesday -->
+              <div class="chart-column">
+                <div class="chart-tooltip" id="tooltip-tue">0 kcal</div>
+                <div class="chart-bar-outer">
+                  <div class="chart-bar-inner" id="bar-tue" style="height: 0%;"></div>
+                </div>
+                <div class="chart-label">T3</div>
+              </div>
+              <!-- Wednesday -->
+              <div class="chart-column">
+                <div class="chart-tooltip" id="tooltip-wed">0 kcal</div>
+                <div class="chart-bar-outer">
+                  <div class="chart-bar-inner" id="bar-wed" style="height: 0%;"></div>
+                </div>
+                <div class="chart-label">T4</div>
+              </div>
+              <!-- Thursday -->
+              <div class="chart-column">
+                <div class="chart-tooltip" id="tooltip-thu">0 kcal</div>
+                <div class="chart-bar-outer">
+                  <div class="chart-bar-inner" id="bar-thu" style="height: 0%;"></div>
+                </div>
+                <div class="chart-label">T5</div>
+              </div>
+              <!-- Friday -->
+              <div class="chart-column">
+                <div class="chart-tooltip" id="tooltip-fri">0 kcal</div>
+                <div class="chart-bar-outer">
+                  <div class="chart-bar-inner" id="bar-fri" style="height: 0%;"></div>
+                </div>
+                <div class="chart-label">T6</div>
+              </div>
+              <!-- Saturday -->
+              <div class="chart-column">
+                <div class="chart-tooltip" id="tooltip-sat">0 kcal</div>
+                <div class="chart-bar-outer">
+                  <div class="chart-bar-inner" id="bar-sat" style="height: 0%;"></div>
+                </div>
+                <div class="chart-label">T7</div>
+              </div>
+              <!-- Sunday -->
+              <div class="chart-column">
+                <div class="chart-tooltip" id="tooltip-sun">0 kcal</div>
+                <div class="chart-bar-outer">
+                  <div class="chart-bar-inner" id="bar-sun" style="height: 0%;"></div>
+                </div>
+                <div class="chart-label">CN</div>
+              </div>
+            </div>
+            
+            <p class="small text-body-secondary mt-3 mb-0 text-center">
+              <i class="bi bi-info-circle me-1"></i> Chiều cao cột tự động co giãn tỷ lệ % dựa trên lượng Calo cao nhất của một ngày trong tuần.
+            </p>
+          </div>
+        </div>
+
+        <!-- HEALTH TIP / MOTIVATION PANEL -->
+        <div class="col-lg-5">
+          <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between" style="background: linear-gradient(135deg, rgba(25, 135, 84, 0.1) 0%, rgba(20, 26, 38, 0.6) 100%);">
+            <div>
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-lightning-charge-fill text-warning fs-4"></i>
+                <h4 class="mb-0 fs-5">Bí quyết năng lượng hôm nay</h4>
+              </div>
+              <p class="text-body-secondary fs-6 leading-relaxed" id="healthTipText">
+                "Uống đủ nước trước, trong và sau khi tập là cách đơn giản nhất để tăng hiệu suất cơ bắp lên tới 15%. Tránh để cơ thể có cảm giác khát mới uống nhé!"
+              </p>
+            </div>
+            
+            <div class="mt-4 pt-3 border-top border-secondary-subtle">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="small text-body-secondary">Chỉ số BMI ước tính</div>
+                  <div class="fw-bold fs-5 text-success">22.4 - Bình thường</div>
+                </div>
+                <i class="bi bi-heartpulse text-danger fs-1 opacity-25"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- WORKOUT JOURNAL LOGS & FILTERS (SECTION 3) -->
+      <div class="glass-card p-4" id="workoutHistorySection">
+        <div class="row g-3 justify-content-between align-items-center mb-4">
+          <div class="col-sm-6">
+            <h4 class="mb-0 fs-5"><i class="bi bi-card-list text-success me-2"></i>Nhật ký lịch sử tập luyện</h4>
+          </div>
+          
+          <!-- FILTERS PANEL -->
+          <div class="col-sm-6">
+            <div class="row g-2 justify-content-sm-end">
+              <div class="col-6 col-md-5">
+                <select class="form-select form-select-sm" id="filterMuscleGroup" title="Lọc theo nhóm cơ">
+                  <option value="">Tất cả Nhóm cơ</option>
+                  <!-- Populated in main.js -->
+                </select>
+              </div>
+              <div class="col-6 col-md-5">
+                <select class="form-select form-select-sm" id="filterExerciseName" title="Lọc theo bài tập">
+                  <option value="">Tất cả Bài tập</option>
+                  <!-- Populated in main.js -->
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LOG TABLE -->
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Ngày tập</th>
+                <th scope="col">Tên bài tập</th>
+                <th scope="col" class="d-none d-md-table-cell">Nhóm cơ</th>
+                <th scope="col">Thời lượng</th>
+                <th scope="col">Tổng Calo tiêu hao</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col" class="d-none d-lg-table-cell">Ghi chú</th>
+                <th scope="col" class="text-center">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="workoutHistoryTableBody">
+              <!-- Dynamically populated -->
+              <tr>
+                <td colspan="8" class="text-center py-4 text-body-secondary">Chưa ghi nhận buổi tập nào. Hãy nhấn nút để lưu buổi tập đầu tiên!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
     </section>
 
-    <!-- PREMIUM -->
+  </main>
 
-    <section class="premium-section">
-
-        <div class="container">
-
-            <div class="premium-box">
-
-                <h2>
-
-                    Nâng cấp Premium
-
-                </h2>
-
-                <p>
-
-                    Mở khóa toàn bộ workout,
-                    huấn luyện viên VIP,
-                    meal plan nâng cao
-                    và theo dõi tiến độ chuyên sâu.
-
-                </p>
-
-                <br>
-
-                <a href="premium.html" class="btn secondary">
-
-                    Xem gói Premium
-
-                </a>
-
-            </div>
-
+  <!-- ==========================================
+       AUTHENTICATION MODAL (LOGIN & REGISTER)
+       ========================================== -->
+  <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-card shadow-2xl">
+        <div class="modal-header border-bottom border-secondary-subtle">
+          <h5 class="modal-title fs-5" id="authModalLabel">Tài khoản FitTrack</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body p-4">
+          
+          <!-- Nav Tabs for Auth option toggles -->
+          <ul class="nav nav-pills nav-fill mb-4 p-1 bg-secondary-subtle rounded-3" id="authTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active py-2 fw-semibold" id="tabLogin" data-bs-toggle="pill" data-bs-target="#paneLogin" type="button" role="tab" aria-controls="paneLogin" aria-selected="true">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Đăng Nhập
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link py-2 fw-semibold" id="tabRegister" data-bs-toggle="pill" data-bs-target="#paneRegister" type="button" role="tab" aria-controls="paneRegister" aria-selected="false">
+                <i class="bi bi-person-plus me-1"></i> Đăng Ký
+              </button>
+            </li>
+          </ul>
 
-    </section>
-
-    <!-- TESTIMONIAL -->
-
-    <section class="testimonial-section">
-
-        <div class="container">
-
-            <div class="section-title">
-
-                <span>
-
-                    REVIEW
-
-                </span>
-
-                <h2>
-
-                    Người dùng nói gì?
-
-                </h2>
-
-            </div>
-
-            <div class="testimonial-grid">
-
-                <div class="testimonial-card">
-
-                    <p>
-
-                        “Ứng dụng cực kỳ dễ dùng,
-                        giúp mình theo dõi lịch tập rất tốt.”
-
-                    </p>
-
-                    <h4>
-
-                        - Nguyễn Minh
-
-                    </h4>
-
+          <div class="tab-content" id="authTabContent">
+            
+            <!-- PANEL: LOGIN FORM -->
+            <div class="tab-pane fade show active" id="paneLogin" role="tabpanel" aria-labelledby="tabLogin">
+              <form id="formLogin">
+                <div class="mb-3">
+                  <label for="loginUsername" class="form-label small fw-bold">Tên đăng nhập (Username)</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-secondary-subtle border-secondary-subtle"><i class="bi bi-person-fill"></i></span>
+                    <input type="text" class="form-control" id="loginUsername" placeholder="Nhập tên đăng nhập..." required autocomplete="username">
+                  </div>
                 </div>
-
-                <div class="testimonial-card">
-
-                    <p>
-
-                        “Workout và meal plan rất chuyên nghiệp.”
-
-                    </p>
-
-                    <h4>
-
-                        - Trần Hoàng
-
-                    </h4>
-
+                <div class="mb-4">
+                  <label for="loginPassword" class="form-label small fw-bold">Mật khẩu (Password)</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-secondary-subtle border-secondary-subtle"><i class="bi bi-shield-lock-fill"></i></span>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Nhập mật khẩu..." required autocomplete="current-password">
+                  </div>
                 </div>
+                <button type="submit" class="btn btn-gradient w-100 py-2.5 text-dark">Đăng Nhập <i class="bi bi-chevron-right ms-1"></i></button>
+              </form>
+            </div>
 
-                <div class="testimonial-card">
-
-                    <p>
-
-                        “Admin dashboard quản lý rất tiện.”
-
-                    </p>
-
-                    <h4>
-
-                        - Lê Huy
-
-                    </h4>
-
+            <!-- PANEL: REGISTER FORM -->
+            <div class="tab-pane fade" id="paneRegister" role="tabpanel" aria-labelledby="tabRegister">
+              <form id="formRegister">
+                <div class="mb-3">
+                  <label for="registerFullName" class="form-label small fw-bold">Họ và tên đầy đủ</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-secondary-subtle border-secondary-subtle"><i class="bi bi-card-text"></i></span>
+                    <input type="text" class="form-control" id="registerFullName" placeholder="Ví dụ: Nguyễn Văn A..." required autocomplete="name">
+                  </div>
                 </div>
-
+                <div class="mb-3">
+                  <label for="registerUsername" class="form-label small fw-bold">Tên đăng nhập</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-secondary-subtle border-secondary-subtle"><i class="bi bi-person-fill"></i></span>
+                    <input type="text" class="form-control" id="registerUsername" placeholder="Viết liền không dấu..." required autocomplete="username">
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="registerPassword" class="form-label small fw-bold">Mật khẩu</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-secondary-subtle border-secondary-subtle"><i class="bi bi-shield-lock-fill"></i></span>
+                    <input type="password" class="form-control" id="registerPassword" placeholder="Mật khẩu bảo mật..." required autocomplete="new-password">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-gradient w-100 py-2.5 text-dark mt-2">Đăng Ký Tài Khoản <i class="bi bi-chevron-right ms-1"></i></button>
+              </form>
             </div>
+
+          </div>
 
         </div>
+      </div>
+    </div>
+  </div>
 
-    </section>
-
-    <!-- FOOTER -->
-
-    <footer class="site-footer">
-
-        <div class="container footer-inner">
-
-            <div class="footer-section">
-
-                <h3>
-
-                    FitTrack
-
-                </h3>
-
-                <p>
-
-                    Fitness Management System
-
-                </p>
-
-            </div>
-
-            <div class="footer-section">
-
-                <h3>
-
-                    Liên kết
-
-                </h3>
-
-                <a href="index.html">
-                    Trang chủ
-                </a>
-
-                <a href="trainer.html">
-                    HLV
-                </a>
-
-                <a href="premium.html">
-                    Premium
-                </a>
-
-            </div>
-
-            <div class="footer-section">
-
-                <h3>
-
-                    Hỗ trợ
-
-                </h3>
-
-                <a href="support.html">
-                    Trung tâm hỗ trợ
-                </a>
-
-            </div>
-
-            <div class="footer-section">
-
-                <h3>
-
-                    Liên hệ
-
-                </h3>
-
-                <p>
-
-                    📞 0283 510 6868
-
-                </p>
-
-                <p>
-
-                    ✉ support@fittrack.com
-
-                </p>
-
-            </div>
-
+  <!-- ==========================================
+       WORKOUT LOGGER MODAL (ADD WORKOUT ENTRY)
+       ========================================== -->
+  <div class="modal fade" id="workoutModal" tabindex="-1" aria-labelledby="workoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-card shadow-2xl">
+        <div class="modal-header border-bottom border-secondary-subtle">
+          <h5 class="modal-title fs-5" id="workoutModalLabel"><i class="bi bi-journal-plus text-success me-2"></i>Ghi nhận buổi tập</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body p-4">
+          <form id="formWorkoutLog">
+            
+            <!-- Exercise Selection Dropdown -->
+            <div class="mb-3">
+              <label for="workoutExerciseSelect" class="form-label small fw-bold">Chọn Bài Tập Mẫu</label>
+              <select class="form-select" id="workoutExerciseSelect" required>
+                <option value="" disabled selected>-- Chọn bài tập trong danh mục --</option>
+                <!-- Populated in main.js -->
+              </select>
+            </div>
 
-        <div class="footer-bottom">
+            <!-- Date selection -->
+            <div class="mb-3">
+              <label for="workoutDate" class="form-label small fw-bold">Ngày Tập</label>
+              <input type="date" class="form-control" id="workoutDate" required>
+            </div>
 
-            © 2026 FitTrack.
-            All Rights Reserved.
+            <!-- Duration input and Calorie dynamic display side-by-side -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="workoutDuration" class="form-label small fw-bold">Thời Lượng (Phút)</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" id="workoutDuration" placeholder="Ví dụ: 30" min="1" required>
+                  <span class="input-group-text bg-secondary-subtle">phút</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-bold text-success">Calo Tiêu Hao (Tự Tính)</label>
+                <div class="input-group">
+                  <input type="text" class="form-control bg-secondary-subtle text-success fw-bold border-success-subtle" id="workoutCaloriesDisplay" value="0" readonly>
+                  <span class="input-group-text bg-success bg-opacity-10 text-success border-success-subtle">kcal</span>
+                </div>
+              </div>
+            </div>
 
+            <!-- Notes text input -->
+            <div class="mb-4">
+              <label for="workoutNotes" class="form-label small fw-bold">Ghi Chú Cá Nhân</label>
+              <textarea class="form-control" id="workoutNotes" rows="2" placeholder="Ví dụ: Tập sung sức, nhịp tim đều, uống 500ml nước..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-gradient w-100 py-2.5 text-dark">Lưu Nhật Ký Buổi Tập <i class="bi bi-save-fill ms-1"></i></button>
+          </form>
         </div>
+      </div>
+    </div>
+  </div>
 
-    </footer>
+  <!-- ==========================================
+       ACCOUNT SETTINGS MODAL (SETTINGS UPDATE)
+       ========================================== -->
+  <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-card shadow-2xl">
+        <div class="modal-header border-bottom border-secondary-subtle">
+          <h5 class="modal-title fs-5" id="settingsModalLabel"><i class="bi bi-gear-fill text-success me-2"></i>Cài đặt tài khoản</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form id="formAccountSettings">
+            
+            <!-- Read-only Username -->
+            <div class="mb-3">
+              <label for="settingsUsername" class="form-label small fw-bold">Tên đăng nhập (Username)</label>
+              <input type="text" class="form-control bg-secondary-subtle text-muted" id="settingsUsername" readonly>
+            </div>
 
-    <!-- SCRIPT -->
+            <!-- Read-only Role -->
+            <div class="mb-3">
+              <label for="settingsRole" class="form-label small fw-bold">Vai trò hệ thống</label>
+              <input type="text" class="form-control bg-secondary-subtle text-muted" id="settingsRole" readonly>
+            </div>
 
-    <script>
+            <!-- Editable Full Name -->
+            <div class="mb-3">
+              <label for="settingsFullName" class="form-label small fw-bold">Họ và tên hiển thị</label>
+              <input type="text" class="form-control" id="settingsFullName" placeholder="Họ và tên..." required autocomplete="name">
+            </div>
 
-        // =========================
-        // MENU MOBILE
-        // =========================
+            <!-- Editable Password -->
+            <div class="mb-4">
+              <label for="settingsPassword" class="form-label small fw-bold">Mật khẩu mới</label>
+              <input type="password" class="form-control" id="settingsPassword" placeholder="Nhập mật khẩu mới bảo mật..." required autocomplete="new-password">
+            </div>
 
-        const menuToggle =
-            document.getElementById(
-                "menuToggle"
-            );
+            <!-- Gym Package Selection for switching -->
+            <div class="mb-4 border-top pt-3 border-secondary-subtle" id="settingsPackageSection">
+              <label for="settingsPackageSelect" class="form-label small fw-bold text-success">Gói tập đăng ký hiện tại</label>
+              <select class="form-select" id="settingsPackageSelect">
+                <option value="Starter">Starter (Miễn phí)</option>
+                <option value="Pro">FitPro (399.000đ/tháng)</option>
+                <option value="VIP">VIP Coach (999.000đ/tháng)</option>
+              </select>
+              <div class="form-text small text-body-secondary mt-1" id="settingsPackageStatusHint">
+                * Gói Starter kích hoạt tức thì. Gói FitPro và VIP Coach cần sự phê duyệt của Admin.
+              </div>
+            </div>
 
-        const mainNav =
-            document.getElementById(
-                "mainNav"
-            );
+            <button type="submit" class="btn btn-gradient w-100 py-2.5 text-dark">Cập Nhật Thông Tin <i class="bi bi-arrow-up-right-circle-fill ms-1"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        menuToggle.addEventListener(
-            "click",
-            () => {
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <footer class="py-4 mt-auto">
+    <div class="container text-center">
+      <div class="row justify-content-between align-items-center g-3">
+        <div class="col-md-6 text-md-start">
+          <p class="mb-0 text-body-secondary">
+            &copy; 2026 <strong>FitTrack</strong>. Bảo lưu mọi quyền.
+          </p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <span class="text-body-secondary fw-semibold">
+            Project: FitTrack - Developed by Nhom 9
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-                mainNav.classList.toggle(
-                    "show-menu"
-                );
+  <!-- Bootstrap 5 Bundle JS via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-            }
-        );
-
-        // =========================
-        // CHECK LOGIN
-        // =========================
-
-        const currentUser =
-            JSON.parse(
-                sessionStorage.getItem(
-                    "fittrackCurrentUser"
-                )
-            );
-
-        const loginMenu =
-            document.getElementById(
-                "loginMenu"
-            );
-
-        const workoutMenu =
-            document.getElementById(
-                "workoutMenu"
-            );
-
-        const scheduleMenu =
-            document.getElementById(
-                "scheduleMenu"
-            );
-
-        const nutritionMenu =
-            document.getElementById(
-                "nutritionMenu"
-            );
-
-        const trainerMenu =
-            document.getElementById(
-                "trainerMenu"
-            );
-
-        const progressMenu =
-            document.getElementById(
-                "progressMenu"
-            );
-
-        const premiumMenu =
-            document.getElementById(
-                "premiumMenu"
-            );
-
-        const settingsMenu =
-            document.getElementById(
-                "settingsMenu"
-            );
-
-        const adminMenu =
-            document.getElementById(
-                "adminMenu"
-            );
-
-        const userBox =
-            document.getElementById(
-                "userBox"
-            );
-
-        const userName =
-            document.getElementById(
-                "userName"
-            );
-
-        // =========================
-        // SHOW MENU WHEN LOGIN
-        // =========================
-
-        if (currentUser) {
-
-            loginMenu.style.display =
-                "none";
-
-            workoutMenu.style.display =
-                "block";
-
-            scheduleMenu.style.display =
-                "block";
-
-            nutritionMenu.style.display =
-                "block";
-
-            trainerMenu.style.display =
-                "block";
-
-            progressMenu.style.display =
-                "block";
-
-            premiumMenu.style.display =
-                "block";
-
-            settingsMenu.style.display =
-                "block";
-
-            userBox.style.display =
-                "flex";
-
-            userName.innerText =
-                "👋 " + currentUser.name;
-
-            // =========================
-            // ADMIN
-            // =========================
-
-            if (
-                currentUser.role === "admin"
-            ) {
-
-                adminMenu.style.display =
-                    "block";
-
-            }
-
-        }
-
-        // =========================
-        // LOGOUT
-        // =========================
-
-        document.getElementById(
-            "logoutBtn"
-        ).addEventListener(
-            "click",
-            () => {
-
-                sessionStorage.removeItem(
-                    "fittrackCurrentUser"
-                );
-
-                alert(
-                    "Đăng xuất thành công"
-                );
-
-                window.location.href =
-                    "index.html";
-
-            }
-        );
-
-    </script>
-
+  <!-- FitTrack Custom JS Modules -->
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/main.js"></script>
 </body>
-
 </html>
