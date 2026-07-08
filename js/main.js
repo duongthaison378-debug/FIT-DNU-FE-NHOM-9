@@ -35,7 +35,10 @@ const FitTrackApp = {
     this.bindEvents();
 
     // Check existing authentication session
-    this.checkSession();
+    await this.checkSession();
+
+    // Initialize checkout page if present
+    this.initCheckoutPage();
   },
 
   /**
@@ -146,31 +149,57 @@ const FitTrackApp = {
   async checkSession() {
     UTILS.showSpinner();
     try {
+      console.log('🔄 Checking session...');
+      
       // Fetch Master Exercises list from DB
       this.exercises = await API.getExercises();
+      console.log('📚 Loaded exercises:', this.exercises.length);
       this.populateWorkoutSelector();
-      
+
+      // Check if user has a saved session
       const loggedUser = UTILS.getCurrentUser();
-      if (loggedUser) {
+      const storedSessionId = UTILS.getStoredSessionId();
+
+      console.log('👤 Logged user:', loggedUser ? loggedUser.username : 'None');
+      console.log('🔑 Stored session ID:', storedSessionId ? 'Yes' : 'No');
+
+      if (loggedUser && storedSessionId) {
         // Fetch fresh user data from server to ensure workouts array is up-to-date
+        console.log('🔄 Fetching fresh user data from MockAPI...');
         const allUsers = await API.getUsers();
         const freshUser = allUsers.find(u => u.id === loggedUser.id);
         
         if (freshUser) {
+          // Verify if session ID matches - if not, user logged in from another device
+          const serverSessionId = freshUser.lastSessionId;
+          console.log('📊 Server session ID:', serverSessionId ? 'Yes' : 'No');
+          
+          if (serverSessionId && serverSessionId !== storedSessionId) {
+            // Session ID mismatch: user logged in from another device
+            console.warn('⚠️ Session mismatch: user logged in from another device');
+            UTILS.clearSession();
+            this.showAnonymousLanding();
+            UTILS.showToast('Tài khoản của bạn đã được đăng nhập từ thiết bị khác. Vui lòng đăng nhập lại!', 'warning');
+            return;
+          }
+
           this.currentUser = freshUser;
           UTILS.setCurrentUser(freshUser);
+          console.log('✅ Session valid, showing dashboard');
           this.showDashboard();
         } else {
           // If session user no longer exists, wipe local storage
+          console.warn('⚠️ User not found in MockAPI');
           UTILS.clearSession();
           this.showAnonymousLanding();
         }
       } else {
+        console.log('ℹ️ No logged user, showing anonymous landing');
         this.showAnonymousLanding();
       }
     } catch (error) {
-      console.error('Bootstrapping error:', error);
-      UTILS.showToast('Không thể kết nối đến máy chủ MockAPI. Vui lòng tải lại trang!', 'danger');
+      console.error('❌ Bootstrapping error:', error);
+      UTILS.showToast('Không thể kết nối đến MockAPI. Sử dụng chế độ offline!', 'warning');
       this.showAnonymousLanding();
     } finally {
       UTILS.hideSpinner();
@@ -181,16 +210,12 @@ const FitTrackApp = {
    * Transition views
    */
   showAnonymousLanding() {
-    document.getElementById('anonymousView').classList.remove('d-none');
-    document.getElementById('dashboardView').classList.add('d-none');
-    document.getElementById('userProfileWidget').classList.add('d-none');
-    document.getElementById('guestActions').classList.remove('d-none');
-    document.getElementById('adminMenuLink').classList.add('d-none');
+    document.getElementById('anonymousView')?.classList.remove('d-none');
+    document.getElementById('dashboardView')?.classList.add('d-none');
+    document.getElementById('userProfileWidget')?.classList.add('d-none');
+    document.getElementById('guestActions')?.classList.remove('d-none');
+    document.getElementById('adminMenuLink')?.classList.add('d-none');
     
-    // Hide conditional journal link
-    const navJournal = document.getElementById('navJournalLink');
-    if (navJournal) navJournal.classList.add('d-none');
-
     // Show landing page links
     const navPackages = document.getElementById('navPackagesLink');
     if (navPackages) navPackages.classList.remove('d-none');
@@ -201,40 +226,51 @@ const FitTrackApp = {
   },
 
   showDashboard() {
-    document.getElementById('anonymousView').classList.add('d-none');
-    document.getElementById('dashboardView').classList.remove('d-none');
-    document.getElementById('guestActions').classList.add('d-none');
+    const anonymousView = document.getElementById('anonymousView');
+    const dashboardView = document.getElementById('dashboardView');
+
+    if (dashboardView) {
+      anonymousView?.classList.add('d-none');
+      dashboardView.classList.remove('d-none');
+    } else {
+      anonymousView?.classList.remove('d-none');
+    }
+
+    document.getElementById('guestActions')?.classList.add('d-none');
     
-    // Show conditional journal link
+    // Keep the main navigation visible for signed-in users too.
     const navJournal = document.getElementById('navJournalLink');
     if (navJournal) navJournal.classList.remove('d-none');
-
-    // Hide landing page links for authenticated users to avoid cluttering
     const navPackages = document.getElementById('navPackagesLink');
-    if (navPackages) navPackages.classList.add('d-none');
+    if (navPackages) navPackages.classList.remove('d-none');
     const navNutrition = document.getElementById('navNutritionLink');
-    if (navNutrition) navNutrition.classList.add('d-none');
+    if (navNutrition) navNutrition.classList.remove('d-none');
     const navSupport = document.getElementById('navSupportLink');
-    if (navSupport) navSupport.classList.add('d-none');
+    if (navSupport) navSupport.classList.remove('d-none');
     
     // Configure user profile controls
     const profileWidget = document.getElementById('userProfileWidget');
-    profileWidget.classList.remove('d-none');
-    profileWidget.classList.add('d-flex');
+    if (profileWidget) {
+      profileWidget.classList.remove('d-none');
+      profileWidget.classList.add('d-flex');
+    }
     
-    document.getElementById('headerFullName').innerText = this.currentUser.fullName;
-    document.getElementById('headerRole').innerText = this.currentUser.role === 'admin' ? 'Quản trị viên' : 'Thành viên';
-    document.getElementById('welcomeUserFullName').innerText = this.currentUser.fullName;
+    const headerFullName = document.getElementById('headerFullName');
+    if (headerFullName) headerFullName.innerText = this.currentUser.fullName;
+    const headerRole = document.getElementById('headerRole');
+    if (headerRole) headerRole.innerText = this.currentUser.role === 'admin' ? 'Quản trị viên' : 'Thành viên';
+    const welcomeUserFullName = document.getElementById('welcomeUserFullName');
+    if (welcomeUserFullName) welcomeUserFullName.innerText = this.currentUser.fullName;
 
     // Show Admin Link if authenticated role is administrator
     const adminLink = document.getElementById('adminMenuLink');
-    if (this.currentUser.role === 'admin') {
+    if (adminLink && this.currentUser.role === 'admin') {
       adminLink.classList.remove('d-none');
-    } else {
+    } else if (adminLink) {
       adminLink.classList.add('d-none');
     }
 
-    // Refresh calculations and UI lists
+    // Refresh calculations and UI lists where the current page has those widgets.
     this.renderStats();
     this.renderWeeklyChart();
     this.populateFilters();
@@ -262,14 +298,19 @@ const FitTrackApp = {
 
     UTILS.showSpinner();
     try {
+      const newSessionId = UTILS.generateSessionId();
       const newUser = await API.register({
         fullName,
         username,
         password,
         role,
-        workouts: []
+        workouts: [],
+        lastSessionId: newSessionId
       });
 
+      // Save the new sessionId BEFORE calling setCurrentUser
+      UTILS.setSessionId(newSessionId);
+      
       this.currentUser = newUser;
       UTILS.setCurrentUser(newUser);
       
@@ -299,6 +340,16 @@ const FitTrackApp = {
     UTILS.showSpinner();
     try {
       const user = await API.login(username, password);
+      
+      // Generate new session ID for this login
+      const newSessionId = UTILS.generateSessionId();
+      user.lastSessionId = newSessionId;
+      
+      // Update user on server with new session ID
+      await API.updateUserWorkings(user.id, user);
+      
+      // Save the new sessionId BEFORE calling setCurrentUser
+      UTILS.setSessionId(newSessionId);
       
       this.currentUser = user;
       UTILS.setCurrentUser(user);
@@ -330,6 +381,7 @@ const FitTrackApp = {
    * Render total sessions, minutes, and cumulative calories burned
    */
   renderStats() {
+    if (!document.getElementById('statTotalWorkouts')) return;
     const workouts = this.currentUser.workouts || [];
     
     const totalSessions = workouts.length;
@@ -347,6 +399,7 @@ const FitTrackApp = {
    * Pure HTML/CSS progress chart calculation & representation
    */
   renderWeeklyChart() {
+    if (!document.getElementById('chartWeekRange')) return;
     const workouts = this.currentUser.workouts || [];
     
     // Group workouts for the current week (Monday - Sunday)
@@ -453,8 +506,12 @@ const FitTrackApp = {
    * Filter and render Workout table entries
    */
   applyFilters() {
-    const filterMuscle = document.getElementById('filterMuscleGroup').value;
-    const filterExercise = document.getElementById('filterExerciseName').value;
+    const filterMuscleEl = document.getElementById('filterMuscleGroup');
+    const filterExerciseEl = document.getElementById('filterExerciseName');
+    if (!filterMuscleEl || !filterExerciseEl) return;
+
+    const filterMuscle = filterMuscleEl.value;
+    const filterExercise = filterExerciseEl.value;
     const workouts = this.currentUser.workouts || [];
 
     this.filteredWorkouts = workouts.filter(w => {
@@ -484,7 +541,7 @@ const FitTrackApp = {
       tbody.innerHTML = `
         <tr>
           <td colspan="8" class="text-center py-4 text-body-secondary">
-            <i class="bi bi-folder-x fs-4 d-block mb-2"></i> Không có dữ liệu nhật ký phù hợp.
+            <i class="bi bi-folder-x fs-4 d-block mb-2"></i> Không có dữ liệu buổi tập phù hợp.
           </td>
         </tr>
       `;
@@ -517,7 +574,7 @@ const FitTrackApp = {
         <td>${statusBadge}</td>
         <td class="d-none d-lg-table-cell text-body-secondary small text-truncate" style="max-width: 200px;" title="${w.notes || ''}">${w.notes || '<span class="text-muted italic">Không có ghi chú</span>'}</td>
         <td class="text-center">
-          <button class="btn btn-sm btn-outline-danger border-danger-subtle px-2.5 rounded-3" onclick="FitTrackApp.handleDeleteWorkout('${w.workoutId}')" title="Xóa nhật ký">
+          <button class="btn btn-sm btn-outline-danger border-danger-subtle px-2.5 rounded-3" onclick="FitTrackApp.handleDeleteWorkout('${w.workoutId}')" title="Xóa buổi tập">
             <i class="bi bi-trash3-fill"></i>
           </button>
         </td>
@@ -596,7 +653,7 @@ const FitTrackApp = {
   },
 
   async handleDeleteWorkout(workoutId) {
-    if (!confirm('Bạn có chắc chắn muốn xóa nhật ký buổi tập này không?')) return;
+    if (!confirm('Bạn có chắc chắn muốn xóa buổi tập này không?')) return;
 
     UTILS.showSpinner();
     try {
@@ -617,7 +674,7 @@ const FitTrackApp = {
       this.populateFilters();
       this.applyFilters();
 
-      UTILS.showToast('Đã xóa nhật ký buổi tập thành công!', 'success');
+      UTILS.showToast('Đã xóa buổi tập thành công!', 'success');
     } catch (error) {
       UTILS.showToast('Không thể xóa dữ liệu trên MockAPI!', 'danger');
     } finally {
@@ -700,6 +757,340 @@ const FitTrackApp = {
    * Handle gym/workout package selection
    * If not logged in, ask to login. If logged in, save request to MockAPI for Admin approval.
    */
+  getPackageCheckoutConfig(packageName) {
+    const packages = {
+      Starter: {
+        type: 'package',
+        packageName: 'Starter',
+        title: 'Gói Starter',
+        subtitle: 'Gói miễn phí để bắt đầu ghi buổi tập',
+        price: 0
+      },
+      Pro: {
+        type: 'package',
+        packageName: 'Pro',
+        title: 'Gói FitPro',
+        subtitle: 'Theo dõi nghiêm túc hơn, cần Admin duyệt',
+        price: 399000
+      },
+      VIP: {
+        type: 'package',
+        packageName: 'VIP',
+        title: 'Gói VIP Coach',
+        subtitle: 'Lộ trình nâng cao và HLV đồng hành 1-1',
+        price: 999000
+      }
+    };
+
+    return packages[packageName] || packages.Starter;
+  },
+
+  formatCurrency(amount) {
+    const value = Number(amount) || 0;
+    return value === 0 ? 'Miễn phí' : `${value.toLocaleString('vi-VN')}đ`;
+  },
+
+  requireLoginForCheckout(message) {
+    if (this.currentUser) return true;
+
+    UTILS.showToast(message || 'Vui lòng đăng nhập để tiếp tục thanh toán!', 'warning');
+    if (this.authModal) {
+      this.authModal.show();
+      window.switchAuthTab('login');
+    }
+    return false;
+  },
+
+  getPackageCheckoutItem(packageName) {
+    const item = {
+      ...this.getPackageCheckoutConfig(packageName),
+      id: `package-${packageName}`,
+      createdAt: new Date().toISOString()
+    };
+
+    return item;
+  },
+
+  canSelectPackage(item) {
+    const currentActivePkg = this.currentUser.activePackage || 'Starter';
+    const currentReqPkg = this.currentUser.requestedPackage;
+    const currentReqStatus = this.currentUser.packageStatus;
+
+    if (currentActivePkg === item.packageName) {
+      UTILS.showToast(`Bạn đang sử dụng ${item.title} rồi!`, 'info');
+      return false;
+    }
+
+    if (currentReqPkg === item.packageName && currentReqStatus === 'Chờ duyệt') {
+      UTILS.showToast(`Yêu cầu đăng ký ${item.title} đang chờ Admin duyệt!`, 'warning');
+      return false;
+    }
+
+    return true;
+  },
+
+  addPackageToCart(packageName) {
+    if (!this.requireLoginForCheckout('Vui lòng đăng nhập tài khoản để thêm gói tập vào giỏ hàng!')) return;
+
+    const item = this.getPackageCheckoutItem(packageName);
+    if (!this.canSelectPackage(item)) return;
+
+    this.addCheckoutItem(item);
+    UTILS.showToast(`Đã thêm ${item.title} vào giỏ hàng!`, 'success');
+  },
+
+  startPackageCheckout(packageName) {
+    if (!this.requireLoginForCheckout('Vui lòng đăng nhập tài khoản để đăng ký gói tập!')) return;
+
+    const item = this.getPackageCheckoutItem(packageName);
+    if (!this.canSelectPackage(item)) return;
+
+    const message = `Bạn có muốn đăng ký ${item.title} (${this.formatCurrency(item.price)}) không?`;
+    if (!confirm(message)) return;
+
+    this.addCheckoutItem(item);
+    UTILS.showToast(`Đang chuyển ${item.title} sang trang thanh toán!`, 'success');
+    window.location.href = 'thanh-toan.html';
+  },
+
+  getCoachCheckoutConfig(coachName, specialty, price = 999000) {
+    return {
+      id: `coach-${coachName.toLowerCase().replace(/\s+/g, '-')}`,
+      type: 'coach',
+      packageName: 'VIP',
+      coachName,
+      specialty,
+      title: `Thuê ${coachName}`,
+      subtitle: specialty,
+      price: Number(price) || 999000,
+      createdAt: new Date().toISOString()
+    };
+  },
+
+  addCoachToCart(coachName, specialty, price = 999000) {
+    if (!this.requireLoginForCheckout('Vui lòng đăng nhập tài khoản để thêm HLV vào giỏ hàng!')) return;
+
+    const item = this.getCoachCheckoutConfig(coachName, specialty, price);
+    const alreadyInCart = this.getCheckoutItems().some(existing => existing.id === item.id);
+    this.addCheckoutItem(item);
+    UTILS.showToast(alreadyInCart ? `${coachName} đã có trong giỏ hàng!` : `Đã thêm ${coachName} vào giỏ hàng!`, alreadyInCart ? 'info' : 'success');
+  },
+
+  startCoachCheckout(coachName, specialty, price = 999000) {
+    if (!this.requireLoginForCheckout('Vui lòng đăng nhập tài khoản để thuê HLV!')) return;
+
+    const item = this.getCoachCheckoutConfig(coachName, specialty, price);
+    this.addCheckoutItem(item);
+    UTILS.showToast(`Đang chuyển ${coachName} sang trang thanh toán!`, 'success');
+    window.location.href = 'thanh-toan.html';
+  },
+
+  getCheckoutItems() {
+    try {
+      const raw = localStorage.getItem('fittrack_cart') || localStorage.getItem('fittrack_checkout') || '[]';
+      const parsed = JSON.parse(raw);
+      if (!parsed) return [];
+      return Array.isArray(parsed) ? parsed : [parsed];
+    } catch (error) {
+      return [];
+    }
+  },
+
+  saveCheckoutItems(items) {
+    localStorage.setItem('fittrack_cart', JSON.stringify(items));
+    localStorage.removeItem('fittrack_checkout');
+  },
+
+  addCheckoutItem(item) {
+    let items = this.getCheckoutItems();
+
+    if (item.type === 'package') {
+      items = items.filter(existing => existing.type !== 'package');
+      items.unshift(item);
+    } else if (!items.some(existing => existing.id === item.id)) {
+      items.push(item);
+    }
+
+    this.saveCheckoutItems(items);
+    return items;
+  },
+
+  removeCheckoutItem(itemId) {
+    const items = this.getCheckoutItems().filter(item => item.id !== itemId);
+    this.saveCheckoutItems(items);
+    this.renderCheckoutCart(items);
+  },
+
+  getCheckoutTotal(items = this.getCheckoutItems()) {
+    return items.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
+  },
+
+  renderCheckoutCart(items = this.getCheckoutItems()) {
+    const checkoutContent = document.getElementById('checkoutContent');
+    const checkoutEmpty = document.getElementById('checkoutEmptyState');
+    const list = document.getElementById('checkoutCartItems');
+
+    if (!checkoutContent && !checkoutEmpty && !list) return;
+
+    if (!items.length) {
+      checkoutContent?.classList.add('d-none');
+      checkoutEmpty?.classList.remove('d-none');
+      return;
+    }
+
+    checkoutEmpty?.classList.add('d-none');
+    checkoutContent?.classList.remove('d-none');
+
+    if (list) {
+      list.innerHTML = items.map(item => `
+        <div class="border border-secondary-subtle rounded-3 p-3 d-flex gap-3 align-items-start">
+          <div class="stat-badge ${item.type === 'coach' ? 'text-info bg-info bg-opacity-10' : 'text-success bg-success bg-opacity-10'} flex-shrink-0" style="width: 44px; height: 44px;">
+            <i class="bi ${item.type === 'coach' ? 'bi-person-check-fill text-info' : 'bi-patch-check-fill text-success'}"></i>
+          </div>
+          <div class="flex-grow-1">
+            <div class="d-flex justify-content-between gap-3">
+              <div>
+                <div class="fw-bold">${item.title}</div>
+                <div class="small text-body-secondary">${item.subtitle || item.specialty || 'Dịch vụ FitTrack'}</div>
+              </div>
+              <div class="text-end">
+                <div class="fw-bold text-success">${this.formatCurrency(item.price)}</div>
+                <button type="button" class="btn btn-sm btn-link text-danger p-0" onclick="FitTrackApp.removeCheckoutItem('${item.id}')">Xóa</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    const total = this.getCheckoutTotal(items);
+    const setText = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.innerText = value;
+    };
+
+    const packageItem = items.find(item => item.type === 'package');
+    const coachCount = items.filter(item => item.type === 'coach').length;
+    setText('checkoutItemTitle', `${items.length} mục trong giỏ hàng`);
+    setText('checkoutItemSubtitle', packageItem ? `${packageItem.title}${coachCount ? ` + ${coachCount} HLV` : ''}` : `${coachCount} HLV đã chọn`);
+    setText('checkoutItemType', 'Giỏ hàng');
+    setText('checkoutSubtotal', this.formatCurrency(total));
+    setText('checkoutTotal', this.formatCurrency(total));
+    setText('checkoutCheckoutCode', `FT-${Date.now().toString().slice(-6)}`);
+
+    const detail = document.getElementById('checkoutItemDetail');
+    if (detail) {
+      detail.innerHTML = items.map(item => `
+        <div class="d-flex justify-content-between gap-3 mb-2">
+          <span>${item.title}</span>
+          <strong>${this.formatCurrency(item.price)}</strong>
+        </div>
+      `).join('');
+    }
+  },
+
+  initCheckoutPage() {
+    const form = document.getElementById('checkoutPaymentForm');
+    const checkoutContent = document.getElementById('checkoutContent');
+    const checkoutEmpty = document.getElementById('checkoutEmptyState');
+
+    if (!form && !checkoutContent && !checkoutEmpty) return;
+
+    this.renderCheckoutCart();
+    form.addEventListener('submit', (e) => this.handleCheckoutPayment(e));
+  },
+
+  async handleCheckoutPayment(e) {
+    e.preventDefault();
+
+    if (!this.requireLoginForCheckout('Vui lòng đăng nhập lại để hoàn tất thanh toán!')) return;
+
+    const items = this.getCheckoutItems();
+    if (!items.length) {
+      UTILS.showToast('Giỏ hàng đang trống. Vui lòng chọn lại dịch vụ!', 'warning');
+      return;
+    }
+
+    const method = document.querySelector('input[name="paymentMethod"]:checked')?.value || 'bank';
+    const methodNames = {
+      bank: 'Chuyển khoản ngân hàng',
+      momo: 'Ví MoMo',
+      card: 'Thẻ ATM/Visa',
+      cash: 'Thanh toán tại phòng tập'
+    };
+
+    if (!confirm(`Xác nhận thanh toán bằng ${methodNames[method] || 'phương thức đã chọn'}?`)) return;
+
+    const total = this.getCheckoutTotal(items);
+    const paymentRecord = {
+      id: Date.now().toString(),
+      type: 'cart',
+      title: `${items.length} mục FitTrack`,
+      amount: total,
+      method,
+      methodName: methodNames[method] || method,
+      status: total > 0 ? 'Đã ghi nhận' : 'Miễn phí',
+      items,
+      createdAt: new Date().toISOString()
+    };
+
+    let updatedUser = {
+      ...this.currentUser,
+      paymentHistory: [
+        ...(this.currentUser.paymentHistory || []),
+        paymentRecord
+      ],
+      lastPayment: paymentRecord
+    };
+
+    const packageItem = items.find(item => item.type === 'package');
+    const coachItems = items.filter(item => item.type === 'coach');
+
+    if (packageItem?.packageName === 'Starter' && coachItems.length === 0) {
+      updatedUser = {
+        ...updatedUser,
+        activePackage: 'Starter',
+        requestedPackage: null,
+        packageStatus: null
+      };
+    } else if (packageItem || coachItems.length) {
+      updatedUser = {
+        ...updatedUser,
+        requestedPackage: coachItems.length ? 'VIP' : packageItem.packageName,
+        packageStatus: 'Chờ duyệt',
+        coachRequests: [
+          ...(this.currentUser.coachRequests || []),
+          ...coachItems.map(item => ({
+            coachName: item.coachName,
+            specialty: item.specialty,
+            price: Number(item.price) || 0,
+            paymentMethod: method,
+            status: 'Chờ duyệt',
+            createdAt: paymentRecord.createdAt
+          }))
+        ]
+      };
+    }
+
+    UTILS.showSpinner();
+    try {
+      const result = await API.updateUserWorkings(this.currentUser.id, updatedUser);
+      this.currentUser = result;
+      UTILS.setCurrentUser(result);
+      localStorage.removeItem('fittrack_cart');
+      localStorage.removeItem('fittrack_checkout');
+
+      document.getElementById('checkoutContent')?.classList.add('d-none');
+      document.getElementById('checkoutSuccessState')?.classList.remove('d-none');
+      UTILS.showToast('Thanh toán đã được ghi nhận và đồng bộ lên MockAPI!', 'success');
+    } catch (error) {
+      console.error(error);
+      UTILS.showToast('Không thể đồng bộ thanh toán lên MockAPI. Vui lòng thử lại!', 'danger');
+    } finally {
+      UTILS.hideSpinner();
+    }
+  },
+
   async handleSelectPackage(packageName) {
     if (!this.currentUser) {
       UTILS.showToast('Vui lòng đăng nhập tài khoản để đăng ký gói tập!', 'warning');

@@ -105,6 +105,23 @@ body:has(#exercises-pane) .glass-card:not(.navbar):hover {
   transform: translateY(-1px);
 }
 
+.split-action {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  width: 100%;
+}
+
+.split-action .btn {
+  min-height: 46px;
+}
+
+.split-action .btn-icon {
+  width: 48px;
+  padding-left: 0;
+  padding-right: 0;
+  font-size: 1.05rem;
+}
+
 /* ==========================================
    COPYRIGHT BADGE CHIPS
    ========================================== */

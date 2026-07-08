@@ -1,0 +1,694 @@
+<!--
+  Project: FitTrack - Developed by Nhom 9
+-->
+<!DOCTYPE html>
+<html lang="vi" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitTrack - Thuê HLV riêng</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS via CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+  <!-- FitTrack Premium Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ==========================================
+       GLOBAL LOADER SPINNER
+       ========================================== -->
+  <div id="globalSpinner" class="d-none">
+    <div class="text-center">
+      <div class="spinner-border text-info" style="width: 3.5rem; height: 3.5rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3 text-info fw-semibold tracking-wide">Đang xử lý dữ liệu...</p>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       APP HEADER / NAVBAR
+       ========================================== -->
+  <nav class="navbar navbar-expand-lg border-bottom border-secondary-subtle py-3 glass-card rounded-0">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <i class="bi bi-heart-pulse-fill text-success fs-3"></i>
+        <span class="fs-4 fw-extrabold tracking-tight">Fit<span class="text-success">Track</span></span>
+      </a>
+
+      <!-- Display copyright on UI as requested -->
+      <div class="d-none d-md-flex align-items-center ms-3">
+        <span class="copyright-badge">
+          <i class="bi bi-c-circle me-1"></i> Project: FitTrack - Developed by Nhom 9
+        </span>
+      </div>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2 gap-lg-3 ms-lg-4" style="font-family: var(--font-heading);">
+          <li class="nav-item">
+            <a class="nav-link fw-semibold text-body opacity-75" href="index.html">Trang chủ</a>
+          </li>
+          <li class="nav-item" id="navJournalLink">
+            <a class="nav-link fw-semibold text-body opacity-75" href="nhat-ky.html">Buổi tập</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold text-body opacity-75" href="goi-tap.html">Gói tập</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold text-body opacity-75" href="dinh-duong.html">Dinh dưỡng</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold text-body opacity-75" href="ho-tro.html">Hỗ trợ</a>
+          </li>
+          <li class="nav-item" id="navCoachLink">
+            <a class="nav-link fw-semibold text-body opacity-75" href="thue-hlv.html">Thuê HLV</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto align-items-center gap-3 mt-3 mt-lg-0">
+          
+          <!-- Admin Dashboard Redirect Link (visible if admin) -->
+          <li class="nav-item d-none" id="adminMenuLink">
+            <a class="nav-link btn btn-outline-info border-info-subtle px-3 py-1.5 rounded-pill text-info d-flex align-items-center gap-2" href="admin.html">
+              <i class="bi bi-shield-lock-fill"></i> Quản trị Admin
+            </a>
+          </li>
+
+          <!-- Theme Toggle Switcher -->
+          <li class="nav-item">
+            <button class="btn btn-link nav-link p-2" id="btnThemeToggle" title="Đổi giao diện">
+              <i id="themeIcon" class="bi bi-moon-stars-fill text-warning fs-5"></i>
+            </button>
+          </li>
+
+          <!-- Guest State Control Actions -->
+          <li class="nav-item d-flex gap-2" id="guestActions">
+            <button class="btn btn-outline-secondary px-3 rounded-3" data-bs-toggle="modal" data-bs-target="#authModal" onclick="switchAuthTab('login')">Đăng Nhập</button>
+            <button class="btn btn-gradient px-3 rounded-3 text-dark" data-bs-toggle="modal" data-bs-target="#authModal" onclick="switchAuthTab('register')">Đăng Ký</button>
+          </li>
+
+          <!-- Authenticated State Profile Widget -->
+          <li class="nav-item d-none align-items-center gap-3" id="userProfileWidget">
+            <div class="text-end d-none d-sm-block">
+              <div class="fw-bold fs-6" id="headerFullName">Họ và tên</div>
+              <span class="badge bg-secondary-subtle text-secondary fw-semibold" id="headerRole">Thành viên</span>
+            </div>
+            <button class="btn btn-outline-secondary px-3 py-2 rounded-3" id="btnSettings" data-bs-toggle="modal" data-bs-target="#settingsModal" title="Cài đặt tài khoản">
+              <i class="bi bi-gear-fill"></i>
+            </button>
+            <button class="btn btn-outline-danger px-3 py-2 rounded-3" id="btnLogout" title="Đăng xuất">
+              <i class="bi bi-box-arrow-right"></i>
+            </button>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       MAIN CONTAINER
+       ========================================== -->
+  <main class="container py-5">
+
+    <section class="py-4">
+      <div class="row align-items-center g-4 mb-5">
+        <div class="col-lg-7">
+          <div class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill fs-7 mb-3 fw-bold border border-info border-opacity-25">
+            <i class="bi bi-person-arms-up me-1"></i> Huấn luyện cá nhân
+          </div>
+          <h1 class="display-5 fw-extrabold mb-3" style="font-family: var(--font-heading);">Chọn HLV theo mảng tập bạn cần</h1>
+          <p class="lead text-body-secondary mb-4">
+            Mỗi HLV phụ trách một nhóm mục tiêu riêng: tăng cơ, giảm mỡ, boxing, yoga, phục hồi và dinh dưỡng. Bạn có thể thêm nhiều HLV vào giỏ hàng rồi thanh toán một lần.
+          </p>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="goi-tap.html" class="btn btn-gradient px-4 py-3 rounded-3 text-dark fw-semibold">
+              <i class="bi bi-stars me-1"></i> Chọn thêm gói tập
+            </a>
+            <a href="thanh-toan.html" class="btn btn-outline-info px-4 py-3 rounded-3 fw-semibold">
+              <i class="bi bi-cart-check-fill me-1"></i> Xem giỏ hàng
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="glass-card p-4 h-100">
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="stat-badge text-info bg-info bg-opacity-10"><i class="bi bi-clipboard2-pulse-fill text-info"></i></div>
+              <div>
+                <div class="fw-bold fs-5">Thuê HLV theo nhu cầu</div>
+                <div class="small text-body-secondary">Chọn một hoặc nhiều chuyên môn trước khi thanh toán</div>
+              </div>
+            </div>
+            <div class="row g-2 small">
+              <div class="col-4">
+                <div class="border border-secondary-subtle rounded-3 p-2 text-center h-100">
+                  <div class="fw-bold text-info">6</div>
+                  <div class="text-body-secondary">mảng tập</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="border border-secondary-subtle rounded-3 p-2 text-center h-100">
+                  <div class="fw-bold text-success">1 giỏ</div>
+                  <div class="text-body-secondary">thanh toán</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="border border-secondary-subtle rounded-3 p-2 text-center h-100">
+                  <div class="fw-bold text-warning">Admin</div>
+                  <div class="text-body-secondary">duyệt</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6 col-xl-4">
+          <div class="glass-card h-100 overflow-hidden d-flex flex-column">
+            <img src="https://medialabs.asia/cms/assets/8ed100bc-8d29-4050-b325-f4cfacea6e34?height=450&amp;width=800" alt="Phạm Văn Mách - HLV thể hình" class="w-100" style="height: 230px; object-fit: cover; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#coachMachModal">
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                <div role="button" data-bs-toggle="modal" data-bs-target="#coachMachModal">
+                  <div class="small text-body-secondary fw-semibold mb-1">Lực sĩ Phạm Văn Mách</div>
+                  <h4 class="mb-1">Strength & Bodybuilding</h4>
+                  <div class="small text-info fw-semibold">Tăng cơ - Sức mạnh</div>
+                </div>
+                <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25">899.000đ</span>
+              </div>
+              <p class="text-body-secondary small mb-3">Hồ sơ phù hợp người muốn tăng cơ, siết dáng, học kỹ thuật tập tạ và tư duy thi đấu thể hình.</p>
+              <button type="button" class="btn btn-link text-info fw-semibold p-0 text-start small mb-3" data-bs-toggle="modal" data-bs-target="#coachMachModal">
+                <i class="bi bi-info-circle me-1"></i> Xem hồ sơ, thành tích
+              </button>
+              <div class="btn-group split-action mt-auto" role="group" aria-label="Chọn Phạm Văn Mách">
+                <button type="button" class="btn btn-outline-info btn-icon fw-bold" title="Thêm Phạm Văn Mách vào giỏ hàng" onclick="FitTrackApp.addCoachToCart('Phạm Văn Mách - Bodybuilding', 'Tăng cơ - Sức mạnh', 899000)"><i class="bi bi-plus-lg"></i></button>
+                <button type="button" class="btn btn-outline-info fw-semibold" onclick="FitTrackApp.startCoachCheckout('Phạm Văn Mách - Bodybuilding', 'Tăng cơ - Sức mạnh', 899000)">Thuê HLV</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+          <div class="glass-card h-100 overflow-hidden d-flex flex-column">
+            <img src="https://medialabs.asia/cms/assets/f858ec42-55ef-4ebb-92a2-0ceb1449e065?height=450&amp;width=800" alt="Phan Bảo Long - HLV giảm cân" class="w-100" style="height: 230px; object-fit: cover; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#coachBaoLongModal">
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                <div role="button" data-bs-toggle="modal" data-bs-target="#coachBaoLongModal">
+                  <div class="small text-body-secondary fw-semibold mb-1">Phan Bảo Long</div>
+                  <h4 class="mb-1">Fat Loss Coach</h4>
+                  <div class="small text-success fw-semibold">Giảm mỡ - Cardio</div>
+                </div>
+                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">799.000đ</span>
+              </div>
+              <p class="text-body-secondary small mb-3">Phù hợp người cần giảm cân, kiểm soát calo, xây dựng thói quen vận động và ăn uống dễ duy trì.</p>
+              <button type="button" class="btn btn-link text-success fw-semibold p-0 text-start small mb-3" data-bs-toggle="modal" data-bs-target="#coachBaoLongModal">
+                <i class="bi bi-info-circle me-1"></i> Xem hồ sơ, câu chuyện học viên
+              </button>
+              <div class="btn-group split-action mt-auto" role="group" aria-label="Chọn Phan Bảo Long">
+                <button type="button" class="btn btn-outline-success btn-icon fw-bold" title="Thêm Phan Bảo Long vào giỏ hàng" onclick="FitTrackApp.addCoachToCart('Phan Bảo Long - Fat Loss', 'Giảm mỡ - Cardio', 799000)"><i class="bi bi-plus-lg"></i></button>
+                <button type="button" class="btn btn-outline-success fw-semibold" onclick="FitTrackApp.startCoachCheckout('Phan Bảo Long - Fat Loss', 'Giảm mỡ - Cardio', 799000)">Thuê HLV</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+          <div class="glass-card h-100 overflow-hidden d-flex flex-column">
+            <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/NGUY%E1%BB%84N_TR%E1%BA%A6N_DUY_NH%E1%BA%A4T_%E2%80%93_CALL_ME_BY_FIRE_VIETNAM_%E2%80%93_P1.jpg" alt="Nguyễn Trần Duy Nhất - Muay Thai" class="w-100" style="height: 230px; object-fit: cover; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#coachDuyNhatModal">
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                <div role="button" data-bs-toggle="modal" data-bs-target="#coachDuyNhatModal">
+                  <div class="small text-body-secondary fw-semibold mb-1">Nguyễn Trần Duy Nhất</div>
+                  <h4 class="mb-1">Muay Thai & Boxing</h4>
+                  <div class="small text-danger fw-semibold">Boxing - Phản xạ</div>
+                </div>
+                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25">899.000đ</span>
+              </div>
+              <p class="text-body-secondary small mb-3">Hồ sơ mạnh về striking, phản xạ, footwork, thể lực đối kháng và tinh thần thi đấu.</p>
+              <button type="button" class="btn btn-link text-danger fw-semibold p-0 text-start small mb-3" data-bs-toggle="modal" data-bs-target="#coachDuyNhatModal">
+                <i class="bi bi-info-circle me-1"></i> Xem hồ sơ, danh hiệu
+              </button>
+              <div class="btn-group split-action mt-auto" role="group" aria-label="Chọn Nguyễn Trần Duy Nhất">
+                <button type="button" class="btn btn-outline-danger btn-icon fw-bold" title="Thêm Nguyễn Trần Duy Nhất vào giỏ hàng" onclick="FitTrackApp.addCoachToCart('Nguyễn Trần Duy Nhất - Muay Thai', 'Boxing - Phản xạ', 899000)"><i class="bi bi-plus-lg"></i></button>
+                <button type="button" class="btn btn-outline-danger fw-semibold" onclick="FitTrackApp.startCoachCheckout('Nguyễn Trần Duy Nhất - Muay Thai', 'Boxing - Phản xạ', 899000)">Thuê HLV</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+          <div class="glass-card h-100 overflow-hidden d-flex flex-column">
+            <img src="https://medialabs.asia/cms/assets/2c62be64-882c-488d-8824-dfc606de87a6?height=450&amp;width=800" alt="Hana Giang Anh - Fitness coach" class="w-100" style="height: 230px; object-fit: cover; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#coachHanaModal">
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                <div role="button" data-bs-toggle="modal" data-bs-target="#coachHanaModal">
+                  <div class="small text-body-secondary fw-semibold mb-1">Hana Giang Anh</div>
+                  <h4 class="mb-1">Fitness & Mobility</h4>
+                  <div class="small text-warning fw-semibold">Yoga - Mobility</div>
+                </div>
+                <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25">799.000đ</span>
+              </div>
+              <p class="text-body-secondary small mb-3">Phù hợp người muốn tập theo lớp, cải thiện dáng, độ linh hoạt, giảm mỡ và xây dựng lối sống khỏe.</p>
+              <button type="button" class="btn btn-link text-warning fw-semibold p-0 text-start small mb-3" data-bs-toggle="modal" data-bs-target="#coachHanaModal">
+                <i class="bi bi-info-circle me-1"></i> Xem hồ sơ, cộng đồng
+              </button>
+              <div class="btn-group split-action mt-auto" role="group" aria-label="Chọn Hana Giang Anh">
+                <button type="button" class="btn btn-outline-warning btn-icon fw-bold" title="Thêm Hana Giang Anh vào giỏ hàng" onclick="FitTrackApp.addCoachToCart('Hana Giang Anh - Fitness & Mobility', 'Yoga - Mobility', 799000)"><i class="bi bi-plus-lg"></i></button>
+                <button type="button" class="btn btn-outline-warning fw-semibold" onclick="FitTrackApp.startCoachCheckout('Hana Giang Anh - Fitness & Mobility', 'Yoga - Mobility', 799000)">Thuê HLV</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+          <div class="glass-card h-100 overflow-hidden d-flex flex-column">
+            <img src="https://medialabs.asia/cms/assets/46528559-f7e7-4a96-89b2-4b67c7175a50?height=450&amp;width=800" alt="Trí Phan - Fitness nutrition" class="w-100" style="height: 230px; object-fit: cover; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#coachTriPhanModal">
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                <div role="button" data-bs-toggle="modal" data-bs-target="#coachTriPhanModal">
+                  <div class="small text-body-secondary fw-semibold mb-1">Trí Phan</div>
+                  <h4 class="mb-1">Nutrition & Recipe</h4>
+                  <div class="small text-primary fw-semibold">Dinh dưỡng - Thói quen</div>
+                </div>
+                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">699.000đ</span>
+              </div>
+              <p class="text-body-secondary small mb-3">Phù hợp người cần món healthy dễ làm, khẩu phần thực tế và tư duy ăn uống khoa học khi tập.</p>
+              <button type="button" class="btn btn-link text-primary fw-semibold p-0 text-start small mb-3" data-bs-toggle="modal" data-bs-target="#coachTriPhanModal">
+                <i class="bi bi-info-circle me-1"></i> Xem hồ sơ, kênh tham khảo
+              </button>
+              <div class="btn-group split-action mt-auto" role="group" aria-label="Chọn Trí Phan">
+                <button type="button" class="btn btn-outline-primary btn-icon fw-bold" title="Thêm Trí Phan vào giỏ hàng" onclick="FitTrackApp.addCoachToCart('Trí Phan - Nutrition', 'Dinh dưỡng - Thói quen', 699000)"><i class="bi bi-plus-lg"></i></button>
+                <button type="button" class="btn btn-outline-primary fw-semibold" onclick="FitTrackApp.startCoachCheckout('Trí Phan - Nutrition', 'Dinh dưỡng - Thói quen', 699000)">Thuê HLV</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+          <div class="glass-card h-100 overflow-hidden d-flex flex-column">
+            <img src="https://medialabs.asia/cms/assets/b75f1ba7-7de6-49ad-b9b3-bb5d370921ae?height=450&amp;width=800" alt="Ryan Long Fitness - HLV người mới" class="w-100" style="height: 230px; object-fit: cover; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#coachRyanModal">
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                <div role="button" data-bs-toggle="modal" data-bs-target="#coachRyanModal">
+                  <div class="small text-body-secondary fw-semibold mb-1">Ryan Long Fitness</div>
+                  <h4 class="mb-1">Beginner & Fat Loss</h4>
+                  <div class="small text-secondary fw-semibold">Phục hồi - Người mới</div>
+                </div>
+                <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25">699.000đ</span>
+              </div>
+              <p class="text-body-secondary small mb-3">Phù hợp người mới, người quay lại tập, cần giáo án rõ ràng để giảm mỡ và lấy lại nền thể lực.</p>
+              <button type="button" class="btn btn-link text-secondary fw-semibold p-0 text-start small mb-3" data-bs-toggle="modal" data-bs-target="#coachRyanModal">
+                <i class="bi bi-info-circle me-1"></i> Xem hồ sơ, minh chứng
+              </button>
+              <div class="btn-group split-action mt-auto" role="group" aria-label="Chọn Ryan Long Fitness">
+                <button type="button" class="btn btn-outline-secondary btn-icon fw-bold" title="Thêm Ryan Long Fitness vào giỏ hàng" onclick="FitTrackApp.addCoachToCart('Ryan Long Fitness - Beginner', 'Phục hồi - Người mới', 699000)"><i class="bi bi-plus-lg"></i></button>
+                <button type="button" class="btn btn-outline-secondary fw-semibold" onclick="FitTrackApp.startCoachCheckout('Ryan Long Fitness - Beginner', 'Phục hồi - Người mới', 699000)">Thuê HLV</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="alert alert-info bg-info bg-opacity-10 border-info border-opacity-25 text-body small mb-0">
+            <i class="bi bi-info-circle-fill text-info me-1"></i>
+            Hồ sơ dùng dữ liệu công khai để mô phỏng chức năng thuê HLV. Các thông tin học viên/cộng đồng chỉ ghi khi có nguồn công khai, không tự gán người nổi tiếng nếu chưa có xác nhận.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="coachMachModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content glass-card">
+            <div class="modal-header border-bottom border-secondary-subtle">
+              <h5 class="modal-title">Phạm Văn Mách - Strength & Bodybuilding</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row g-4">
+                <div class="col-md-5">
+                  <img src="https://medialabs.asia/cms/assets/8ed100bc-8d29-4050-b325-f4cfacea6e34?height=650&amp;width=520" alt="Phạm Văn Mách" class="w-100 rounded-3" style="height: 360px; object-fit: cover;">
+                </div>
+                <div class="col-md-7">
+                  <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 mb-2">Thể hình Việt Nam</span>
+                  <p class="text-body-secondary">Lực sĩ Phạm Văn Mách là một trong những gương mặt thể hình nổi tiếng của Việt Nam, phù hợp cho học viên muốn tăng cơ, siết dáng và học kỹ thuật tập tạ bài bản.</p>
+                  <h6>Thành tích nổi bật</h6>
+                  <ul class="small text-body-secondary">
+                    <li>Được MediaLabs ghi nhận: 6 lần vô địch thế giới, 8 lần vô địch châu Á.</li>
+                    <li>3 HCV SEA Games 31 và nhiều giải thưởng quốc gia.</li>
+                    <li>Được vinh danh VĐV tiêu biểu, nhận Huân chương Lao động.</li>
+                  </ul>
+                  <h6>Học viên/cộng đồng tham khảo</h6>
+                  <p class="small text-body-secondary mb-3">Kênh “Lực Sĩ Phạm Văn Mách” và các nền tảng cá nhân được dùng như nguồn học kỹ thuật thể hình, posing và lối sống tập luyện.</p>
+                  <a href="https://medialabs.asia/our-update/brand-marketing/top-fitness-influencer-noi-tieng-187" target="_blank" class="btn btn-sm btn-outline-info">Nguồn tham khảo</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="coachBaoLongModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content glass-card">
+            <div class="modal-header border-bottom border-secondary-subtle">
+              <h5 class="modal-title">Phan Bảo Long - Fat Loss Coach</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row g-4">
+                <div class="col-md-5">
+                  <img src="https://medialabs.asia/cms/assets/f858ec42-55ef-4ebb-92a2-0ceb1449e065?height=650&amp;width=520" alt="Phan Bảo Long" class="w-100 rounded-3" style="height: 360px; object-fit: cover;">
+                </div>
+                <div class="col-md-7">
+                  <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 mb-2">Giảm cân khoa học</span>
+                  <p class="text-body-secondary">Phan Bảo Long phù hợp cho học viên cần giảm cân, chỉnh thói quen ăn uống và tập luyện theo hướng có kiểm soát.</p>
+                  <h6>Thông tin nổi bật</h6>
+                  <ul class="small text-body-secondary">
+                    <li>MediaLabs giới thiệu là fitness influencer nổi tiếng tại Việt Nam.</li>
+                    <li>Từng là giảng viên Khoa Y Dược, Đại học Tây Nguyên theo hồ sơ bài viết.</li>
+                    <li>Có nội dung tập luyện, dinh dưỡng và giảm cân trên nhiều nền tảng xã hội.</li>
+                  </ul>
+                  <h6>Học viên/câu chuyện công khai</h6>
+                  <p class="small text-body-secondary mb-3">Bài viết MediaLabs nhắc đến trường hợp Sơn Tùng giảm từ 168kg xuống 90kg sau khi đồng hành cùng Phan Bảo Long.</p>
+                  <a href="https://medialabs.asia/our-update/brand-marketing/top-fitness-influencer-noi-tieng-187" target="_blank" class="btn btn-sm btn-outline-success">Nguồn tham khảo</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="coachDuyNhatModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content glass-card">
+            <div class="modal-header border-bottom border-secondary-subtle">
+              <h5 class="modal-title">Nguyễn Trần Duy Nhất - Muay Thai & Boxing</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row g-4">
+                <div class="col-md-5">
+                  <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/NGUY%E1%BB%84N_TR%E1%BA%A6N_DUY_NH%E1%BA%A4T_%E2%80%93_CALL_ME_BY_FIRE_VIETNAM_%E2%80%93_P1.jpg" alt="Nguyễn Trần Duy Nhất" class="w-100 rounded-3" style="height: 360px; object-fit: cover;">
+                </div>
+                <div class="col-md-7">
+                  <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 mb-2">No.1 Muay Club</span>
+                  <p class="text-body-secondary">Nguyễn Trần Duy Nhất là võ sĩ Muay Thai/Lethwei/MMA nổi tiếng của Việt Nam, phù hợp cho học viên muốn học striking, phản xạ và nền thể lực đối kháng.</p>
+                  <h6>Thành tích nổi bật</h6>
+                  <ul class="small text-body-secondary">
+                    <li>Wikipedia ghi nhận anh là võ sĩ Việt Nam từng thi đấu Muay Thai, Lethwei và MMA.</li>
+                    <li>5 lần vô địch WMF Muay Thai thế giới, nhiều huy chương SEA Games.</li>
+                    <li>HCV World Games 2022, HCV SEA Games 2021 và từng thi đấu tại ONE Championship.</li>
+                  </ul>
+                  <h6>Học viên/cộng đồng tham khảo</h6>
+                  <p class="small text-body-secondary mb-3">Hồ sơ công khai ghi đội/CLB thi đấu là No.1 Muay Club; vì vậy phần demo dùng anh cho nhóm Boxing - phản xạ.</p>
+                  <a href="https://en.wikipedia.org/wiki/Nguy%E1%BB%85n_Tr%E1%BA%A7n_Duy_Nh%E1%BA%A5t" target="_blank" class="btn btn-sm btn-outline-danger">Nguồn thành tích</a>
+                  <a href="https://commons.wikimedia.org/wiki/File:NGUY%E1%BB%84N_TR%E1%BA%A6N_DUY_NH%E1%BA%A4T_%E2%80%93_CALL_ME_BY_FIRE_VIETNAM_%E2%80%93_P1.jpg" target="_blank" class="btn btn-sm btn-outline-secondary ms-2">Nguồn ảnh</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="coachHanaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content glass-card">
+            <div class="modal-header border-bottom border-secondary-subtle">
+              <h5 class="modal-title">Hana Giang Anh - Fitness & Mobility</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row g-4">
+                <div class="col-md-5">
+                  <img src="https://medialabs.asia/cms/assets/2c62be64-882c-488d-8824-dfc606de87a6?height=650&amp;width=520" alt="Hana Giang Anh" class="w-100 rounded-3" style="height: 360px; object-fit: cover;">
+                </div>
+                <div class="col-md-7">
+                  <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 mb-2">Fitness truyền cảm hứng</span>
+                  <p class="text-body-secondary">Hana Giang Anh phù hợp cho nhóm học viên muốn tập theo lớp, cải thiện vóc dáng, mobility và thói quen vận động hằng ngày.</p>
+                  <h6>Thông tin nổi bật</h6>
+                  <ul class="small text-body-secondary">
+                    <li>Tên thật: Nguyễn Đăng Hương Giang.</li>
+                    <li>MediaLabs ghi nhận là HLV gym/fitness nổi tiếng, YouTuber và người sáng lập INSPIRE Boutique Fitness.</li>
+                    <li>Kenh14 ghi nhận Hana bắt đầu chia sẻ video hướng dẫn tập luyện hình thể trên YouTube từ năm 2013.</li>
+                  </ul>
+                  <h6>Học viên/cộng đồng tham khảo</h6>
+                  <p class="small text-body-secondary mb-3">Hồ sơ MediaLabs ghi nhận kênh YouTube Hana Giang Anh đạt khoảng 1,59 triệu người đăng ký tại thời điểm bài viết cập nhật.</p>
+                  <a href="https://medialabs.asia/our-update/brand-marketing/top-fitness-influencer-noi-tieng-187" target="_blank" class="btn btn-sm btn-outline-warning">Nguồn hồ sơ</a>
+                  <a href="https://kenh14.vn/hana-giang-anh-hlv-fitness-la-mot-nghe-nhay-cam-va-day-cam-do-20190511192620296.chn" target="_blank" class="btn btn-sm btn-outline-secondary ms-2">Nguồn bài viết</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="coachTriPhanModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content glass-card">
+            <div class="modal-header border-bottom border-secondary-subtle">
+              <h5 class="modal-title">Trí Phan - Nutrition & Recipe</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row g-4">
+                <div class="col-md-5">
+                  <img src="https://medialabs.asia/cms/assets/46528559-f7e7-4a96-89b2-4b67c7175a50?height=650&amp;width=520" alt="Trí Phan" class="w-100 rounded-3" style="height: 360px; object-fit: cover;">
+                </div>
+                <div class="col-md-7">
+                  <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 mb-2">Dinh dưỡng thực tế</span>
+                  <p class="text-body-secondary">Trí Phan phù hợp cho người cần học cách ăn uống lành mạnh, chuẩn bị bữa ăn và hiểu dinh dưỡng dưới góc nhìn gần gũi.</p>
+                  <h6>Thông tin nổi bật</h6>
+                  <ul class="small text-body-secondary">
+                    <li>MediaLabs xếp Trí Phan trong nhóm fitness influencer nổi tiếng tại Việt Nam.</li>
+                    <li>Nội dung tập trung vào món ăn healthy, kiến thức tập luyện và cách ăn uống khoa học.</li>
+                    <li>Hồ sơ bài viết ghi nhận TikTok khoảng 2,1 triệu người theo dõi và YouTube khoảng 162 nghìn người đăng ký.</li>
+                  </ul>
+                  <h6>Học viên/cộng đồng tham khảo</h6>
+                  <p class="small text-body-secondary mb-3">Phù hợp phần demo “HLV Nutrition” vì có cộng đồng theo dõi lớn về công thức món ăn và thói quen ăn uống khi tập.</p>
+                  <a href="https://medialabs.asia/our-update/brand-marketing/top-fitness-influencer-noi-tieng-187" target="_blank" class="btn btn-sm btn-outline-primary">Nguồn tham khảo</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="coachRyanModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content glass-card">
+            <div class="modal-header border-bottom border-secondary-subtle">
+              <h5 class="modal-title">Ryan Long Fitness - Beginner & Fat Loss</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row g-4">
+                <div class="col-md-5">
+                  <img src="https://medialabs.asia/cms/assets/b75f1ba7-7de6-49ad-b9b3-bb5d370921ae?height=650&amp;width=520" alt="Ryan Long Fitness" class="w-100 rounded-3" style="height: 360px; object-fit: cover;">
+                </div>
+                <div class="col-md-7">
+                  <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 mb-2">Người mới tập</span>
+                  <p class="text-body-secondary">Ryan Long Fitness phù hợp cho người mới hoặc người quay lại tập, cần giáo án rõ ràng để giảm mỡ, tăng cơ cơ bản và xây nền thể lực.</p>
+                  <h6>Thông tin nổi bật</h6>
+                  <ul class="small text-body-secondary">
+                    <li>MediaLabs ghi tên thật là Huỳnh Long.</li>
+                    <li>Được biết tới qua các video hướng dẫn tăng cơ, giảm mỡ trên YouTube.</li>
+                    <li>Hồ sơ bài viết ghi nhận YouTube Ryan Long Fitness khoảng 667 nghìn người theo dõi.</li>
+                  </ul>
+                  <h6>Học viên/câu chuyện công khai</h6>
+                  <p class="small text-body-secondary mb-3">MediaLabs nhắc đến video hơn 2 triệu lượt xem về quá trình vợ anh tập luyện để giảm mỡ bụng, dùng như minh chứng công khai cho giáo trình.</p>
+                  <a href="https://medialabs.asia/our-update/brand-marketing/top-fitness-influencer-noi-tieng-187" target="_blank" class="btn btn-sm btn-outline-secondary">Nguồn tham khảo</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       AUTHENTICATION MODAL (LOGIN & REGISTER)
+       ========================================== -->
+  <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-card shadow-2xl">
+        <div class="modal-header border-bottom border-secondary-subtle">
+          <h5 class="modal-title fs-5" id="authModalLabel">Tài khoản FitTrack</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          
+          <!-- Nav Tabs for Auth option toggles -->
+          <ul class="nav nav-pills nav-fill mb-4 p-1 bg-secondary-subtle rounded-3" id="authTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active py-2 fw-semibold" id="tabLogin" data-bs-toggle="pill" data-bs-target="#paneLogin" type="button" role="tab" aria-controls="paneLogin" aria-selected="true">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Đăng Nhập
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link py-2 fw-semibold" id="tabRegister" data-bs-toggle="pill" data-bs-target="#paneRegister" type="button" role="tab" aria-controls="paneRegister" aria-selected="false">
+                <i class="bi bi-person-plus me-1"></i> Đăng Ký
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="authTabContent">
+            
+            <!-- PANEL: LOGIN FORM -->
+            <div class="tab-pane fade show active" id="paneLogin" role="tabpanel" aria-labelledby="tabLogin">
+              <form id="formLogin">
+                <div class="mb-3">
+                  <label for="loginUsername" class="form-label small fw-bold">Tên đăng nhập (Username)</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-secondary-subtle border-secondary-subtle"><i class="bi bi-person-fill"></i></span>
+                    <input type="text" class="form-control" id="loginUsername" placeholder="Nhập tên đăng nhập..." required autocomplete="username">
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <label for="loginPassword" class="form-label small fw-bold">Mật khẩu (Password)</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-secondary-subtle border-secondary-subtle"><i class="bi bi-shield-lock-fill"></i></span>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Nhập mật khẩu..." required autocomplete="current-password">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-gradient w-100 py-2.5 text-dark">Đăng Nhập <i class="bi bi-chevron-right ms-1"></i></button>
+              </form>
+            </div>
+
+            <!-- PANEL: REGISTER FORM -->
+            <div class="tab-pane fade" id="paneRegister" role="tabpanel" aria-labelledby="tabRegister">
+              <form id="formRegister">
+                <div class="mb-3">
+                  <label for="registerFullName" class="form-label small fw-bold">Họ và tên đầy đủ</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-secondary-subtle border-secondary-subtle"><i class="bi bi-card-text"></i></span>
+                    <input type="text" class="form-control" id="registerFullName" placeholder="Ví dụ: Nguyễn Văn A..." required autocomplete="name">
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="registerUsername" class="form-label small fw-bold">Tên đăng nhập</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-secondary-subtle border-secondary-subtle"><i class="bi bi-person-fill"></i></span>
+                    <input type="text" class="form-control" id="registerUsername" placeholder="Viết liền không dấu..." required autocomplete="username">
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="registerPassword" class="form-label small fw-bold">Mật khẩu</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-secondary-subtle border-secondary-subtle"><i class="bi bi-shield-lock-fill"></i></span>
+                    <input type="password" class="form-control" id="registerPassword" placeholder="Mật khẩu bảo mật..." required autocomplete="new-password">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-gradient w-100 py-2.5 text-dark mt-2">Đăng Ký Tài Khoản <i class="bi bi-chevron-right ms-1"></i></button>
+              </form>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       ACCOUNT SETTINGS MODAL (SETTINGS UPDATE)
+       ========================================== -->
+  <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-card shadow-2xl">
+        <div class="modal-header border-bottom border-secondary-subtle">
+          <h5 class="modal-title fs-5" id="settingsModalLabel"><i class="bi bi-gear-fill text-success me-2"></i>Cài đặt tài khoản</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form id="formAccountSettings">
+            
+            <!-- Read-only Username -->
+            <div class="mb-3">
+              <label for="settingsUsername" class="form-label small fw-bold">Tên đăng nhập (Username)</label>
+              <input type="text" class="form-control bg-secondary-subtle text-muted" id="settingsUsername" readonly>
+            </div>
+
+            <!-- Read-only Role -->
+            <div class="mb-3">
+              <label for="settingsRole" class="form-label small fw-bold">Vai trò hệ thống</label>
+              <input type="text" class="form-control bg-secondary-subtle text-muted" id="settingsRole" readonly>
+            </div>
+
+            <!-- Editable Full Name -->
+            <div class="mb-3">
+              <label for="settingsFullName" class="form-label small fw-bold">Họ và tên hiển thị</label>
+              <input type="text" class="form-control" id="settingsFullName" placeholder="Họ và tên..." required autocomplete="name">
+            </div>
+
+            <!-- Editable Password -->
+            <div class="mb-4">
+              <label for="settingsPassword" class="form-label small fw-bold">Mật khẩu mới</label>
+              <input type="password" class="form-control" id="settingsPassword" placeholder="Nhập mật khẩu mới bảo mật..." required autocomplete="new-password">
+            </div>
+
+            <!-- Gym Package Selection for switching -->
+            <div class="mb-4 border-top pt-3 border-secondary-subtle" id="settingsPackageSection">
+              <label for="settingsPackageSelect" class="form-label small fw-bold text-success">Gói tập đăng ký hiện tại</label>
+              <select class="form-select" id="settingsPackageSelect">
+                <option value="Starter">Starter (Miễn phí)</option>
+                <option value="Pro">FitPro (399.000đ/tháng)</option>
+                <option value="VIP">VIP Coach (999.000đ/tháng)</option>
+              </select>
+              <div class="form-text small text-body-secondary mt-1" id="settingsPackageStatusHint">
+                * Gói Starter kích hoạt tức thì. Gói FitPro và VIP Coach cần sự phê duyệt của Admin.
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-gradient w-100 py-2.5 text-dark">Cập Nhật Thông Tin <i class="bi bi-arrow-up-right-circle-fill ms-1"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <footer class="py-4 mt-auto">
+    <div class="container text-center">
+      <div class="row justify-content-between align-items-center g-3">
+        <div class="col-md-6 text-md-start">
+          <p class="mb-0 text-body-secondary">
+            &copy; 2026 <strong>FitTrack</strong>. Bảo lưu mọi quyền.
+          </p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <span class="text-body-secondary fw-semibold">
+            Project: FitTrack - Developed by Nhom 9
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 Bundle JS via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- FitTrack Custom JS Modules -->
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

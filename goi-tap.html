@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FitTrack - Buổi tập & Theo dõi sức khỏe cá nhân</title>
+  <title>FitTrack - Gói Tập - Bảng giá dịch vụ</title>
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,13 +65,13 @@
           <li class="nav-item" id="navJournalLink">
             <a class="nav-link fw-semibold text-body opacity-75" href="nhat-ky.html">Buổi tập</a>
           </li>
-          <li class="nav-item" id="navPackagesLink">
+          <li class="nav-item">
             <a class="nav-link fw-semibold text-body opacity-75" href="goi-tap.html">Gói tập</a>
           </li>
-          <li class="nav-item" id="navNutritionLink">
+          <li class="nav-item">
             <a class="nav-link fw-semibold text-body opacity-75" href="dinh-duong.html">Dinh dưỡng</a>
           </li>
-          <li class="nav-item" id="navSupportLink">
+          <li class="nav-item">
             <a class="nav-link fw-semibold text-body opacity-75" href="ho-tro.html">Hỗ trợ</a>
           </li>
           <li class="nav-item" id="navCoachLink">
@@ -132,61 +132,228 @@
     </div>
 
     <!-- ==========================================
-         ANONYMOUS INTRO VIEW (GUEST SCREEN)
+         WORKOUT PACKAGES SECTION (#packagesSection)
          ========================================== -->
-    <section id="anonymousView" class="py-5 text-center">
-      <div class="row justify-content-center">
-        <div class="col-lg-8 col-xl-7">
+    <section class="py-4">
+      <div class="row align-items-center g-4 mb-5">
+        <div class="col-lg-7">
           <div class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fs-7 mb-3 fw-bold border border-success border-opacity-25">
-            <i class="bi bi-activity me-1"></i> Sức Khỏe Là Vàng - Kỷ Luật Là Chìa Khóa
+            <i class="bi bi-layers-fill me-1"></i> Gói tập FitTrack
           </div>
-          <h1 class="display-4 fw-extrabold text-gradient-title mb-3" style="font-family: var(--font-heading);">
-            Theo Dõi Tập Luyện,<br>Kiến Tạo Vóc Dáng Ước Mơ
-          </h1>
-          <p class="lead text-body-secondary fs-5 mb-5 px-lg-4">
-            FitTrack đồng hành cùng bạn ghi buổi tập thể thao hàng ngày, tự động đo đạc calo tiêu thụ, tổng hợp số liệu khoa học với biểu đồ tiến độ sinh động giúp bạn kiên trì mỗi ngày.
+          <h1 class="display-5 fw-extrabold mb-3" style="font-family: var(--font-heading);">Chọn gói theo mục tiêu tập luyện</h1>
+          <p class="lead text-body-secondary mb-4">
+            Starter dùng ngay miễn phí. FitPro dành cho người muốn theo dõi nghiêm túc hơn. VIP Coach dành cho người cần HLV đồng hành và lộ trình cá nhân.
           </p>
-          <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
-            <button class="btn btn-gradient btn-lg px-4 py-3 rounded-3" data-bs-toggle="modal" data-bs-target="#authModal" onclick="switchAuthTab('register')">
-              Bắt đầu hoàn toàn miễn phí <i class="bi bi-arrow-right ms-2"></i>
-            </button>
-            <button class="btn btn-outline-secondary btn-lg px-4 py-3 rounded-3" data-bs-toggle="modal" data-bs-target="#authModal" onclick="switchAuthTab('login')">
-              Đăng nhập tài khoản
-            </button>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="#packageCards" class="btn btn-gradient px-4 py-3 rounded-3 text-dark fw-semibold">
+              <i class="bi bi-grid-3x3-gap-fill me-1"></i> Xem gói tập
+            </a>
+            <a href="thue-hlv.html" class="btn btn-outline-info px-4 py-3 rounded-3 fw-semibold">
+              <i class="bi bi-person-arms-up me-1"></i> Thuê HLV
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="glass-card p-4 h-100">
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="stat-badge text-success bg-success bg-opacity-10">
+                <i class="bi bi-patch-check-fill text-success"></i>
+              </div>
+              <div>
+                <div class="fw-bold fs-5">Luồng đăng ký rõ ràng</div>
+                <div class="small text-body-secondary">Starter kích hoạt ngay, Pro/VIP chờ Admin duyệt</div>
+              </div>
+            </div>
+            <div class="row g-2 small">
+              <div class="col-4">
+                <div class="border border-secondary-subtle rounded-3 p-2 text-center h-100">
+                  <div class="fw-bold text-success">0đ</div>
+                  <div class="text-body-secondary">bắt đầu</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="border border-secondary-subtle rounded-3 p-2 text-center h-100">
+                  <div class="fw-bold text-info">3 gói</div>
+                  <div class="text-body-secondary">lựa chọn</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="border border-secondary-subtle rounded-3 p-2 text-center h-100">
+                  <div class="fw-bold text-warning">1-1</div>
+                  <div class="text-body-secondary">HLV VIP</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Feature grid in landing page -->
-      <div class="row g-4 mt-5 text-start justify-content-center">
-        <div class="col-md-4">
-          <div class="glass-card p-4 h-100">
-            <div class="stat-badge mb-3">
-              <i class="bi bi-journal-check"></i>
+      <div class="row g-4 align-items-stretch mb-5" id="packageCards">
+        <div class="col-lg-4">
+          <div class="glass-card p-4 h-100 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-10 px-2.5 py-1.5 fw-bold">Starter</span>
+                <div class="small text-body-secondary mt-2">Cho người mới bắt đầu</div>
+              </div>
+              <i class="bi bi-lightning-charge-fill text-warning fs-4"></i>
             </div>
-            <h4 class="mb-2">Ghi nhận tức thì</h4>
-            <p class="text-body-secondary mb-0">Nhập thời lượng tập, hệ thống tự động quy đổi lượng calo tiêu hao chính xác cho hàng chục môn thể thao master.</p>
+            <div class="mb-3">
+              <div class="display-6 fw-bold text-success">Miễn phí</div>
+              <div class="small text-body-secondary">Kích hoạt tức thì</div>
+            </div>
+            <ul class="list-unstyled d-flex flex-column gap-2 mb-4 text-body-secondary">
+              <li><i class="bi bi-check-circle-fill text-success me-2"></i>Ghi và xem buổi tập cá nhân</li>
+              <li><i class="bi bi-check-circle-fill text-success me-2"></i>Danh mục bài tập mẫu cơ bản</li>
+              <li><i class="bi bi-check-circle-fill text-success me-2"></i>Thống kê calo theo tuần</li>
+              <li><i class="bi bi-check-circle-fill text-success me-2"></i>Đổi về Starter bất cứ lúc nào</li>
+            </ul>
+            <div class="btn-group split-action mt-auto" role="group" aria-label="Chọn gói Starter">
+              <button type="button" class="btn btn-outline-success btn-icon fw-bold" title="Thêm Starter vào giỏ hàng" onclick="FitTrackApp.addPackageToCart('Starter')"><i class="bi bi-plus-lg"></i></button>
+              <button type="button" class="btn btn-outline-success fw-semibold" onclick="FitTrackApp.startPackageCheckout('Starter')">Đăng ký gói</button>
+            </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="glass-card p-4 h-100">
-            <div class="stat-badge mb-3 text-info bg-info bg-opacity-10">
-              <i class="bi bi-bar-chart-line-fill text-info"></i>
+
+        <div class="col-lg-4">
+          <div class="glass-card p-4 h-100 d-flex flex-column border border-success border-opacity-50 shadow-lg" style="background: linear-gradient(135deg, rgba(25, 135, 84, 0.10), rgba(13, 202, 240, 0.05));">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <span class="badge bg-success text-white px-2.5 py-1.5 fw-bold">FitPro</span>
+                <div class="small text-success fw-semibold mt-2">Phù hợp nhất</div>
+              </div>
+              <i class="bi bi-graph-up-arrow text-success fs-4"></i>
             </div>
-            <h4 class="mb-2">Biểu đồ tiến độ</h4>
-            <p class="text-body-secondary mb-0">Biểu đồ CSS hiện đại giúp bạn cập nhật ngay lượng năng lượng giải phóng theo tuần để có hướng điều chỉnh kịp thời.</p>
+            <div class="mb-3">
+              <div class="display-6 fw-bold">399.000đ</div>
+              <div class="small text-body-secondary">mỗi tháng, cần Admin duyệt</div>
+            </div>
+            <ul class="list-unstyled d-flex flex-column gap-2 mb-4 text-body-secondary">
+              <li><i class="bi bi-check-circle-fill text-success me-2"></i>Bao gồm toàn bộ gói Starter</li>
+              <li><i class="bi bi-check-circle-fill text-success me-2"></i>Ưu tiên duyệt buổi tập và gói tập</li>
+              <li><i class="bi bi-check-circle-fill text-success me-2"></i>Gợi ý dinh dưỡng căn bản</li>
+              <li><i class="bi bi-check-circle-fill text-success me-2"></i>Phù hợp người tập 3-5 buổi/tuần</li>
+            </ul>
+            <div class="btn-group split-action mt-auto" role="group" aria-label="Chọn gói FitPro">
+              <button type="button" class="btn btn-outline-success btn-icon fw-bold" title="Thêm FitPro vào giỏ hàng" onclick="FitTrackApp.addPackageToCart('Pro')"><i class="bi bi-plus-lg"></i></button>
+              <button type="button" class="btn btn-gradient fw-semibold text-dark" onclick="FitTrackApp.startPackageCheckout('Pro')">Đăng ký gói</button>
+            </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="glass-card p-4 h-100">
-            <div class="stat-badge mb-3 text-warning bg-warning bg-opacity-10">
-              <i class="bi bi-shield-check text-warning"></i>
+
+        <div class="col-lg-4">
+          <div class="glass-card p-4 h-100 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <span class="badge bg-info text-white px-2.5 py-1.5 fw-bold">VIP Coach</span>
+                <div class="small text-info fw-semibold mt-2">HLV đồng hành 1-1</div>
+              </div>
+              <i class="bi bi-person-check-fill text-info fs-4"></i>
             </div>
-            <h4 class="mb-2">Bảo mật & Đơn giản</h4>
-            <p class="text-body-secondary mb-0">Hệ thống đồng bộ cơ sở dữ liệu MockAPI tin cậy, thao tác giao diện bất đồng bộ mượt mà cùng giao diện Dark Mode bảo vệ mắt.</p>
+            <div class="mb-3">
+              <div class="display-6 fw-bold">999.000đ</div>
+              <div class="small text-body-secondary">mỗi tháng, cần Admin duyệt</div>
+            </div>
+            <ul class="list-unstyled d-flex flex-column gap-2 mb-4 text-body-secondary">
+              <li><i class="bi bi-check-circle-fill text-success me-2"></i>Bao gồm toàn bộ gói FitPro</li>
+              <li><i class="bi bi-check-circle-fill text-success me-2"></i>Lộ trình tập luyện cá nhân hóa</li>
+              <li><i class="bi bi-check-circle-fill text-success me-2"></i>Theo dõi kỹ thuật và tiến độ</li>
+              <li><i class="bi bi-check-circle-fill text-success me-2"></i>Kết nối trang Thuê HLV riêng</li>
+            </ul>
+            <div class="btn-group split-action mt-auto" role="group" aria-label="Chọn gói VIP Coach">
+              <button type="button" class="btn btn-outline-info btn-icon fw-bold" title="Thêm VIP Coach vào giỏ hàng" onclick="FitTrackApp.addPackageToCart('VIP')"><i class="bi bi-plus-lg"></i></button>
+              <button type="button" class="btn btn-outline-info fw-semibold text-info" onclick="FitTrackApp.startPackageCheckout('VIP')">Đăng ký gói</button>
+            </div>
           </div>
         </div>
       </div>
+
+      <div class="row g-4 mb-5">
+        <div class="col-lg-4">
+          <div class="d-flex gap-3 h-100">
+            <div class="stat-badge flex-shrink-0"><i class="bi bi-box-arrow-in-right"></i></div>
+            <div>
+              <h4 class="fs-5 mb-1">1. Đăng nhập</h4>
+              <p class="text-body-secondary mb-0">Nếu chưa đăng nhập, nút chọn gói sẽ mở form tài khoản để bạn tiếp tục.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="d-flex gap-3 h-100">
+            <div class="stat-badge text-info bg-info bg-opacity-10 flex-shrink-0"><i class="bi bi-ui-checks-grid text-info"></i></div>
+            <div>
+              <h4 class="fs-5 mb-1">2. Chọn gói</h4>
+              <p class="text-body-secondary mb-0">Starter đổi ngay. Pro và VIP tạo yêu cầu đăng ký trên MockAPI.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="d-flex gap-3 h-100">
+            <div class="stat-badge text-warning bg-warning bg-opacity-10 flex-shrink-0"><i class="bi bi-shield-check text-warning"></i></div>
+            <div>
+              <h4 class="fs-5 mb-1">3. Admin duyệt</h4>
+              <p class="text-body-secondary mb-0">Admin có thể duyệt, từ chối hoặc đổi trực tiếp gói tập cho học viên.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card p-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+          <div>
+            <h4 class="mb-1"><i class="bi bi-table text-success me-2"></i>So sánh nhanh</h4>
+            <p class="text-body-secondary mb-0">Chọn gói theo mức hỗ trợ bạn cần, không theo số lượng chữ trong danh sách tính năng.</p>
+          </div>
+          <a href="ho-tro.html" class="btn btn-outline-secondary rounded-3 fw-semibold px-3">
+            Cần tư vấn <i class="bi bi-arrow-up-right ms-1"></i>
+          </a>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Nhu cầu</th>
+                <th scope="col" class="text-center">Starter</th>
+                <th scope="col" class="text-center">FitPro</th>
+                <th scope="col" class="text-center">VIP Coach</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="fw-semibold">Bắt đầu ghi buổi tập</td>
+                <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i></td>
+                <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i></td>
+                <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i></td>
+              </tr>
+              <tr>
+                <td class="fw-semibold">Cần theo dõi nghiêm túc</td>
+                <td class="text-center text-muted">Cơ bản</td>
+                <td class="text-center text-success fw-semibold">Tốt</td>
+                <td class="text-center text-info fw-semibold">Rất tốt</td>
+              </tr>
+              <tr>
+                <td class="fw-semibold">Cần HLV cá nhân</td>
+                <td class="text-center"><i class="bi bi-dash-circle text-muted"></i></td>
+                <td class="text-center"><i class="bi bi-dash-circle text-muted"></i></td>
+                <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i></td>
+              </tr>
+              <tr>
+                <td class="fw-semibold">Trạng thái sau khi chọn</td>
+                <td class="text-center text-success">Kích hoạt ngay</td>
+                <td class="text-center text-warning">Chờ duyệt</td>
+                <td class="text-center text-warning">Chờ duyệt</td>
+              </tr>
+              <tr class="border-top border-secondary-subtle fw-bold">
+                <td>Chi phí</td>
+                <td class="text-center text-success">Miễn phí</td>
+                <td class="text-center">399.000đ/tháng</td>
+                <td class="text-center">999.000đ/tháng</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </section>
 
   </main>
@@ -270,65 +437,6 @@
 
           </div>
 
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==========================================
-       WORKOUT LOGGER MODAL (ADD WORKOUT ENTRY)
-       ========================================== -->
-  <div class="modal fade" id="workoutModal" tabindex="-1" aria-labelledby="workoutModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content glass-card shadow-2xl">
-        <div class="modal-header border-bottom border-secondary-subtle">
-          <h5 class="modal-title fs-5" id="workoutModalLabel"><i class="bi bi-journal-plus text-success me-2"></i>Ghi nhận buổi tập</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body p-4">
-          <form id="formWorkoutLog">
-            
-            <!-- Exercise Selection Dropdown -->
-            <div class="mb-3">
-              <label for="workoutExerciseSelect" class="form-label small fw-bold">Chọn Bài Tập Mẫu</label>
-              <select class="form-select" id="workoutExerciseSelect" required>
-                <option value="" disabled selected>-- Chọn bài tập trong danh mục --</option>
-                <!-- Populated in main.js -->
-              </select>
-            </div>
-
-            <!-- Date selection -->
-            <div class="mb-3">
-              <label for="workoutDate" class="form-label small fw-bold">Ngày Tập</label>
-              <input type="date" class="form-control" id="workoutDate" required>
-            </div>
-
-            <!-- Duration input and Calorie dynamic display side-by-side -->
-            <div class="row g-3 mb-3">
-              <div class="col-md-6">
-                <label for="workoutDuration" class="form-label small fw-bold">Thời Lượng (Phút)</label>
-                <div class="input-group">
-                  <input type="number" class="form-control" id="workoutDuration" placeholder="Ví dụ: 30" min="1" required>
-                  <span class="input-group-text bg-secondary-subtle">phút</span>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label small fw-bold text-success">Calo Tiêu Hao (Tự Tính)</label>
-                <div class="input-group">
-                  <input type="text" class="form-control bg-secondary-subtle text-success fw-bold border-success-subtle" id="workoutCaloriesDisplay" value="0" readonly>
-                  <span class="input-group-text bg-success bg-opacity-10 text-success border-success-subtle">kcal</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Notes text input -->
-            <div class="mb-4">
-              <label for="workoutNotes" class="form-label small fw-bold">Ghi Chú Cá Nhân</label>
-              <textarea class="form-control" id="workoutNotes" rows="2" placeholder="Ví dụ: Tập sung sức, nhịp tim đều, uống 500ml nước..."></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-gradient w-100 py-2.5 text-dark">Lưu Buổi Tập <i class="bi bi-save-fill ms-1"></i></button>
-          </form>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FitTrack - Buổi tập & Theo dõi sức khỏe cá nhân</title>
+  <title>FitTrack - Buổi tập</title>
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,68 +123,92 @@
        MAIN CONTAINER
        ========================================== -->
   <main class="container py-5">
-    
-    <!-- AUTHOR INFO ALERT BLOCK FOR SMALL VIEWPORTS -->
-    <div class="d-flex d-md-none justify-content-center mb-4">
-      <span class="copyright-badge">
-        <i class="bi bi-c-circle me-1"></i> Project: FitTrack - Developed by Nhom 9
-      </span>
-    </div>
 
-    <!-- ==========================================
-         ANONYMOUS INTRO VIEW (GUEST SCREEN)
-         ========================================== -->
     <section id="anonymousView" class="py-5 text-center">
       <div class="row justify-content-center">
-        <div class="col-lg-8 col-xl-7">
-          <div class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fs-7 mb-3 fw-bold border border-success border-opacity-25">
-            <i class="bi bi-activity me-1"></i> Sức Khỏe Là Vàng - Kỷ Luật Là Chìa Khóa
-          </div>
-          <h1 class="display-4 fw-extrabold text-gradient-title mb-3" style="font-family: var(--font-heading);">
-            Theo Dõi Tập Luyện,<br>Kiến Tạo Vóc Dáng Ước Mơ
-          </h1>
-          <p class="lead text-body-secondary fs-5 mb-5 px-lg-4">
-            FitTrack đồng hành cùng bạn ghi buổi tập thể thao hàng ngày, tự động đo đạc calo tiêu thụ, tổng hợp số liệu khoa học với biểu đồ tiến độ sinh động giúp bạn kiên trì mỗi ngày.
-          </p>
-          <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
-            <button class="btn btn-gradient btn-lg px-4 py-3 rounded-3" data-bs-toggle="modal" data-bs-target="#authModal" onclick="switchAuthTab('register')">
-              Bắt đầu hoàn toàn miễn phí <i class="bi bi-arrow-right ms-2"></i>
-            </button>
-            <button class="btn btn-outline-secondary btn-lg px-4 py-3 rounded-3" data-bs-toggle="modal" data-bs-target="#authModal" onclick="switchAuthTab('login')">
-              Đăng nhập tài khoản
-            </button>
+        <div class="col-lg-7">
+          <div class="glass-card p-5">
+            <div class="stat-badge mx-auto mb-3">
+              <i class="bi bi-journal-lock"></i>
+            </div>
+            <h1 class="h2 fw-extrabold mb-3" style="font-family: var(--font-heading);">Buổi tập</h1>
+            <p class="text-body-secondary mb-4">Vui lòng đăng nhập để xem, lọc và quản lý lịch sử các buổi tập đã lưu trên MockAPI.</p>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+              <button class="btn btn-gradient px-4 py-2.5 rounded-3 text-dark" data-bs-toggle="modal" data-bs-target="#authModal" onclick="switchAuthTab('login')">
+                Đăng nhập <i class="bi bi-box-arrow-in-right ms-1"></i>
+              </button>
+              <button class="btn btn-outline-secondary px-4 py-2.5 rounded-3" data-bs-toggle="modal" data-bs-target="#authModal" onclick="switchAuthTab('register')">
+                Tạo tài khoản
+              </button>
+            </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Feature grid in landing page -->
-      <div class="row g-4 mt-5 text-start justify-content-center">
-        <div class="col-md-4">
-          <div class="glass-card p-4 h-100">
-            <div class="stat-badge mb-3">
-              <i class="bi bi-journal-check"></i>
+    <section id="dashboardView" class="d-none">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+          <div class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fs-7 mb-2 fw-bold border border-success border-opacity-25">
+            <i class="bi bi-clock-history me-1"></i> Lịch sử cá nhân
+          </div>
+          <h1 class="h2 fw-extrabold mb-1" style="font-family: var(--font-heading);">Buổi tập</h1>
+          <p class="text-body-secondary mb-0">Theo dõi toàn bộ buổi tập, trạng thái duyệt và lượng calo đã tiêu hao.</p>
+        </div>
+        <button class="btn btn-gradient px-4 py-2.5 rounded-3 text-dark fw-semibold" data-bs-toggle="modal" data-bs-target="#workoutModal">
+          <i class="bi bi-plus-circle-fill me-1"></i> Ghi buổi tập
+        </button>
+      </div>
+
+      <!-- ==========================================
+           WORKOUT JOURNAL LOGS & FILTERS (SECTION 3) -->
+      <div class="glass-card p-4" id="workoutHistorySection">
+        <div class="row g-3 justify-content-between align-items-center mb-4">
+          <div class="col-sm-6">
+            <h4 class="mb-0 fs-5"><i class="bi bi-card-list text-success me-2"></i>Buổi tập</h4>
+          </div>
+          
+          <!-- FILTERS PANEL -->
+          <div class="col-sm-6">
+            <div class="row g-2 justify-content-sm-end">
+              <div class="col-6 col-md-5">
+                <select class="form-select form-select-sm" id="filterMuscleGroup" title="Lọc theo nhóm cơ">
+                  <option value="">Tất cả Nhóm cơ</option>
+                  <!-- Populated in main.js -->
+                </select>
+              </div>
+              <div class="col-6 col-md-5">
+                <select class="form-select form-select-sm" id="filterExerciseName" title="Lọc theo bài tập">
+                  <option value="">Tất cả Bài tập</option>
+                  <!-- Populated in main.js -->
+                </select>
+              </div>
             </div>
-            <h4 class="mb-2">Ghi nhận tức thì</h4>
-            <p class="text-body-secondary mb-0">Nhập thời lượng tập, hệ thống tự động quy đổi lượng calo tiêu hao chính xác cho hàng chục môn thể thao master.</p>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="glass-card p-4 h-100">
-            <div class="stat-badge mb-3 text-info bg-info bg-opacity-10">
-              <i class="bi bi-bar-chart-line-fill text-info"></i>
-            </div>
-            <h4 class="mb-2">Biểu đồ tiến độ</h4>
-            <p class="text-body-secondary mb-0">Biểu đồ CSS hiện đại giúp bạn cập nhật ngay lượng năng lượng giải phóng theo tuần để có hướng điều chỉnh kịp thời.</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="glass-card p-4 h-100">
-            <div class="stat-badge mb-3 text-warning bg-warning bg-opacity-10">
-              <i class="bi bi-shield-check text-warning"></i>
-            </div>
-            <h4 class="mb-2">Bảo mật & Đơn giản</h4>
-            <p class="text-body-secondary mb-0">Hệ thống đồng bộ cơ sở dữ liệu MockAPI tin cậy, thao tác giao diện bất đồng bộ mượt mà cùng giao diện Dark Mode bảo vệ mắt.</p>
-          </div>
+
+        <!-- LOG TABLE -->
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Ngày tập</th>
+                <th scope="col">Tên bài tập</th>
+                <th scope="col" class="d-none d-md-table-cell">Nhóm cơ</th>
+                <th scope="col">Thời lượng</th>
+                <th scope="col">Tổng Calo tiêu hao</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col" class="d-none d-lg-table-cell">Ghi chú</th>
+                <th scope="col" class="text-center">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="workoutHistoryTableBody">
+              <!-- Dynamically populated -->
+              <tr>
+                <td colspan="8" class="text-center py-4 text-body-secondary">Chưa ghi nhận buổi tập nào. Hãy nhấn nút để lưu buổi tập đầu tiên!</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>

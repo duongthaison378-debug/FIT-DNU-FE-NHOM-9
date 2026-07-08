@@ -70,6 +70,8 @@ const FitTrackAdmin = {
     try {
       this.exercises = await API.getExercises();
       this.renderTable();
+      this.renderModuleOverview();
+      this.renderAdminOverview();
     } catch (error) {
       UTILS.showToast('Không thể tải danh mục bài tập mẫu từ máy chủ!', 'danger');
     } finally {
@@ -86,6 +88,9 @@ const FitTrackAdmin = {
       // Store all registered users to allow admin to manage all account permissions
       this.students = users;
       this.renderStudentsList();
+      this.renderAdminOverview();
+      this.renderServiceManagement();
+      this.renderModuleOverview();
       
       // If a user was previously selected, reload their fresh profile data
       if (this.selectedStudent) {
@@ -101,6 +106,345 @@ const FitTrackAdmin = {
       console.error('Failed to load accounts list:', error);
       UTILS.showToast('Không thể tải danh sách tài khoản từ hệ thống!', 'danger');
     }
+  },
+
+  formatDateTime(value) {
+    if (!value) return 'Chưa có thời gian';
+    const date = new Date(value);
+    if (isNaN(date.getTime())) return value;
+    return date.toLocaleString('vi-VN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  },
+
+  formatMoney(value) {
+    const amount = Number(value) || 0;
+    return amount.toLocaleString('vi-VN') + 'đ';
+  },
+
+  getAdminMetrics() {
+    const users = this.students || [];
+    const students = users.filter(user => user.role !== 'admin');
+    const admins = users.filter(user => user.role === 'admin');
+
+    const workouts = users.flatMap(user =>
+      (user.workouts || []).map(workout => ({ user, workout }))
+    );
+    const pendingWorkouts = workouts.filter(row => row.workout.status !== 'Đã duyệt');
+
+    const pendingPackages = students.filter(user =>
+      user.requestedPackage && user.packageStatus === 'Chờ duyệt'
+    );
+
+    const coachRequests = users.flatMap(user =>
+      (user.coachRequests || []).map((request, index) => ({ user, request, index }))
+    );
+    const pendingCoaches = coachRequests.filter(row => row.request.status === 'Chờ duyệt');
+
+    const payments = users.flatMap(user =>
+      (user.paymentHistory || []).map(payment => ({ user, payment }))
+    );
+    const revenue = payments.reduce((sum, row) => sum + (Number(row.payment.amount) || 0), 0);
+
+    return {
+      users,
+      students,
+      admins,
+      workouts,
+      pendingWorkouts,
+      pendingPackages,
+      coachRequests,
+      pendingCoaches,
+      payments,
+      revenue
+    };
+  },
+
+  renderAdminOverview() {
+    const metrics = this.getAdminMetrics();
+    const setText = (id, value) => {
+      const element = document.getElementById(id);
+      if (element) element.innerText = value;
+    };
+
+    setText('adminTotalUsers', metrics.users.length);
+    setText('adminTotalStudents', metrics.students.length);
+    setText('adminTotalAdmins', metrics.admins.length);
+    setText('adminTotalWorkouts', metrics.workouts.length);
+    setText('adminPendingWorkouts', metrics.pendingWorkouts.length);
+    setText('adminPendingPackages', metrics.pendingPackages.length);
+    setText('adminPendingCoaches', metrics.pendingCoaches.length);
+    setText('adminRevenueTotal', this.formatMoney(metrics.revenue));
+
+    const recentContainer = document.getElementById('adminRecentRequests');
+    if (!recentContainer) return;
+
+    const recentItems = [
+      ...metrics.pendingWorkouts.map(row => ({
+        type: 'Buổi tập',
+        icon: 'bi-journal-check',
+        color: 'success',
+        title: row.workout.exerciseName || 'Buổi tập mới',
+        user: row.user.fullName,
+        date: row.workout.date,
+        action: `FitTrackAdmin.openStudentFromOverview('${row.user.id}')`
+      })),
+      ...metrics.pendingPackages.map(user => ({
+        type: 'Gói tập',
+        icon: 'bi-tags-fill',
+        color: 'warning',
+        title: `Đăng ký gói ${user.requestedPackage}`,
+        user: user.fullName,
+        date: user.lastPayment?.createdAt || user.updatedAt,
+        action: `FitTrackAdmin.openStudentFromOverview('${user.id}')`
+      })),
+      ...metrics.pendingCoaches.map(row => ({
+        type: 'Thuê HLV',
+        icon: 'bi-person-workspace',
+        color: 'info',
+        title: row.request.coachName || row.request.specialty || 'Yêu cầu HLV',
+        user: row.user.fullName,
+        date: row.request.createdAt,
+        action: `FitTrackAdmin.openServiceTab()`
+      }))
+    ].sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0)).slice(0, 8);
+
+    if (recentItems.length === 0) {
+      recentContainer.innerHTML = `
+        <div class="text-center text-body-secondary py-4">
+          <i class="bi bi-check2-circle fs-1 text-success d-block mb-2"></i>
+          Hiện chưa có yêu cầu nào cần xử lý.
+        </div>
+      `;
+      return;
+    }
+
+    recentContainer.innerHTML = recentItems.map(item => `
+      <button type="button" class="btn text-start border border-secondary-subtle rounded-3 p-3 bg-secondary bg-opacity-10" onclick="${item.action}">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+          <div class="d-flex gap-3">
+            <span class="badge bg-${item.color} bg-opacity-10 text-${item.color} border border-${item.color} border-opacity-25 p-2">
+              <i class="bi ${item.icon}"></i>
+            </span>
+            <div>
+              <div class="fw-bold">${item.title}</div>
+              <div class="small text-body-secondary">${item.type} - ${item.user}</div>
+            </div>
+          </div>
+          <span class="small text-muted text-nowrap">${this.formatDateTime(item.date)}</span>
+        </div>
+      </button>
+    `).join('');
+  },
+
+  renderServiceManagement() {
+    const metrics = this.getAdminMetrics();
+    this.renderPackageRequests(metrics.pendingPackages);
+    this.renderCoachRequests(metrics.coachRequests);
+    this.renderPaymentHistory(metrics.payments);
+  },
+
+  renderPackageRequests(packageRequests) {
+    const container = document.getElementById('adminPackageRequestsList');
+    if (!container) return;
+
+    if (packageRequests.length === 0) {
+      container.innerHTML = `
+        <div class="text-center text-body-secondary py-4">
+          <i class="bi bi-tags fs-1 d-block mb-2 opacity-50"></i>
+          Không có yêu cầu gói tập đang chờ.
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = packageRequests.map(user => `
+      <div class="border border-secondary-subtle rounded-3 p-3 bg-secondary bg-opacity-10">
+        <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+          <div>
+            <div class="fw-bold">${user.fullName}</div>
+            <div class="small text-body-secondary">@${user.username} muốn đăng ký gói <strong>${user.requestedPackage}</strong></div>
+          </div>
+          <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25">Chờ duyệt</span>
+        </div>
+        <div class="d-flex gap-2 mt-3">
+          <button class="btn btn-sm btn-outline-danger rounded-3 fw-semibold" onclick="FitTrackAdmin.handleRejectPackage('${user.id}')">Từ chối</button>
+          <button class="btn btn-sm btn-outline-success rounded-3 fw-semibold" onclick="FitTrackAdmin.handleApprovePackage('${user.id}')">Duyệt gói</button>
+        </div>
+      </div>
+    `).join('');
+  },
+
+  renderCoachRequests(coachRequests) {
+    const container = document.getElementById('adminCoachRequestsList');
+    if (!container) return;
+
+    if (coachRequests.length === 0) {
+      container.innerHTML = `
+        <div class="text-center text-body-secondary py-4">
+          <i class="bi bi-person-workspace fs-1 d-block mb-2 opacity-50"></i>
+          Chưa có yêu cầu thuê HLV nào.
+        </div>
+      `;
+      return;
+    }
+
+    const sorted = [...coachRequests].sort((a, b) => new Date(b.request.createdAt || 0) - new Date(a.request.createdAt || 0));
+    container.innerHTML = sorted.map(row => {
+      const status = row.request.status || 'Chờ duyệt';
+      const statusClass = status === 'Đã duyệt' ? 'success' : status === 'Từ chối' ? 'danger' : 'warning';
+      const actions = status === 'Chờ duyệt' ? `
+        <div class="d-flex gap-2 mt-3">
+          <button class="btn btn-sm btn-outline-danger rounded-3 fw-semibold" onclick="FitTrackAdmin.handleRejectCoachRequest('${row.user.id}', ${row.index})">Từ chối</button>
+          <button class="btn btn-sm btn-outline-success rounded-3 fw-semibold" onclick="FitTrackAdmin.handleApproveCoachRequest('${row.user.id}', ${row.index})">Duyệt thuê</button>
+        </div>
+      ` : '';
+
+      return `
+        <div class="border border-secondary-subtle rounded-3 p-3 bg-secondary bg-opacity-10">
+          <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+            <div>
+              <div class="fw-bold">${row.request.coachName || 'HLV chưa rõ tên'}</div>
+              <div class="small text-body-secondary">${row.request.specialty || 'Tư vấn tập luyện'} - ${row.user.fullName}</div>
+              <div class="small text-muted mt-1">${this.formatDateTime(row.request.createdAt)} | ${this.formatMoney(row.request.price)}</div>
+            </div>
+            <span class="badge bg-${statusClass} bg-opacity-10 text-${statusClass} border border-${statusClass} border-opacity-25">${status}</span>
+          </div>
+          ${actions}
+        </div>
+      `;
+    }).join('');
+  },
+
+  renderPaymentHistory(payments) {
+    const tbody = document.getElementById('adminPaymentHistoryList');
+    if (!tbody) return;
+
+    if (payments.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="text-center text-body-secondary py-4">
+            Chưa có giao dịch thanh toán nào.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    const sorted = [...payments].sort((a, b) => new Date(b.payment.createdAt || 0) - new Date(a.payment.createdAt || 0)).slice(0, 12);
+    tbody.innerHTML = sorted.map(row => `
+      <tr>
+        <td class="small text-body-secondary">${this.formatDateTime(row.payment.createdAt)}</td>
+        <td>
+          <div class="fw-bold">${row.user.fullName}</div>
+          <div class="small text-muted">@${row.user.username}</div>
+        </td>
+        <td>${row.payment.title || row.payment.packageName || row.payment.serviceName || row.payment.type || 'Dịch vụ FitTrack'}</td>
+        <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-10">${row.payment.methodName || row.payment.method || 'Chưa rõ'}</span></td>
+        <td class="text-end fw-bold text-success">${this.formatMoney(row.payment.amount)}</td>
+      </tr>
+    `).join('');
+  },
+
+  renderModuleOverview() {
+    const container = document.getElementById('adminModuleOverview');
+    if (!container) return;
+
+    const metrics = this.getAdminMetrics();
+    const modules = [
+      {
+        name: 'Trang chủ',
+        href: 'index.html',
+        icon: 'bi-house-door-fill',
+        color: 'primary',
+        summary: `${metrics.users.length} tài khoản đang đồng bộ MockAPI`,
+        admin: 'Đăng nhập, dashboard học viên, điều hướng'
+      },
+      {
+        name: 'Buổi tập',
+        href: 'nhat-ky.html',
+        icon: 'bi-journal-text',
+        color: 'success',
+        summary: `${metrics.pendingWorkouts.length} buổi chờ duyệt`,
+        admin: 'Duyệt/xóa buổi tập trong tab Người dùng'
+      },
+      {
+        name: 'Gói tập',
+        href: 'goi-tap.html',
+        icon: 'bi-tags-fill',
+        color: 'warning',
+        summary: `${metrics.pendingPackages.length} yêu cầu chờ duyệt`,
+        admin: 'Duyệt gói trong tab Dịch vụ & Thanh toán'
+      },
+      {
+        name: 'Thuê HLV',
+        href: 'thue-hlv.html',
+        icon: 'bi-person-workspace',
+        color: 'info',
+        summary: `${metrics.pendingCoaches.length} yêu cầu chờ duyệt`,
+        admin: 'Duyệt thuê HLV và kiểm tra thanh toán'
+      },
+      {
+        name: 'Dinh dưỡng',
+        href: 'dinh-duong.html',
+        icon: 'bi-egg-fried',
+        color: 'success',
+        summary: 'Nội dung tham khảo healthy food',
+        admin: 'Kiểm tra giao diện và liên kết trang'
+      },
+      {
+        name: 'Thanh toán',
+        href: 'thanh-toan.html',
+        icon: 'bi-cart-check-fill',
+        color: 'primary',
+        summary: `${metrics.payments.length} giao dịch đã ghi nhận`,
+        admin: 'Đối chiếu lịch sử thanh toán'
+      },
+      {
+        name: 'Hỗ trợ',
+        href: 'ho-tro.html',
+        icon: 'bi-headset',
+        color: 'secondary',
+        summary: 'Kênh hỗ trợ người tập',
+        admin: 'Mở nhanh trang hỗ trợ'
+      }
+    ];
+
+    container.innerHTML = modules.map(module => `
+      <div class="col-md-6 col-xl-4">
+        <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-4 h-100">
+          <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+            <span class="badge bg-${module.color} bg-opacity-10 text-${module.color} border border-${module.color} border-opacity-25 p-2">
+              <i class="bi ${module.icon} fs-5"></i>
+            </span>
+            <a class="btn btn-sm btn-outline-primary rounded-3" href="${module.href}">
+              <i class="bi bi-box-arrow-up-right"></i>
+            </a>
+          </div>
+          <h5 class="fw-bold mb-1">${module.name}</h5>
+          <p class="small text-body-secondary mb-3">${module.summary}</p>
+          <div class="small border-top border-secondary-subtle pt-3">
+            <span class="text-muted">Admin quản lý:</span><br>
+            <strong>${module.admin}</strong>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  },
+
+  openStudentFromOverview(userId) {
+    const studentsTab = document.getElementById('students-tab');
+    if (studentsTab) bootstrap.Tab.getOrCreateInstance(studentsTab).show();
+    this.selectStudent(userId);
+  },
+
+  openServiceTab() {
+    const servicesTab = document.getElementById('services-tab');
+    if (servicesTab) bootstrap.Tab.getOrCreateInstance(servicesTab).show();
   },
 
   /**
@@ -222,6 +566,18 @@ const FitTrackAdmin = {
     // Fill details header
     document.getElementById('selectedStudentName').innerText = student.fullName;
     document.getElementById('selectedStudentUsername').innerText = student.username;
+    
+    // Fill password field
+    const passwordField = document.getElementById('selectedStudentPassword');
+    if (passwordField) {
+      passwordField.value = student.password || '';
+      // Reset to password type when switching students
+      passwordField.type = 'password';
+      const toggleBtn = document.getElementById('togglePasswordBtn');
+      if (toggleBtn) {
+        toggleBtn.innerHTML = '<i class="bi bi-eye-fill"></i>';
+      }
+    }
 
     // Fill current role badge
     const roleBadge = document.getElementById('selectedUserRoleBadge');
@@ -388,7 +744,7 @@ const FitTrackAdmin = {
       tbody.innerHTML = `
         <tr>
           <td colspan="6" class="text-center py-5 text-body-secondary">
-            <i class="bi bi-journal-x fs-3 d-block mb-2 text-muted"></i> Học viên này chưa có nhật ký buổi tập nào trên MockAPI.
+            <i class="bi bi-journal-x fs-3 d-block mb-2 text-muted"></i> Học viên này chưa có buổi tập nào trên MockAPI.
           </td>
         </tr>
       `;
@@ -719,7 +1075,7 @@ const FitTrackAdmin = {
     const targetWorkout = this.selectedStudent.workouts.find(w => w.workoutId === workoutId);
     if (!targetWorkout) return;
 
-    if (!confirm(`Bạn có chắc chắn muốn xóa vĩnh viễn nhật ký buổi tập "${targetWorkout.exerciseName}" của học viên ${this.selectedStudent.fullName} không?`)) {
+    if (!confirm(`Bạn có chắc chắn muốn xóa vĩnh viễn buổi tập "${targetWorkout.exerciseName}" của học viên ${this.selectedStudent.fullName} không?`)) {
       return;
     }
 
@@ -737,7 +1093,118 @@ const FitTrackAdmin = {
       this.selectStudent(this.selectedStudent.id);
     } catch (error) {
       console.error(error);
-      UTILS.showToast('Gặp lỗi khi xóa nhật ký buổi tập trên MockAPI!', 'danger');
+      UTILS.showToast('Gặp lỗi khi xóa buổi tập trên MockAPI!', 'danger');
+    } finally {
+      UTILS.hideSpinner();
+    }
+  },
+
+  async updateCoachRequestStatus(userId, requestIndex, nextStatus) {
+    const student = this.students.find(s => s.id === userId);
+    if (!student || !Array.isArray(student.coachRequests) || !student.coachRequests[requestIndex]) {
+      UTILS.showToast('Không tìm thấy yêu cầu thuê HLV tương ứng!', 'danger');
+      return;
+    }
+
+    const request = student.coachRequests[requestIndex];
+    const isApprove = nextStatus === 'Đã duyệt';
+    const confirmMessage = isApprove
+      ? `Bạn có chắc chắn duyệt yêu cầu thuê ${request.coachName || 'HLV'} cho học viên ${student.fullName} không?`
+      : `Bạn có chắc chắn từ chối yêu cầu thuê ${request.coachName || 'HLV'} của học viên ${student.fullName} không?`;
+
+    if (!confirm(confirmMessage)) return;
+
+    student.coachRequests[requestIndex] = {
+      ...request,
+      status: nextStatus,
+      reviewedAt: new Date().toISOString()
+    };
+
+    if (isApprove) {
+      student.activePackage = student.activePackage === 'VIP' ? student.activePackage : 'VIP';
+    }
+
+    const stillPendingCoach = student.coachRequests.some(item => item.status === 'Chờ duyệt');
+    if (!stillPendingCoach && student.requestedPackage === 'VIP' && student.packageStatus === 'Chờ duyệt') {
+      student.requestedPackage = null;
+      student.packageStatus = null;
+    }
+
+    UTILS.showSpinner();
+    try {
+      await API.updateUserWorkings(userId, student);
+      UTILS.showToast(isApprove ? 'Đã duyệt yêu cầu thuê HLV thành công!' : 'Đã từ chối yêu cầu thuê HLV.', isApprove ? 'success' : 'info');
+      await this.fetchStudents();
+      if (this.selectedStudent && this.selectedStudent.id === userId) {
+        this.selectStudent(userId);
+      }
+    } catch (error) {
+      console.error(error);
+      UTILS.showToast('Gặp lỗi khi cập nhật yêu cầu thuê HLV trên MockAPI!', 'danger');
+    } finally {
+      UTILS.hideSpinner();
+    }
+  },
+
+  async handleApproveCoachRequest(userId, requestIndex) {
+    await this.updateCoachRequestStatus(userId, requestIndex, 'Đã duyệt');
+  },
+
+  async handleRejectCoachRequest(userId, requestIndex) {
+    await this.updateCoachRequestStatus(userId, requestIndex, 'Từ chối');
+  },
+
+  /**
+   * Toggle password visibility (show/hide)
+   */
+  togglePasswordVisibility() {
+    const passwordField = document.getElementById('selectedStudentPassword');
+    const toggleBtn = document.getElementById('togglePasswordBtn');
+    
+    if (!passwordField || !toggleBtn) return;
+
+    if (passwordField.type === 'password') {
+      passwordField.type = 'text';
+      toggleBtn.innerHTML = '<i class="bi bi-eye-slash-fill"></i>';
+    } else {
+      passwordField.type = 'password';
+      toggleBtn.innerHTML = '<i class="bi bi-eye-fill"></i>';
+    }
+  },
+
+  /**
+   * Delete a student account permanently
+   */
+  async handleDeleteAccount() {
+    if (!this.selectedStudent) return;
+
+    // Prevent self-deletion
+    if (this.selectedStudent.id === this.adminUser.id) {
+      UTILS.showToast('Bạn không thể xóa tài khoản của chính mình!', 'warning');
+      return;
+    }
+
+    if (!confirm(`Bạn muốn xóa tài khoản ${this.selectedStudent.fullName} (@${this.selectedStudent.username}) vĩnh viễn chứ?`)) {
+      return;
+    }
+
+    UTILS.showSpinner();
+    try {
+      // Delete account from MockAPI
+      await API.deleteUser(this.selectedStudent.id);
+      
+      UTILS.showToast(`Đã xóa vĩnh viễn tài khoản @${this.selectedStudent.username} khỏi hệ thống!`, 'success');
+      
+      // Reload lists
+      await this.fetchStudents();
+      
+      // Clear selection
+      this.selectedStudent = null;
+      document.getElementById('noStudentSelectedMsg').classList.remove('d-none');
+      document.getElementById('studentDetailsWorkspace').classList.add('d-none');
+    } catch (error) {
+      console.error(error);
+      UTILS.showToast('Gặp lỗi khi xóa tài khoản trên MockAPI!', 'danger');
     } finally {
       UTILS.hideSpinner();
     }

@@ -26,7 +26,9 @@
       let isAdmin = false;
       if (savedUserStr) {
         try {
-          const user = JSON.parse(savedUserStr);
+          const parsed = JSON.parse(savedUserStr);
+          // Handle both old format (direct user) and new format (with sessionId)
+          const user = parsed.user || parsed;
           if (user && user.role === 'admin') {
             isAdmin = true;
           }
@@ -127,21 +129,117 @@
       <!-- Admin Workspace Navigation Tabs -->
       <ul class="nav nav-tabs mb-5" id="adminTabs" role="tablist">
         <li class="nav-item" role="presentation">
-          <button class="nav-link active fw-semibold text-primary" id="exercises-tab" data-bs-toggle="tab" data-bs-target="#exercises-pane" type="button" role="tab" aria-controls="exercises-pane" aria-selected="true">
-            <i class="bi bi-collection-play-fill me-2"></i>Danh mục bài tập mẫu
+          <button class="nav-link active fw-semibold text-primary" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview-pane" type="button" role="tab" aria-controls="overview-pane" aria-selected="true">
+            <i class="bi bi-speedometer2 me-2"></i>Tổng quan
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-semibold text-primary" id="exercises-tab" data-bs-toggle="tab" data-bs-target="#exercises-pane" type="button" role="tab" aria-controls="exercises-pane" aria-selected="false">
+            <i class="bi bi-collection-play-fill me-2"></i>Bài tập mẫu
           </button>
         </li>
         <li class="nav-item" role="presentation">
           <button class="nav-link fw-semibold text-primary" id="students-tab" data-bs-toggle="tab" data-bs-target="#students-pane" type="button" role="tab" aria-controls="students-pane" aria-selected="false">
-            <i class="bi bi-people-fill me-2"></i>Quản lý Tài khoản & Duyệt tập
+            <i class="bi bi-people-fill me-2"></i>Người dùng
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-semibold text-primary" id="services-tab" data-bs-toggle="tab" data-bs-target="#services-pane" type="button" role="tab" aria-controls="services-pane" aria-selected="false">
+            <i class="bi bi-credit-card-2-front-fill me-2"></i>Dịch vụ & Thanh toán
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-semibold text-primary" id="content-tab" data-bs-toggle="tab" data-bs-target="#content-pane" type="button" role="tab" aria-controls="content-pane" aria-selected="false">
+            <i class="bi bi-grid-1x2-fill me-2"></i>Nội dung trang
           </button>
         </li>
       </ul>
 
       <div class="tab-content" id="adminTabsContent">
         
+        <!-- TAB PANE 0: ADMIN OVERVIEW -->
+        <div class="tab-pane fade show active" id="overview-pane" role="tabpanel" aria-labelledby="overview-tab">
+          <div class="row align-items-center justify-content-between g-3 mb-4">
+            <div class="col-lg-7">
+              <h3 class="mb-1 text-primary"><i class="bi bi-command me-2"></i>Bảng điều khiển quản trị</h3>
+              <p class="text-body-secondary mb-0">Theo dõi nhanh người dùng, buổi tập, gói tập, thuê HLV và thanh toán từ MockAPI.</p>
+            </div>
+            <div class="col-lg-5 text-lg-end">
+              <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+                <a class="btn btn-sm btn-outline-primary rounded-3 fw-semibold" href="goi-tap.html"><i class="bi bi-tags-fill me-1"></i>Gói tập</a>
+                <a class="btn btn-sm btn-outline-primary rounded-3 fw-semibold" href="thue-hlv.html"><i class="bi bi-person-workspace me-1"></i>Thuê HLV</a>
+                <a class="btn btn-sm btn-outline-primary rounded-3 fw-semibold" href="thanh-toan.html"><i class="bi bi-cart-check-fill me-1"></i>Thanh toán</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-sm-6 col-xl-3">
+              <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-3 h-100">
+                <div class="small text-muted fw-semibold">Tài khoản</div>
+                <div class="display-6 fw-bold text-primary" id="adminTotalUsers">0</div>
+                <div class="small text-body-secondary"><span id="adminTotalStudents">0</span> học viên, <span id="adminTotalAdmins">0</span> admin</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+              <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-3 h-100">
+                <div class="small text-muted fw-semibold">Buổi tập</div>
+                <div class="display-6 fw-bold text-success" id="adminTotalWorkouts">0</div>
+                <div class="small text-warning"><span id="adminPendingWorkouts">0</span> buổi chờ duyệt</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+              <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-3 h-100">
+                <div class="small text-muted fw-semibold">Yêu cầu dịch vụ</div>
+                <div class="display-6 fw-bold text-warning" id="adminPendingPackages">0</div>
+                <div class="small text-body-secondary"><span id="adminPendingCoaches">0</span> yêu cầu thuê HLV</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xl-3">
+              <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-3 h-100">
+                <div class="small text-muted fw-semibold">Doanh thu ghi nhận</div>
+                <div class="h2 fw-bold text-info mb-1" id="adminRevenueTotal">0đ</div>
+                <div class="small text-body-secondary">Tổng từ lịch sử thanh toán</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-lg-7">
+              <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="fw-bold mb-0"><i class="bi bi-bell-fill text-warning me-2"></i>Việc cần xử lý</h5>
+                  <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25">Ưu tiên mới nhất</span>
+                </div>
+                <div id="adminRecentRequests" class="vstack gap-3">
+                  <div class="text-center text-muted py-4">Đang tải dữ liệu quản trị...</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-4 h-100">
+                <h5 class="fw-bold mb-3"><i class="bi bi-diagram-3-fill text-primary me-2"></i>Luồng quản lý</h5>
+                <div class="vstack gap-3 small">
+                  <div class="d-flex gap-3">
+                    <span class="badge bg-primary rounded-pill align-self-start">1</span>
+                    <div><strong>Người dùng</strong><br><span class="text-body-secondary">Duyệt buổi tập, cấp quyền admin, khóa/xóa tài khoản.</span></div>
+                  </div>
+                  <div class="d-flex gap-3">
+                    <span class="badge bg-success rounded-pill align-self-start">2</span>
+                    <div><strong>Dịch vụ</strong><br><span class="text-body-secondary">Duyệt gói tập, thuê HLV, đối chiếu thanh toán.</span></div>
+                  </div>
+                  <div class="d-flex gap-3">
+                    <span class="badge bg-info rounded-pill align-self-start">3</span>
+                    <div><strong>Nội dung</strong><br><span class="text-body-secondary">Mở nhanh các trang: dinh dưỡng, gói tập, thuê HLV, hỗ trợ.</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <!-- TAB PANE 1: MASTER EXERCISE CRUD -->
-        <div class="tab-pane fade show active" id="exercises-pane" role="tabpanel" aria-labelledby="exercises-tab">
+        <div class="tab-pane fade" id="exercises-pane" role="tabpanel" aria-labelledby="exercises-tab">
           <div class="row align-items-center justify-content-between g-3 mb-4">
             <div class="col-md-8">
               <h3 class="mb-1 text-primary"><i class="bi bi-folder-fill me-2"></i>Danh mục bài tập mẫu</h3>
@@ -206,7 +304,7 @@
               <div id="noStudentSelectedMsg" class="h-100 d-flex flex-column align-items-center justify-content-center py-5 text-center text-body-secondary">
                 <i class="bi bi-person-bounding-box display-1 text-primary opacity-25 mb-3"></i>
                 <h5 class="fw-bold">Chưa lựa chọn tài khoản</h5>
-                <p class="small text-muted mb-0">Vui lòng nhấp vào một tài khoản ở danh sách bên trái để kiểm tra phân quyền và duyệt nhật ký.</p>
+                <p class="small text-muted mb-0">Vui lòng nhấp vào một tài khoản ở danh sách bên trái để kiểm tra phân quyền và duyệt buổi tập.</p>
               </div>
 
               <!-- Interactive details workspace -->
@@ -217,6 +315,31 @@
                   <div>
                     <h4 class="mb-0 text-success fw-bold" id="selectedStudentName">Nguyễn Văn A</h4>
                     <p class="small text-muted mb-0">Tên đăng nhập: <strong id="selectedStudentUsername">student01</strong></p>
+                  </div>
+                </div>
+
+                <!-- PASSWORD & ACCOUNT INFO SECTION -->
+                <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-3 mb-4">
+                  <div class="row align-items-center g-3">
+                    <div class="col-sm-6">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-key-fill text-warning fs-3"></i>
+                        <div>
+                          <div class="small text-muted fw-semibold">Mật khẩu tài khoản</div>
+                          <div class="input-group input-group-sm mt-1" style="width: 180px;">
+                            <input type="password" class="form-control" id="selectedStudentPassword" readonly>
+                            <button class="btn btn-outline-secondary" type="button" id="togglePasswordBtn" onclick="FitTrackAdmin.togglePasswordVisibility()">
+                              <i class="bi bi-eye-fill"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 text-sm-end">
+                      <button class="btn btn-sm btn-outline-danger border-danger-subtle px-3 py-2 rounded-3 fw-semibold" onclick="FitTrackAdmin.handleDeleteAccount()" title="Xóa tài khoản này">
+                        <i class="bi bi-trash3-fill me-1"></i> Xóa tài khoản
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -236,6 +359,7 @@
                       <div id="roleActionContainer">
                         <!-- Promote/Demote action buttons -->
                       </div>
+                    </div>
                   </div>
                 </div>
 
@@ -284,7 +408,7 @@
                 <!-- WORKOUT LOGS SUB-WORKSPACE -->
                 <div id="workoutsLogWorkspace">
                   <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0 fw-bold"><i class="bi bi-journal-text me-2 text-success"></i>Nhật ký tập luyện</h5>
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-journal-text me-2 text-success"></i>Buổi tập</h5>
                     <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-10 py-1.5 px-2.5" id="selectedStudentStats">0 buổi tập</span>
                   </div>
                   
@@ -311,13 +435,92 @@
                 <div id="adminUserAlertPlaceholder" class="card border border-info-subtle rounded-3 p-4 bg-info bg-opacity-10 text-center d-none">
                   <i class="bi bi-shield-fill text-info display-5 mb-2"></i>
                   <h6 class="fw-bold text-info">Tài khoản Quản trị viên</h6>
-                  <p class="small text-body-secondary mb-0">Tài khoản này có vai trò Admin và không có nhật ký cá nhân cần duyệt tập.</p>
+                  <p class="small text-body-secondary mb-0">Tài khoản này có vai trò Admin và không có buổi tập cá nhân cần duyệt tập.</p>
                 </div>
 
               </div>
 
             </div>
 
+          </div>
+        </div>
+
+        <!-- TAB PANE 3: SERVICE & PAYMENT MANAGEMENT -->
+        <div class="tab-pane fade" id="services-pane" role="tabpanel" aria-labelledby="services-tab">
+          <div class="row align-items-center justify-content-between g-3 mb-4">
+            <div class="col-lg-8">
+              <h3 class="mb-1 text-primary"><i class="bi bi-credit-card-2-front-fill me-2"></i>Dịch vụ & Thanh toán</h3>
+              <p class="text-body-secondary mb-0">Quản lý yêu cầu đăng ký gói tập, thuê HLV và lịch sử thanh toán của học viên.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+              <a class="btn btn-outline-primary rounded-3 fw-semibold" href="thanh-toan.html">
+                <i class="bi bi-box-arrow-up-right me-1"></i>Mở trang thanh toán
+              </a>
+            </div>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-xl-6">
+              <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-4 h-100">
+                <h5 class="fw-bold mb-3"><i class="bi bi-tags-fill text-success me-2"></i>Yêu cầu gói tập</h5>
+                <div id="adminPackageRequestsList" class="vstack gap-3">
+                  <div class="text-center text-muted py-4">Đang tải yêu cầu gói tập...</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-4 h-100">
+                <h5 class="fw-bold mb-3"><i class="bi bi-person-workspace text-info me-2"></i>Yêu cầu thuê HLV</h5>
+                <div id="adminCoachRequestsList" class="vstack gap-3">
+                  <div class="text-center text-muted py-4">Đang tải yêu cầu thuê HLV...</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-4">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                  <h5 class="fw-bold mb-0"><i class="bi bi-receipt-cutoff text-warning me-2"></i>Lịch sử thanh toán</h5>
+                  <span class="small text-body-secondary">Hiển thị các giao dịch mới nhất từ MockAPI</span>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Thời gian</th>
+                        <th>Học viên</th>
+                        <th>Dịch vụ</th>
+                        <th>Phương thức</th>
+                        <th class="text-end">Số tiền</th>
+                      </tr>
+                    </thead>
+                    <tbody id="adminPaymentHistoryList">
+                      <tr>
+                        <td colspan="5" class="text-center text-muted py-4">Đang tải lịch sử thanh toán...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB PANE 4: SITE CONTENT MANAGEMENT -->
+        <div class="tab-pane fade" id="content-pane" role="tabpanel" aria-labelledby="content-tab">
+          <div class="row align-items-center justify-content-between g-3 mb-4">
+            <div class="col-lg-8">
+              <h3 class="mb-1 text-primary"><i class="bi bi-grid-1x2-fill me-2"></i>Nội dung trang</h3>
+              <p class="text-body-secondary mb-0">Theo dõi các thư mục/trang chính và mở nhanh khu cần chỉnh hoặc kiểm tra liên kết MockAPI.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+              <a class="btn btn-indigo rounded-3 fw-semibold" href="index.html">
+                <i class="bi bi-house-door-fill me-1"></i>Về trang chủ
+              </a>
+            </div>
+          </div>
+
+          <div class="row g-3" id="adminModuleOverview">
+            <div class="col-12 text-center text-muted py-4">Đang tải danh sách trang quản lý...</div>
           </div>
         </div>
 

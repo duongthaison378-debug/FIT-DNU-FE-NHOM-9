@@ -26,22 +26,82 @@ const UTILS = {
   // SESSION PERSISTENCE
   // ==========================================
   setCurrentUser(user) {
-    localStorage.setItem('fittrack_user', JSON.stringify(user));
+    // Only generate new sessionId if it doesn't exist yet
+    let sessionId = this.getSessionId();
+    if (!sessionId) {
+      sessionId = this.generateSessionId();
+      this.setSessionId(sessionId);
+    }
+    const sessionData = {
+      user,
+      sessionId
+    };
+    localStorage.setItem('fittrack_user', JSON.stringify(sessionData));
   },
 
   getCurrentUser() {
     const data = localStorage.getItem('fittrack_user');
     if (!data) return null;
     try {
-      return JSON.parse(data);
+      const parsed = JSON.parse(data);
+      // Handle both old format (direct user) and new format (with sessionId)
+      if (parsed.user) {
+        return parsed.user;
+      }
+      return parsed;
     } catch (e) {
       console.error('Session parse failed:', e);
       return null;
     }
   },
 
+  /**
+   * Get the stored session ID from localStorage
+   */
+  getStoredSessionId() {
+    const data = localStorage.getItem('fittrack_user');
+    if (!data) return null;
+    try {
+      const parsed = JSON.parse(data);
+      return parsed.sessionId || null;
+    } catch (e) {
+      return null;
+    }
+  },
+
   clearSession() {
     localStorage.removeItem('fittrack_user');
+    localStorage.removeItem('fittrack_session_id');
+  },
+
+  /**
+   * Generate a unique session ID for this browser/device
+   */
+  generateSessionId() {
+    return `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  },
+
+  /**
+   * Save session ID to localStorage
+   */
+  setSessionId(sessionId) {
+    localStorage.setItem('fittrack_session_id', sessionId);
+  },
+
+  /**
+   * Get current session ID
+   */
+  getSessionId() {
+    return localStorage.getItem('fittrack_session_id');
+  },
+
+  /**
+   * Check if session is still valid on this device
+   * (Prevents login from other devices)
+   */
+  isSessionValid(savedSessionId) {
+    const currentSessionId = this.getSessionId();
+    return currentSessionId === savedSessionId;
   },
 
   // ==========================================
