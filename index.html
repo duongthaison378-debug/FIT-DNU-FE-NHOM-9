@@ -68,14 +68,17 @@
           <li class="nav-item" id="navPackagesLink">
             <a class="nav-link fw-semibold text-body opacity-75" href="goi-tap.html">Gói tập</a>
           </li>
+          <li class="nav-item" id="navCoachLink">
+            <a class="nav-link fw-semibold text-body opacity-75" href="thue-hlv.html">Thuê HLV</a>
+          </li>
           <li class="nav-item" id="navNutritionLink">
             <a class="nav-link fw-semibold text-body opacity-75" href="dinh-duong.html">Dinh dưỡng</a>
           </li>
+          <li class="nav-item" id="navPaymentLink">
+            <a class="nav-link fw-semibold text-body opacity-75" href="thanh-toan.html">Thanh toán</a>
+          </li>
           <li class="nav-item" id="navSupportLink">
             <a class="nav-link fw-semibold text-body opacity-75" href="ho-tro.html">Hỗ trợ</a>
-          </li>
-          <li class="nav-item" id="navCoachLink">
-            <a class="nav-link fw-semibold text-body opacity-75" href="thue-hlv.html">Thuê HLV</a>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto align-items-center gap-3 mt-3 mt-lg-0">
@@ -135,6 +138,54 @@
          ANONYMOUS INTRO VIEW (GUEST SCREEN)
          ========================================== -->
     <section id="anonymousView" class="py-5 text-center">
+      <div id="homePromoCarousel" class="carousel slide mb-5" data-bs-ride="carousel" data-bs-interval="3500" data-bs-pause="false" data-bs-touch="true">
+        <div class="carousel-indicators" id="homePromoCarouselIndicators">
+          <button type="button" data-bs-target="#homePromoCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#homePromoCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#homePromoCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner rounded-4 overflow-hidden" id="homePromoCarouselInner">
+          <div class="carousel-item active">
+            <div class="home-promo-slide" style="background-image: linear-gradient(90deg, rgba(5,10,18,.82), rgba(5,10,18,.28)), url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1400&q=80');">
+              <div class="home-promo-copy text-start">
+                <span class="badge bg-success text-white mb-3">FitTrack Pro</span>
+                <h2 class="display-6 fw-extrabold mb-3">Theo dõi tập luyện nghiêm túc hơn mỗi ngày</h2>
+                <p class="lead mb-4">Ghi buổi tập, xem calo, chọn gói và thuê HLV trong cùng một hệ thống.</p>
+                <a href="goi-tap.html" class="btn btn-gradient rounded-3 px-4 py-2 text-dark fw-semibold">Xem gói tập</a>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="home-promo-slide" style="background-image: linear-gradient(90deg, rgba(5,10,18,.82), rgba(5,10,18,.28)), url('https://images.unsplash.com/photo-1534258936925-c58bed479fcb?auto=format&fit=crop&w=1400&q=80');">
+              <div class="home-promo-copy text-start">
+                <span class="badge bg-info text-white mb-3">Thuê HLV</span>
+                <h2 class="display-6 fw-extrabold mb-3">Chọn HLV theo đúng mục tiêu của bạn</h2>
+                <p class="lead mb-4">Tăng cơ, giảm mỡ, boxing, mobility, recovery và dinh dưỡng.</p>
+                <a href="thue-hlv.html" class="btn btn-outline-info rounded-3 px-4 py-2 fw-semibold">Tìm HLV</a>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="home-promo-slide" style="background-image: linear-gradient(90deg, rgba(5,10,18,.82), rgba(5,10,18,.28)), url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1400&q=80');">
+              <div class="home-promo-copy text-start">
+                <span class="badge bg-warning text-dark mb-3">Dinh dưỡng</span>
+                <h2 class="display-6 fw-extrabold mb-3">Tập luyện hiệu quả hơn khi ăn uống đúng</h2>
+                <p class="lead mb-4">Tham khảo thực phẩm healthy, thực đơn và mẹo duy trì thói quen.</p>
+                <a href="dinh-duong.html" class="btn btn-outline-warning rounded-3 px-4 py-2 fw-semibold">Xem dinh dưỡng</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#homePromoCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#homePromoCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
       <div class="row justify-content-center">
         <div class="col-lg-8 col-xl-7">
           <div class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fs-7 mb-3 fw-bold border border-success border-opacity-25">
@@ -184,6 +235,115 @@
             </div>
             <h4 class="mb-2">Bảo mật & Đơn giản</h4>
             <p class="text-body-secondary mb-0">Hệ thống đồng bộ cơ sở dữ liệu MockAPI tin cậy, thao tác giao diện bất đồng bộ mượt mà cùng giao diện Dark Mode bảo vệ mắt.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 align-items-center mt-5 pt-4 text-start">
+        <div class="col-lg-5">
+          <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 mb-3">Hệ sinh thái FitTrack</span>
+          <h2 class="fw-extrabold mb-3" style="font-family: var(--font-heading);">Một trang chủ, đủ đường đi cho người tập.</h2>
+          <p class="text-body-secondary mb-4">Từ ghi buổi tập, chọn gói, thuê HLV đến tham khảo dinh dưỡng và thanh toán, người tập có thể đi theo đúng nhu cầu mà không bị rối.</p>
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="home-mini-stat">
+                <div class="fw-bold fs-4 text-success">3</div>
+                <div class="small text-body-secondary">gói tập</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="home-mini-stat">
+                <div class="fw-bold fs-4 text-info">6+</div>
+                <div class="small text-body-secondary">nhóm HLV</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="home-mini-stat">
+                <div class="fw-bold fs-4 text-warning">24/7</div>
+                <div class="small text-body-secondary">theo dõi</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="home-mini-stat">
+                <div class="fw-bold fs-4 text-primary">1</div>
+                <div class="small text-body-secondary">giỏ hàng</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="home-photo-mosaic">
+            <img class="home-photo-main" src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=1000&q=80" alt="Người tập luyện với huấn luyện viên">
+            <img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=600&q=80" alt="Tập tạ trong phòng gym">
+            <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=600&q=80" alt="Cardio và sức bền">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Bữa ăn healthy">
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5 pt-4 text-start">
+        <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+          <div>
+            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 mb-2">Khám phá nhanh</span>
+            <h2 class="fw-extrabold mb-0" style="font-family: var(--font-heading);">Chọn mục bạn muốn bắt đầu</h2>
+          </div>
+          <button class="btn btn-outline-secondary rounded-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#authModal" onclick="switchAuthTab('register')">
+            Tạo tài khoản <i class="bi bi-arrow-up-right ms-1"></i>
+          </button>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6 col-xl-3">
+            <a class="home-action-tile" href="nhat-ky.html">
+              <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=700&q=80" alt="Ghi buổi tập">
+              <div>
+                <i class="bi bi-journal-check text-success"></i>
+                <h5>Buổi tập</h5>
+                <p>Ghi lịch sử, thời lượng và calo tiêu hao.</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-6 col-xl-3">
+            <a class="home-action-tile" href="goi-tap.html">
+              <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=700&q=80" alt="Gói tập FitTrack">
+              <div>
+                <i class="bi bi-tags-fill text-warning"></i>
+                <h5>Gói tập</h5>
+                <p>Chọn Starter, Pro hoặc VIP theo mục tiêu.</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-6 col-xl-3">
+            <a class="home-action-tile" href="thue-hlv.html">
+              <img src="https://medialabs.asia/cms/assets/8ed100bc-8d29-4050-b325-f4cfacea6e34?height=520&amp;width=760" alt="Thuê huấn luyện viên">
+              <div>
+                <i class="bi bi-person-workspace text-info"></i>
+                <h5>Thuê HLV</h5>
+                <p>Tìm HLV theo tăng cơ, giảm mỡ, boxing, phục hồi.</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-6 col-xl-3">
+            <a class="home-action-tile" href="dinh-duong.html">
+              <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=700&q=80" alt="Dinh dưỡng healthy">
+              <div>
+                <i class="bi bi-egg-fried text-primary"></i>
+                <h5>Dinh dưỡng</h5>
+                <p>Xem món ăn healthy và gợi ý thực đơn dễ áp dụng.</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-wide-cta mt-5 text-start">
+        <div>
+          <span class="badge bg-dark text-white mb-3">FitTrack Lifestyle</span>
+          <h2 class="fw-extrabold mb-3">Tập luyện có kế hoạch, ăn uống có định hướng, tiến bộ có số liệu.</h2>
+          <p class="mb-4">Trang chủ giờ là điểm bắt đầu rõ ràng hơn cho người mới: nhìn được lợi ích, xem ảnh minh họa, chọn nhanh hành động và đi thẳng tới phần cần dùng.</p>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="thanh-toan.html" class="btn btn-gradient rounded-3 px-4 py-2 text-dark fw-semibold">Xem giỏ hàng</a>
+            <a href="ho-tro.html" class="btn btn-outline-light rounded-3 px-4 py-2 fw-semibold">Cần hỗ trợ</a>
           </div>
         </div>
       </div>

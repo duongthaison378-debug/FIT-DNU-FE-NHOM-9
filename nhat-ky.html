@@ -1,4 +1,4 @@
-<!--
+﻿<!--
   Project: FitTrack - Developed by Nhom 9
 -->
 <!DOCTYPE html>
@@ -68,14 +68,17 @@
           <li class="nav-item" id="navPackagesLink">
             <a class="nav-link fw-semibold text-body opacity-75" href="goi-tap.html">Gói tập</a>
           </li>
+          <li class="nav-item" id="navCoachLink">
+            <a class="nav-link fw-semibold text-body opacity-75" href="thue-hlv.html">Thuê HLV</a>
+          </li>
           <li class="nav-item" id="navNutritionLink">
             <a class="nav-link fw-semibold text-body opacity-75" href="dinh-duong.html">Dinh dưỡng</a>
           </li>
+          <li class="nav-item" id="navPaymentLink">
+            <a class="nav-link fw-semibold text-body opacity-75" href="thanh-toan.html">Thanh toán</a>
+          </li>
           <li class="nav-item" id="navSupportLink">
             <a class="nav-link fw-semibold text-body opacity-75" href="ho-tro.html">Hỗ trợ</a>
-          </li>
-          <li class="nav-item" id="navCoachLink">
-            <a class="nav-link fw-semibold text-body opacity-75" href="thue-hlv.html">Thuê HLV</a>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto align-items-center gap-3 mt-3 mt-lg-0">
@@ -146,7 +149,185 @@
       </div>
     </section>
 
-    <section id="dashboardView" class="d-none">
+    <section id="dashboardView" class="d-none workout-page">
+      <div class="workout-hero glass-card overflow-hidden mb-4">
+        <div class="row g-0 align-items-stretch">
+          <div class="col-lg-7 p-4 p-lg-5">
+            <div class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fs-7 mb-3 fw-bold border border-success border-opacity-25">
+              <i class="bi bi-activity me-1"></i> Trung tâm buổi tập
+            </div>
+            <h1 class="display-6 fw-extrabold mb-3" style="font-family: var(--font-heading);">Ghi buổi tập, theo dõi tiến độ, chờ Admin duyệt.</h1>
+            <p class="text-body-secondary lead mb-4">Mỗi buổi tập được lưu theo bài mẫu, thời lượng, calo và trạng thái duyệt. Dữ liệu đồng bộ lên MockAPI để Admin kiểm tra và hỗ trợ bạn theo sát hơn.</p>
+            <div class="d-flex flex-wrap gap-3">
+              <button class="btn btn-gradient px-4 py-3 rounded-3 text-dark fw-semibold" data-bs-toggle="modal" data-bs-target="#workoutModal">
+                <i class="bi bi-plus-circle-fill me-1"></i> Ghi buổi tập
+              </button>
+              <a href="#workoutHistorySection" class="btn btn-outline-success px-4 py-3 rounded-3 fw-semibold">
+                <i class="bi bi-card-list me-1"></i> Xem lịch sử
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-5 workout-hero-panel p-4 p-lg-5">
+            <div class="d-flex flex-column gap-3 h-100 justify-content-center">
+              <div class="workout-flow-item">
+                <span class="workout-flow-icon bg-success bg-opacity-10 text-success"><i class="bi bi-check2-square"></i></span>
+                <div>
+                  <div class="fw-bold">1. Chọn bài mẫu</div>
+                  <div class="small text-body-secondary">Danh mục bài tập lấy từ MockAPI.</div>
+                </div>
+              </div>
+              <div class="workout-flow-item">
+                <span class="workout-flow-icon bg-info bg-opacity-10 text-info"><i class="bi bi-stopwatch"></i></span>
+                <div>
+                  <div class="fw-bold">2. Nhập phút tập</div>
+                  <div class="small text-body-secondary">Calo tự tính theo cường độ bài tập.</div>
+                </div>
+              </div>
+              <div class="workout-flow-item">
+                <span class="workout-flow-icon bg-warning bg-opacity-10 text-warning"><i class="bi bi-shield-check"></i></span>
+                <div>
+                  <div class="fw-bold">3. Chờ duyệt</div>
+                  <div class="small text-body-secondary">Admin xác nhận buổi tập trong trang quản trị.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <div class="glass-card workout-stat-card p-4 h-100">
+            <span class="stat-badge mb-3"><i class="bi bi-journal-check"></i></span>
+            <div class="text-body-secondary small fw-semibold mb-1">Tổng buổi tập</div>
+            <div class="display-6 fw-bold text-success mb-0" id="statTotalWorkouts">0</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-card workout-stat-card p-4 h-100">
+            <span class="stat-badge mb-3 text-info bg-info bg-opacity-10"><i class="bi bi-stopwatch-fill"></i></span>
+            <div class="text-body-secondary small fw-semibold mb-1">Tổng thời lượng</div>
+            <div class="display-6 fw-bold text-info mb-0" id="statTotalDuration">0 <span class="fs-5">phút</span></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-card workout-stat-card p-4 h-100">
+            <span class="stat-badge mb-3 text-danger bg-danger bg-opacity-10"><i class="bi bi-fire"></i></span>
+            <div class="text-body-secondary small fw-semibold mb-1">Calo tiêu hao</div>
+            <div class="display-6 fw-bold text-danger mb-0" id="statTotalCalories">0 <span class="fs-5">kcal</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 mb-4">
+        <div class="col-xl-7">
+          <div class="glass-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-4">
+              <div>
+                <h4 class="mb-1"><i class="bi bi-bar-chart-fill text-success me-2"></i>Calo trong tuần</h4>
+                <p class="text-body-secondary small mb-0" id="chartWeekRange">Tuần hiện tại</p>
+              </div>
+              <button class="btn btn-sm btn-outline-success rounded-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#workoutModal">
+                <i class="bi bi-plus-lg me-1"></i> Thêm
+              </button>
+            </div>
+            <div class="chart-container workout-week-chart">
+              <div class="chart-column">
+                <div class="chart-bar-outer"><span class="chart-tooltip" id="tooltip-mon">0 kcal</span><div class="chart-bar-inner" id="bar-mon"></div></div>
+                <div class="chart-label">T2</div>
+              </div>
+              <div class="chart-column">
+                <div class="chart-bar-outer"><span class="chart-tooltip" id="tooltip-tue">0 kcal</span><div class="chart-bar-inner" id="bar-tue"></div></div>
+                <div class="chart-label">T3</div>
+              </div>
+              <div class="chart-column">
+                <div class="chart-bar-outer"><span class="chart-tooltip" id="tooltip-wed">0 kcal</span><div class="chart-bar-inner" id="bar-wed"></div></div>
+                <div class="chart-label">T4</div>
+              </div>
+              <div class="chart-column">
+                <div class="chart-bar-outer"><span class="chart-tooltip" id="tooltip-thu">0 kcal</span><div class="chart-bar-inner" id="bar-thu"></div></div>
+                <div class="chart-label">T5</div>
+              </div>
+              <div class="chart-column">
+                <div class="chart-bar-outer"><span class="chart-tooltip" id="tooltip-fri">0 kcal</span><div class="chart-bar-inner" id="bar-fri"></div></div>
+                <div class="chart-label">T6</div>
+              </div>
+              <div class="chart-column">
+                <div class="chart-bar-outer"><span class="chart-tooltip" id="tooltip-sat">0 kcal</span><div class="chart-bar-inner" id="bar-sat"></div></div>
+                <div class="chart-label">T7</div>
+              </div>
+              <div class="chart-column">
+                <div class="chart-bar-outer"><span class="chart-tooltip" id="tooltip-sun">0 kcal</span><div class="chart-bar-inner" id="bar-sun"></div></div>
+                <div class="chart-label">CN</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-5">
+          <div class="glass-card p-4 h-100">
+            <h4 class="mb-3"><i class="bi bi-lightning-charge-fill text-warning me-2"></i>Ghi nhanh hợp lý</h4>
+            <div class="d-flex flex-column gap-3">
+              <div class="workout-tip"><i class="bi bi-calendar2-check text-success"></i><span>Ghi đúng ngày tập để biểu đồ tuần không bị lệch.</span></div>
+              <div class="workout-tip"><i class="bi bi-stopwatch text-info"></i><span>Nhập thời lượng thật, hệ thống tự tính kcal theo bài mẫu.</span></div>
+              <div class="workout-tip"><i class="bi bi-pencil-square text-warning"></i><span>Thêm ghi chú về cảm giác tập, mức tạ hoặc nhịp tim nếu cần.</span></div>
+              <div class="workout-tip"><i class="bi bi-cloud-check text-primary"></i><span>Sau khi lưu, buổi tập sẽ đồng bộ MockAPI và chờ Admin duyệt.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card p-4" id="workoutHistorySection">
+        <div class="row g-3 justify-content-between align-items-center mb-4">
+          <div class="col-lg-5">
+            <h4 class="mb-1"><i class="bi bi-card-list text-success me-2"></i>Lịch sử buổi tập</h4>
+            <p class="text-body-secondary small mb-0">Lọc nhanh theo nhóm cơ hoặc tên bài tập để xem đúng phần cần theo dõi.</p>
+          </div>
+          <div class="col-lg-7">
+            <div class="row g-2 justify-content-lg-end">
+              <div class="col-md-5">
+                <select class="form-select" id="filterMuscleGroup" title="Lọc theo nhóm cơ">
+                  <option value="">Tất cả nhóm cơ</option>
+                </select>
+              </div>
+              <div class="col-md-5">
+                <select class="form-select" id="filterExerciseName" title="Lọc theo bài tập">
+                  <option value="">Tất cả bài tập</option>
+                </select>
+              </div>
+              <div class="col-md-auto">
+                <button class="btn btn-outline-success w-100 rounded-3" data-bs-toggle="modal" data-bs-target="#workoutModal" title="Ghi buổi tập mới">
+                  <i class="bi bi-plus-lg"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive workout-table-wrap">
+          <table class="table table-hover align-middle mb-0 workout-table">
+            <thead>
+              <tr>
+                <th scope="col">Ngày tập</th>
+                <th scope="col">Bài tập</th>
+                <th scope="col" class="d-none d-md-table-cell">Nhóm cơ</th>
+                <th scope="col">Thời lượng</th>
+                <th scope="col">Calo</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col" class="d-none d-lg-table-cell">Ghi chú</th>
+                <th scope="col" class="text-center">Xóa</th>
+              </tr>
+            </thead>
+            <tbody id="workoutHistoryTableBody">
+              <tr>
+                <td colspan="8" class="text-center py-4 text-body-secondary">Chưa ghi nhận buổi tập nào. Hãy nhấn nút để lưu buổi tập đầu tiên!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboardViewLegacy" class="d-none">
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div>
           <div class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fs-7 mb-2 fw-bold border border-success border-opacity-25">
@@ -162,7 +343,7 @@
 
       <!-- ==========================================
            WORKOUT JOURNAL LOGS & FILTERS (SECTION 3) -->
-      <div class="glass-card p-4" id="workoutHistorySection">
+      <div class="glass-card p-4" id="workoutHistorySectionLegacy">
         <div class="row g-3 justify-content-between align-items-center mb-4">
           <div class="col-sm-6">
             <h4 class="mb-0 fs-5"><i class="bi bi-card-list text-success me-2"></i>Buổi tập</h4>
@@ -172,13 +353,13 @@
           <div class="col-sm-6">
             <div class="row g-2 justify-content-sm-end">
               <div class="col-6 col-md-5">
-                <select class="form-select form-select-sm" id="filterMuscleGroup" title="Lọc theo nhóm cơ">
+                <select class="form-select form-select-sm" id="filterMuscleGroupLegacy" title="Lọc theo nhóm cơ">
                   <option value="">Tất cả Nhóm cơ</option>
                   <!-- Populated in main.js -->
                 </select>
               </div>
               <div class="col-6 col-md-5">
-                <select class="form-select form-select-sm" id="filterExerciseName" title="Lọc theo bài tập">
+                <select class="form-select form-select-sm" id="filterExerciseNameLegacy" title="Lọc theo bài tập">
                   <option value="">Tất cả Bài tập</option>
                   <!-- Populated in main.js -->
                 </select>
@@ -202,7 +383,7 @@
                 <th scope="col" class="text-center">Thao tác</th>
               </tr>
             </thead>
-            <tbody id="workoutHistoryTableBody">
+            <tbody id="workoutHistoryTableBodyLegacy">
               <!-- Dynamically populated -->
               <tr>
                 <td colspan="8" class="text-center py-4 text-body-secondary">Chưa ghi nhận buổi tập nào. Hãy nhấn nút để lưu buổi tập đầu tiên!</td>
@@ -303,7 +484,7 @@
        WORKOUT LOGGER MODAL (ADD WORKOUT ENTRY)
        ========================================== -->
   <div class="modal fade" id="workoutModal" tabindex="-1" aria-labelledby="workoutModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content glass-card shadow-2xl">
         <div class="modal-header border-bottom border-secondary-subtle">
           <h5 class="modal-title fs-5" id="workoutModalLabel"><i class="bi bi-journal-plus text-success me-2"></i>Ghi nhận buổi tập</h5>

@@ -12,6 +12,7 @@ const FitTrackAdmin = {
   students: [], // Stores all users (students and admins alike) for management
   selectedStudent: null, // Tracks selected user profile
   crudModal: null,
+  contentItems: [],
 
   /**
    * Initialize Admin Application
@@ -49,6 +50,11 @@ const FitTrackAdmin = {
       formExerciseCrud.addEventListener('submit', (e) => this.handleSaveExercise(e));
     }
 
+    const adminContentForm = document.getElementById('adminContentForm');
+    if (adminContentForm) {
+      adminContentForm.addEventListener('submit', (e) => this.handleSaveContentItem(e));
+    }
+
     // Bind Student Lookup Search Bar
     const searchStudentInput = document.getElementById('searchStudentInput');
     if (searchStudentInput) {
@@ -60,6 +66,7 @@ const FitTrackAdmin = {
     // Fetch lists from database
     await this.fetchExercises();
     await this.fetchStudents();
+    this.loadContentItems();
   },
 
   /**
@@ -124,6 +131,22 @@ const FitTrackAdmin = {
   formatMoney(value) {
     const amount = Number(value) || 0;
     return amount.toLocaleString('vi-VN') + 'đ';
+  },
+
+  getMembershipLabel(user) {
+    if (!user || user.role === 'admin') return 'Quản trị viên';
+    const activePackage = user.activePackage || 'Starter';
+    return `Hội viên ${activePackage}`;
+  },
+
+  isProtectedAdmin(user) {
+    if (!user || user.role !== 'admin') return false;
+    const username = (user.username || '').toLowerCase();
+    const fullName = (user.fullName || '').toLowerCase();
+    return user.id === this.adminUser?.id
+      || username === 'admin'
+      || fullName.includes('huấn luyện viên')
+      || fullName.includes('huan luyen vien');
   },
 
   getAdminMetrics() {
@@ -243,9 +266,47 @@ const FitTrackAdmin = {
 
   renderServiceManagement() {
     const metrics = this.getAdminMetrics();
+    this.renderWorkoutApprovalQueue(metrics.pendingWorkouts);
     this.renderPackageRequests(metrics.pendingPackages);
     this.renderCoachRequests(metrics.coachRequests);
     this.renderPaymentHistory(metrics.payments);
+  },
+
+  renderWorkoutApprovalQueue(pendingWorkouts) {
+    const container = document.getElementById('adminWorkoutApprovalList');
+    if (!container) return;
+
+    if (pendingWorkouts.length === 0) {
+      container.innerHTML = `
+        <div class="text-center text-body-secondary py-4">
+          <i class="bi bi-check2-circle fs-1 text-success d-block mb-2"></i>
+          Không có buổi tập nào đang chờ duyệt.
+        </div>
+      `;
+      return;
+    }
+
+    const sorted = [...pendingWorkouts].sort((a, b) => new Date(b.workout.date || 0) - new Date(a.workout.date || 0));
+    container.innerHTML = sorted.map(row => `
+      <div class="border border-secondary-subtle rounded-3 p-3 bg-secondary bg-opacity-10">
+        <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+          <div>
+            <div class="fw-bold text-success">${row.workout.exerciseName || 'Buổi tập mới'}</div>
+            <div class="small text-body-secondary">${row.user.fullName} - ${this.getMembershipLabel(row.user)}</div>
+            <div class="small text-muted mt-1">
+              ${this.formatDateTime(row.workout.date)} | ${row.workout.duration || 0} phút | ${row.workout.totalCalories || 0} kcal
+            </div>
+          </div>
+          <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25">Chờ duyệt</span>
+        </div>
+        <div class="d-flex gap-2 mt-3">
+          <button class="btn btn-sm btn-outline-secondary rounded-3 fw-semibold" onclick="FitTrackAdmin.openStudentFromOverview('${row.user.id}')">Xem học viên</button>
+          <button class="btn btn-sm btn-indigo rounded-3 fw-semibold text-white" onclick="FitTrackAdmin.setWorkoutStatusForUser('${row.user.id}', '${row.workout.workoutId}', 'Đã duyệt')">
+            <i class="bi bi-patch-check-fill me-1"></i>Duyệt buổi tập
+          </button>
+        </div>
+      </div>
+    `).join('');
   },
 
   renderPackageRequests(packageRequests) {
@@ -414,16 +475,33 @@ const FitTrackAdmin = {
       }
     ];
 
-    container.innerHTML = modules.map(module => `
+    const targetMap = {
+      'index.html': 'users',
+      'nhat-ky.html': 'users',
+      'goi-tap.html': 'services',
+      'thue-hlv.html': 'services',
+      'dinh-duong.html': 'content',
+      'thanh-toan.html': 'services',
+      'ho-tro.html': 'content'
+    };
+
+    container.innerHTML = modules.map(module => {
+      const target = targetMap[module.href] || 'content';
+      return `
       <div class="col-md-6 col-xl-4">
         <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-4 h-100">
           <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
             <span class="badge bg-${module.color} bg-opacity-10 text-${module.color} border border-${module.color} border-opacity-25 p-2">
               <i class="bi ${module.icon} fs-5"></i>
             </span>
-            <a class="btn btn-sm btn-outline-primary rounded-3" href="${module.href}">
-              <i class="bi bi-box-arrow-up-right"></i>
-            </a>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-info rounded-3" type="button" onclick="FitTrackAdmin.openAdminArea('${target}')" title="Mở khu quản lý">
+                <i class="bi bi-sliders"></i>
+              </button>
+              <a class="btn btn-sm btn-outline-primary rounded-3" href="${module.href}" title="Mở trang">
+                <i class="bi bi-box-arrow-up-right"></i>
+              </a>
+            </div>
           </div>
           <h5 class="fw-bold mb-1">${module.name}</h5>
           <p class="small text-body-secondary mb-3">${module.summary}</p>
@@ -433,7 +511,238 @@ const FitTrackAdmin = {
           </div>
         </div>
       </div>
-    `).join('');
+    `;
+    }).join('');
+  },
+
+  loadContentItems() {
+    try {
+      const raw = localStorage.getItem('fittrack_admin_content');
+      this.contentItems = raw ? JSON.parse(raw) : this.getDefaultContentItems();
+    } catch (error) {
+      this.contentItems = this.getDefaultContentItems();
+    }
+
+    if (!localStorage.getItem('fittrack_admin_content')) {
+      this.saveContentItems();
+    }
+
+    this.renderContentItems();
+  },
+
+  getDefaultContentItems() {
+    return [
+      {
+        id: 'home-banner-1',
+        module: 'home',
+        title: 'FitTrack Pro cho người tập nghiêm túc',
+        subtitle: 'Theo dõi buổi tập, chọn HLV và thanh toán trong một hệ thống',
+        price: 0,
+        image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1400&q=80',
+        description: 'Banner quảng cáo trang chủ',
+        status: 'active'
+      },
+      {
+        id: 'package-pro',
+        module: 'package',
+        title: 'Gói FitPro',
+        subtitle: 'Theo dõi nâng cao, ưu tiên duyệt buổi tập',
+        price: 399000,
+        image: 'https://images.unsplash.com/photo-1571019613914-85f342c1dca4?auto=format&fit=crop&w=900&q=80',
+        description: 'Phù hợp người tập đều 3-5 buổi mỗi tuần.',
+        status: 'active'
+      },
+      {
+        id: 'package-starter',
+        module: 'package',
+        title: 'Gói Starter',
+        subtitle: 'Bắt đầu miễn phí, ghi buổi tập và xem thống kê cơ bản',
+        price: 0,
+        image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=80',
+        description: 'Phù hợp người mới bắt đầu theo dõi tập luyện.',
+        status: 'active'
+      },
+      {
+        id: 'package-vip',
+        module: 'package',
+        title: 'Gói VIP Coach',
+        subtitle: 'Lộ trình cá nhân hóa và HLV đồng hành 1-1',
+        price: 999000,
+        image: 'https://images.unsplash.com/photo-1549060279-7e168fcee0c2?auto=format&fit=crop&w=900&q=80',
+        description: 'Phù hợp người cần kèm sát kỹ thuật, lịch tập và mục tiêu.',
+        status: 'active'
+      },
+      {
+        id: 'coach-recovery',
+        module: 'coach',
+        title: 'HLV Recovery',
+        subtitle: 'Phục hồi - Người mới',
+        price: 699000,
+        image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=900&q=80',
+        description: 'Hỗ trợ người mới tập, phục hồi sau chấn thương nhẹ và xây lại nền thể lực.',
+        status: 'active'
+      },
+      {
+        id: 'coach-strength',
+        module: 'coach',
+        title: 'HLV Strength',
+        subtitle: 'Tăng cơ - Sức mạnh',
+        price: 899000,
+        image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=900&q=80',
+        description: 'Tập trung kỹ thuật tập tạ, tăng cơ và siết dáng.',
+        status: 'active'
+      },
+      {
+        id: 'coach-nutrition',
+        module: 'coach',
+        title: 'HLV Nutrition',
+        subtitle: 'Dinh dưỡng - Thói quen',
+        price: 699000,
+        image: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=900&q=80',
+        description: 'Hỗ trợ ăn uống lành mạnh, thực đơn và thói quen bền vững.',
+        status: 'active'
+      }
+    ];
+  },
+
+  saveContentItems() {
+    localStorage.setItem('fittrack_admin_content', JSON.stringify(this.contentItems));
+  },
+
+  escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[char]);
+  },
+
+  resetContentForm(moduleName = '') {
+    const form = document.getElementById('adminContentForm');
+    if (form) form.reset();
+    const idInput = document.getElementById('contentItemId');
+    if (idInput) idInput.value = '';
+    const moduleSelect = document.getElementById('contentModule');
+    if (moduleSelect && moduleName) moduleSelect.value = moduleName;
+    const status = document.getElementById('contentStatus');
+    if (status) status.value = 'active';
+    document.getElementById('adminContentForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  },
+
+  handleSaveContentItem(e) {
+    e.preventDefault();
+
+    const id = document.getElementById('contentItemId').value || `content-${Date.now()}`;
+    const item = {
+      id,
+      module: document.getElementById('contentModule').value,
+      title: document.getElementById('contentTitle').value.trim(),
+      subtitle: document.getElementById('contentSubtitle').value.trim(),
+      price: Number(document.getElementById('contentPrice').value) || 0,
+      image: document.getElementById('contentImage').value.trim(),
+      description: document.getElementById('contentDescription').value.trim(),
+      status: document.getElementById('contentStatus').value,
+      updatedAt: new Date().toISOString()
+    };
+
+    if (!item.title) {
+      UTILS.showToast('Vui lòng nhập tiêu đề nội dung!', 'warning');
+      return;
+    }
+
+    const index = this.contentItems.findIndex(content => content.id === id);
+    if (index >= 0) {
+      this.contentItems[index] = item;
+    } else {
+      this.contentItems.push(item);
+    }
+
+    this.saveContentItems();
+    this.renderContentItems();
+    this.resetContentForm();
+    UTILS.showToast('Đã lưu nội dung trang. Các trang sẽ đọc dữ liệu này khi tải lại.', 'success');
+  },
+
+  renderContentItems() {
+    const container = document.getElementById('adminContentList');
+    if (!container) return;
+
+    if (!this.contentItems.length) {
+      container.innerHTML = '<div class="col-12 text-center text-muted py-3">Chưa có nội dung tùy chỉnh.</div>';
+      return;
+    }
+
+    const moduleLabels = {
+      home: 'Trang chủ',
+      package: 'Gói tập',
+      coach: 'Thuê HLV',
+      nutrition: 'Dinh dưỡng',
+      support: 'Hỗ trợ'
+    };
+
+    container.innerHTML = this.contentItems.map(item => {
+      const id = this.escapeHtml(item.id);
+      const title = this.escapeHtml(item.title || 'Chưa đặt tên');
+      const subtitle = this.escapeHtml(item.subtitle || 'Chưa có phụ đề');
+      const description = this.escapeHtml(item.description || 'Chưa có mô tả.');
+      const image = this.escapeHtml(item.image || '');
+      const moduleLabel = this.escapeHtml(moduleLabels[item.module] || item.module);
+      const isActive = item.status === 'active';
+
+      return `
+        <div class="col-md-6 col-xl-4">
+          <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 overflow-hidden h-100">
+            ${image ? `<img src="${image}" alt="${title}" class="w-100" style="height: 150px; object-fit: cover;">` : ''}
+            <div class="p-3">
+              <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-10">${moduleLabel}</span>
+                <span class="badge ${isActive ? 'bg-success bg-opacity-10 text-success border border-success border-opacity-25' : 'bg-secondary bg-opacity-10 text-secondary'}">${isActive ? 'Hiển thị' : 'Ẩn'}</span>
+              </div>
+              <h6 class="fw-bold mb-1">${title}</h6>
+              <div class="small text-body-secondary mb-2">${subtitle}</div>
+              <div class="small text-success fw-bold mb-2">${this.formatMoney(item.price)}</div>
+              <p class="small text-muted mb-3">${description}</p>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-info rounded-3" type="button" onclick="FitTrackAdmin.editContentItem('${id}')">
+                  <i class="bi bi-pencil-square me-1"></i>Sửa
+                </button>
+                <button class="btn btn-sm btn-outline-danger rounded-3" type="button" onclick="FitTrackAdmin.deleteContentItem('${id}')">
+                  <i class="bi bi-trash3-fill me-1"></i>Xóa
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  editContentItem(id) {
+    const item = this.contentItems.find(content => content.id === id);
+    if (!item) return;
+
+    document.getElementById('contentItemId').value = item.id;
+    document.getElementById('contentModule').value = item.module;
+    document.getElementById('contentTitle').value = item.title || '';
+    document.getElementById('contentSubtitle').value = item.subtitle || '';
+    document.getElementById('contentPrice').value = item.price || 0;
+    document.getElementById('contentStatus').value = item.status || 'active';
+    document.getElementById('contentImage').value = item.image || '';
+    document.getElementById('contentDescription').value = item.description || '';
+    document.getElementById('adminContentForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  },
+
+  deleteContentItem(id) {
+    const item = this.contentItems.find(content => content.id === id);
+    if (!item) return;
+    if (!confirm(`Bạn có chắc muốn xóa nội dung "${item.title}" không?`)) return;
+
+    this.contentItems = this.contentItems.filter(content => content.id !== id);
+    this.saveContentItems();
+    this.renderContentItems();
+    UTILS.showToast('Đã xóa nội dung trang.', 'info');
   },
 
   openStudentFromOverview(userId) {
@@ -445,6 +754,82 @@ const FitTrackAdmin = {
   openServiceTab() {
     const servicesTab = document.getElementById('services-tab');
     if (servicesTab) bootstrap.Tab.getOrCreateInstance(servicesTab).show();
+  },
+
+  openAdminArea(area) {
+    const tabMap = {
+      overview: 'overview-tab',
+      exercises: 'exercises-tab',
+      users: 'students-tab',
+      services: 'services-tab',
+      content: 'content-tab'
+    };
+    const targetTab = document.getElementById(tabMap[area] || 'overview-tab');
+    if (targetTab) bootstrap.Tab.getOrCreateInstance(targetTab).show();
+  },
+
+  async auditSiteLinks() {
+    const container = document.getElementById('adminLinkAuditList');
+    if (!container) return;
+
+    const links = [
+      { label: 'Trang chủ', href: 'index.html', type: 'HTML' },
+      { label: 'Buổi tập', href: 'nhat-ky.html', type: 'HTML' },
+      { label: 'Gói tập', href: 'goi-tap.html', type: 'HTML' },
+      { label: 'Thuê HLV', href: 'thue-hlv.html', type: 'HTML' },
+      { label: 'Dinh dưỡng', href: 'dinh-duong.html', type: 'HTML' },
+      { label: 'Thanh toán', href: 'thanh-toan.html', type: 'HTML' },
+      { label: 'Hỗ trợ', href: 'ho-tro.html', type: 'HTML' },
+      { label: 'Admin', href: 'admin.html', type: 'HTML' },
+      { label: 'MockAPI config', href: 'js/api.js', type: 'JS' },
+      { label: 'App logic', href: 'js/main.js', type: 'JS' },
+      { label: 'Admin logic', href: 'js/admin.js', type: 'JS' }
+    ];
+
+    container.innerHTML = links.map(link => `
+      <div class="col-md-6 col-xl-4">
+        <div class="border border-secondary-subtle rounded-3 p-3 bg-secondary bg-opacity-10">
+          <div class="d-flex justify-content-between align-items-center gap-2">
+            <div>
+              <div class="fw-bold">${link.label}</div>
+              <div class="small text-muted">${link.href}</div>
+            </div>
+            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25">
+              <span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>Đang kiểm tra
+            </span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    const results = await Promise.all(links.map(async link => {
+      try {
+        const response = await fetch(link.href, { cache: 'no-store' });
+        return { ...link, ok: response.ok, status: response.status };
+      } catch (error) {
+        return { ...link, ok: false, status: 'Không đọc được' };
+      }
+    }));
+
+    container.innerHTML = results.map(result => {
+      const color = result.ok ? 'success' : 'danger';
+      const text = result.ok ? 'Hoạt động' : result.status;
+      return `
+        <div class="col-md-6 col-xl-4">
+          <div class="border border-${color} border-opacity-25 rounded-3 p-3 bg-${color} bg-opacity-10">
+            <div class="d-flex justify-content-between align-items-center gap-2">
+              <div>
+                <div class="fw-bold">${result.label}</div>
+                <div class="small text-muted">${result.type} - ${result.href}</div>
+              </div>
+              <span class="badge bg-${color} bg-opacity-10 text-${color} border border-${color} border-opacity-25">${text}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    UTILS.showToast('Đã kiểm tra xong các liên kết chính của FitTrack.', 'success');
   },
 
   /**
@@ -524,11 +909,19 @@ const FitTrackAdmin = {
     filtered.forEach(s => {
       const totalSessions = s.workouts ? s.workouts.length : 0;
       const isSelected = this.selectedStudent && this.selectedStudent.id === s.id;
+      const membershipLabel = this.getMembershipLabel(s);
+      const membershipClass = s.role === 'admin'
+        ? 'bg-info text-white'
+        : s.activePackage === 'VIP'
+          ? 'bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25'
+          : s.activePackage === 'Pro'
+            ? 'bg-success bg-opacity-10 text-success border border-success border-opacity-25'
+            : 'bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-10';
       
       // Visual indicators for role
       const roleMarker = s.role === 'admin' 
         ? `<span class="badge bg-info text-white ms-2" style="font-size: 0.65rem;">Admin</span>`
-        : `<span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-10 ms-2" style="font-size: 0.65rem;">Học viên</span>`;
+        : `<span class="badge ${membershipClass} ms-2" style="font-size: 0.65rem;">${membershipLabel}</span>`;
 
       const itemBtn = document.createElement('button');
       itemBtn.type = 'button';
@@ -540,7 +933,7 @@ const FitTrackAdmin = {
           <div class="fw-bold ${isSelected ? 'text-primary' : ''}">${s.fullName} ${roleMarker}</div>
           <span class="badge ${isSelected ? 'bg-primary text-white' : 'bg-secondary bg-opacity-10 text-secondary'} rounded-pill small">${totalSessions} buổi</span>
         </div>
-        <div class="small text-muted mt-1">@${s.username}</div>
+        <div class="small text-muted mt-1">@${s.username} ${this.isProtectedAdmin(s) ? '• Admin mặc định' : ''}</div>
       `;
       
       itemBtn.addEventListener('click', () => this.selectStudent(s.id));
@@ -556,6 +949,7 @@ const FitTrackAdmin = {
     if (!student) return;
 
     this.selectedStudent = student;
+    const protectedAdmin = this.isProtectedAdmin(student);
     
     // Toggle containers visibility
     document.getElementById('noStudentSelectedMsg').classList.add('d-none');
@@ -583,22 +977,25 @@ const FitTrackAdmin = {
     const roleBadge = document.getElementById('selectedUserRoleBadge');
     if (roleBadge) {
       if (student.role === 'admin') {
-        roleBadge.innerText = 'Quản trị viên (Admin)';
+        roleBadge.innerText = protectedAdmin ? 'Quản trị viên mặc định (Admin)' : 'Quản trị viên (Admin)';
         roleBadge.className = 'badge bg-info text-white fw-bold fs-7 mt-1';
       } else {
-        roleBadge.innerText = 'Học viên (Student)';
-        roleBadge.className = 'badge bg-primary text-white fw-bold fs-7 mt-1';
+        roleBadge.innerText = this.getMembershipLabel(student);
+        roleBadge.className = student.activePackage === 'VIP'
+          ? 'badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 fw-bold fs-7 mt-1'
+          : student.activePackage === 'Pro'
+            ? 'badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 fw-bold fs-7 mt-1'
+            : 'badge bg-primary text-white fw-bold fs-7 mt-1';
       }
     }
 
     // Generate dynamic Promote/Demote privilege controls
     const roleActionContainer = document.getElementById('roleActionContainer');
     if (roleActionContainer) {
-      if (student.id === this.adminUser.id) {
-        // Self Demotion Protection
+      if (protectedAdmin) {
         roleActionContainer.innerHTML = `
-          <button class="btn btn-sm btn-outline-secondary px-3 py-2 rounded-3 fw-semibold" disabled title="Bạn không thể tự thu hồi quyền quản trị của bản thân!">
-            <i class="bi bi-shield-slash me-1"></i> Tự khóa quyền (Bị cấm)
+          <button class="btn btn-sm btn-outline-secondary px-3 py-2 rounded-3 fw-semibold" disabled title="Tài khoản admin mặc định không thể chỉnh sửa">
+            <i class="bi bi-shield-lock-fill me-1"></i> Admin mặc định - không thể chỉnh sửa
           </button>
         `;
       } else if (student.role === 'admin') {
@@ -651,7 +1048,7 @@ const FitTrackAdmin = {
             <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 py-1.5 px-2.5">
               <i class="bi bi-hourglass-split me-1"></i>Yêu cầu: Gói ${reqPkg}
             </span>
-            <div class="small text-muted mt-1">Gói hiện tại: ${activePkg}</div>
+            <div class="small text-muted mt-1">Hiện tại: ${this.getMembershipLabel(student)}</div>
           `;
 
           packageActionContainer.innerHTML = `
@@ -667,7 +1064,7 @@ const FitTrackAdmin = {
         } else {
           packageStatusContainer.innerHTML = `
             <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 py-1.5 px-2.5">
-              <i class="bi bi-patch-check-fill me-1"></i>Gói đang dùng: Gói ${activePkg}
+              <i class="bi bi-patch-check-fill me-1"></i>${this.getMembershipLabel(student)}
             </span>
           `;
 
@@ -696,8 +1093,8 @@ const FitTrackAdmin = {
     const user = this.students.find(s => s.id === userId);
     if (!user) return;
 
-    if (userId === this.adminUser.id) {
-      UTILS.showToast('Bạn không thể tự thay đổi phân quyền của chính mình!', 'warning');
+    if (this.isProtectedAdmin(user)) {
+      UTILS.showToast('Tài khoản Admin mặc định không thể chỉnh sửa phân quyền!', 'warning');
       return;
     }
 
@@ -835,6 +1232,37 @@ const FitTrackAdmin = {
     }
   },
 
+  async setWorkoutStatusForUser(userId, workoutId, newStatus) {
+    const student = this.students.find(s => s.id === userId);
+    if (!student || !Array.isArray(student.workouts)) {
+      UTILS.showToast('Không tìm thấy học viên hoặc buổi tập tương ứng!', 'danger');
+      return;
+    }
+
+    const wIndex = student.workouts.findIndex(w => w.workoutId === workoutId);
+    if (wIndex === -1) {
+      UTILS.showToast('Không tìm thấy buổi tập tương ứng!', 'danger');
+      return;
+    }
+
+    student.workouts[wIndex].status = newStatus;
+
+    UTILS.showSpinner();
+    try {
+      await API.updateUserWorkings(userId, student);
+      UTILS.showToast('Đã duyệt buổi tập thành công!', 'success');
+      await this.fetchStudents();
+      if (this.selectedStudent && this.selectedStudent.id === userId) {
+        this.selectStudent(userId);
+      }
+    } catch (error) {
+      console.error(error);
+      UTILS.showToast('Gặp lỗi khi duyệt buổi tập trên MockAPI!', 'danger');
+    } finally {
+      UTILS.hideSpinner();
+    }
+  },
+
   // ==========================================
   // MASTER EXERCISE CRUD CONTROLLERS
   // ==========================================
@@ -940,6 +1368,10 @@ const FitTrackAdmin = {
   async handleApprovePackage(userId) {
     const student = this.students.find(s => s.id === userId);
     if (!student) return;
+    if (this.isProtectedAdmin(student)) {
+      UTILS.showToast('Tài khoản Admin mặc định không dùng gói hội viên!', 'warning');
+      return;
+    }
 
     const requested = student.requestedPackage;
     if (!requested) return;
@@ -971,6 +1403,10 @@ const FitTrackAdmin = {
   async handleRejectPackage(userId) {
     const student = this.students.find(s => s.id === userId);
     if (!student) return;
+    if (this.isProtectedAdmin(student)) {
+      UTILS.showToast('Tài khoản Admin mặc định không dùng gói hội viên!', 'warning');
+      return;
+    }
 
     const requested = student.requestedPackage;
     if (!requested) return;
@@ -1001,6 +1437,10 @@ const FitTrackAdmin = {
   async handleCancelPackage(userId) {
     const student = this.students.find(s => s.id === userId);
     if (!student) return;
+    if (this.isProtectedAdmin(student)) {
+      UTILS.showToast('Tài khoản Admin mặc định không dùng gói hội viên!', 'warning');
+      return;
+    }
 
     const currentPkg = student.activePackage;
     if (!currentPkg || currentPkg === 'Starter') return;
@@ -1031,6 +1471,10 @@ const FitTrackAdmin = {
 
   async handleAdminChangePackage() {
     if (!this.selectedStudent) return;
+    if (this.isProtectedAdmin(this.selectedStudent)) {
+      UTILS.showToast('Tài khoản Admin mặc định không thể chỉnh sửa gói hội viên!', 'warning');
+      return;
+    }
 
     const select = document.getElementById('adminDirectPackageSelect');
     if (!select) return;
@@ -1172,6 +1616,41 @@ const FitTrackAdmin = {
     }
   },
 
+  async handleAdminUpdatePassword() {
+    if (!this.selectedStudent) return;
+    if (this.isProtectedAdmin(this.selectedStudent)) {
+      UTILS.showToast('Tài khoản Admin mặc định không thể chỉnh sửa mật khẩu tại đây!', 'warning');
+      return;
+    }
+
+    const passwordField = document.getElementById('selectedStudentPassword');
+    const newPassword = passwordField ? passwordField.value.trim() : '';
+
+    if (!newPassword || newPassword.length < 3) {
+      UTILS.showToast('Mật khẩu mới cần có ít nhất 3 ký tự!', 'warning');
+      return;
+    }
+
+    if (!confirm(`Bạn có chắc muốn đổi mật khẩu cho tài khoản @${this.selectedStudent.username} không?`)) {
+      return;
+    }
+
+    this.selectedStudent.password = newPassword;
+
+    UTILS.showSpinner();
+    try {
+      await API.updateUserWorkings(this.selectedStudent.id, this.selectedStudent);
+      UTILS.showToast('Đã cập nhật mật khẩu tài khoản người dùng trên MockAPI!', 'success');
+      await this.fetchStudents();
+      this.selectStudent(this.selectedStudent.id);
+    } catch (error) {
+      console.error(error);
+      UTILS.showToast('Gặp lỗi khi cập nhật mật khẩu trên MockAPI!', 'danger');
+    } finally {
+      UTILS.hideSpinner();
+    }
+  },
+
   /**
    * Delete a student account permanently
    */
@@ -1179,8 +1658,8 @@ const FitTrackAdmin = {
     if (!this.selectedStudent) return;
 
     // Prevent self-deletion
-    if (this.selectedStudent.id === this.adminUser.id) {
-      UTILS.showToast('Bạn không thể xóa tài khoản của chính mình!', 'warning');
+    if (this.isProtectedAdmin(this.selectedStudent)) {
+      UTILS.showToast('Tài khoản Admin mặc định không thể xóa hoặc chỉnh sửa!', 'warning');
       return;
     }
 

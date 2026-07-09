@@ -23,7 +23,15 @@ const FitTrackApp = {
     if (authModalEl) this.authModal = new bootstrap.Modal(authModalEl);
     
     const workoutModalEl = document.getElementById('workoutModal');
-    if (workoutModalEl) this.workoutModal = new bootstrap.Modal(workoutModalEl);
+    if (workoutModalEl) {
+      this.workoutModal = new bootstrap.Modal(workoutModalEl);
+      workoutModalEl.addEventListener('show.bs.modal', () => {
+        const workoutDate = document.getElementById('workoutDate');
+        if (workoutDate && !workoutDate.value) {
+          workoutDate.value = new Date().toISOString().slice(0, 10);
+        }
+      });
+    }
 
     // Initial Theme & Theme Toggle Listener
     const btnThemeToggle = document.getElementById('btnThemeToggle');
@@ -39,6 +47,170 @@ const FitTrackApp = {
 
     // Initialize checkout page if present
     this.initCheckoutPage();
+    this.renderManagedContent();
+  },
+
+  getManagedContent(moduleName) {
+    try {
+      const raw = localStorage.getItem('fittrack_admin_content');
+      const items = raw ? JSON.parse(raw) : [];
+      return items.filter(item => item.module === moduleName && item.status !== 'hidden');
+    } catch (error) {
+      return [];
+    }
+  },
+
+  renderManagedContent() {
+    this.renderManagedHomeBanners();
+  },
+
+  renderManagedHomeBanners() {
+    const items = this.getManagedContent('home');
+    const inner = document.getElementById('homePromoCarouselInner');
+    const indicators = document.getElementById('homePromoCarouselIndicators');
+    if (!inner || !indicators) return;
+
+    const fallbackSlides = [
+      {
+        title: 'Tập luyện có kế hoạch, tiến bộ có số liệu',
+        subtitle: 'Workout tracking',
+        image: 'https://images.unsplash.com/photo-1534258936925-c58bed479fcb?auto=format&fit=crop&w=1600&q=80',
+        description: 'Theo dõi buổi tập, calo, lịch sử tiến bộ và trạng thái duyệt từ Admin.',
+        cta: 'Ghi buổi tập',
+        href: 'nhat-ky.html',
+        points: ['Calo tự tính', 'Lịch sử rõ ràng', 'Admin duyệt']
+      },
+      {
+        title: 'Chọn HLV theo đúng mục tiêu tập của bạn',
+        subtitle: 'Personal coach',
+        image: 'https://medialabs.asia/cms/assets/8ed100bc-8d29-4050-b325-f4cfacea6e34?height=900&width=1600',
+        description: 'Tăng cơ, giảm mỡ, boxing, mobility, recovery và dinh dưỡng trong một giỏ hàng.',
+        cta: 'Thuê HLV',
+        href: 'thue-hlv.html',
+        points: ['HLV theo mảng', 'Thêm vào giỏ', 'Thanh toán chung']
+      },
+      {
+        title: 'Ăn uống đúng để tập luyện hiệu quả hơn',
+        subtitle: 'Healthy nutrition',
+        image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1600&q=80',
+        description: 'Tham khảo món healthy, thực đơn mẫu và thói quen ăn uống dễ duy trì.',
+        cta: 'Xem dinh dưỡng',
+        href: 'dinh-duong.html',
+        points: ['Thực đơn mẫu', 'Món healthy', 'Thói quen bền vững']
+      },
+      {
+        title: 'Gói Pro và VIP cho người tập nghiêm túc',
+        subtitle: 'FitTrack membership',
+        image: 'https://images.unsplash.com/photo-1549060279-7e168fcee0c2?auto=format&fit=crop&w=1600&q=80',
+        description: 'Chọn gói tập, thuê thêm HLV và thanh toán nhanh trên FitTrack.',
+        cta: 'Xem gói tập',
+        href: 'goi-tap.html',
+        points: ['Starter miễn phí', 'Pro nâng cao', 'VIP kèm HLV']
+      }
+    ];
+
+    const normalizedItems = items.map(item => ({
+      ...item,
+      cta: 'Khám phá ngay',
+      href: 'goi-tap.html',
+      points: ['Theo dõi buổi tập', 'Chọn HLV', 'Thanh toán dễ dàng']
+    }));
+    const slides = [...normalizedItems, ...fallbackSlides].slice(0, 6);
+
+    indicators.innerHTML = slides.map((_, index) => `
+      <button type="button" data-bs-target="#homePromoCarousel" data-bs-slide-to="${index}" class="${index === 0 ? 'active' : ''}" ${index === 0 ? 'aria-current="true"' : ''} aria-label="Slide ${index + 1}"></button>
+    `).join('');
+
+    inner.innerHTML = slides.map((item, index) => `
+      <div class="carousel-item ${index === 0 ? 'active' : ''}">
+        <div class="home-promo-slide" style="background-image: linear-gradient(90deg, rgba(5,10,18,.78) 0%, rgba(5,10,18,.50) 46%, rgba(5,10,18,.14) 100%), url('${item.image || 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1400&q=80'}');">
+          <div class="home-promo-copy text-start">
+            <span class="badge bg-success text-white mb-3">${item.subtitle || 'FitTrack'}</span>
+            <h2 class="display-6 fw-extrabold mb-3">${item.title}</h2>
+            <p class="lead mb-4">${item.description || 'Nội dung quảng cáo từ Admin.'}</p>
+            <div class="home-promo-points mb-4">
+              ${(item.points || []).map(point => `<span><i class="bi bi-check2-circle"></i>${point}</span>`).join('')}
+            </div>
+            <a href="${item.href || 'goi-tap.html'}" data-home-href="${item.href || 'goi-tap.html'}" class="btn btn-gradient rounded-3 px-4 py-2 text-dark fw-semibold home-promo-cta">${item.cta || 'Khám phá ngay'}</a>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    inner.querySelectorAll('.home-promo-cta').forEach(link => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.location.href = link.dataset.homeHref || link.getAttribute('href');
+      });
+    });
+
+    const carouselEl = document.getElementById('homePromoCarousel');
+    if (carouselEl && window.bootstrap?.Carousel) {
+      const carousel = bootstrap.Carousel.getOrCreateInstance(carouselEl, {
+        interval: 3500,
+        ride: 'carousel',
+        pause: false,
+        touch: true,
+        wrap: true
+      });
+      carousel.cycle();
+    }
+  },
+
+  renderManagedPackages() {
+    const items = this.getManagedContent('package');
+    const container = document.getElementById('packageCards');
+    if (!container || items.length === 0) return;
+
+    container.innerHTML = items.map(item => {
+      const packageName = item.title.toLowerCase().includes('vip') ? 'VIP' : item.title.toLowerCase().includes('pro') ? 'Pro' : 'Starter';
+      return `
+        <div class="col-lg-4">
+          <div class="glass-card h-100 d-flex flex-column overflow-hidden">
+            ${item.image ? `<img src="${item.image}" alt="${item.title}" class="w-100" style="height: 190px; object-fit: cover;">` : ''}
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 align-self-start mb-3">${packageName}</span>
+              <h4 class="fw-bold mb-2">${item.title}</h4>
+              <p class="text-body-secondary small mb-3">${item.subtitle || item.description || 'Gói tập FitTrack'}</p>
+              <div class="display-6 fw-bold mb-2">${this.formatCurrency(item.price)}</div>
+              <p class="text-body-secondary small flex-grow-1">${item.description || 'Nội dung gói được quản lý bởi Admin.'}</p>
+              <div class="btn-group split-action mt-auto" role="group">
+                <button type="button" class="btn btn-outline-success btn-icon fw-bold" onclick="FitTrackApp.addPackageToCart('${packageName}')"><i class="bi bi-plus-lg"></i></button>
+                <button type="button" class="btn btn-gradient fw-semibold text-dark" onclick="FitTrackApp.startPackageCheckout('${packageName}')">Đăng ký gói</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  renderManagedCoaches() {
+    const items = this.getManagedContent('coach');
+    const container = document.getElementById('coachCards');
+    if (!container || items.length === 0) return;
+
+    container.innerHTML = items.map(item => `
+      <div class="col-md-6 col-xl-4">
+        <div class="glass-card h-100 overflow-hidden d-flex flex-column">
+          ${item.image ? `<img src="${item.image}" alt="${item.title}" class="w-100" style="height: 230px; object-fit: cover;">` : ''}
+          <div class="p-4 d-flex flex-column flex-grow-1">
+            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+              <div>
+                <div class="small text-body-secondary fw-semibold mb-1">${item.title}</div>
+                <h4 class="mb-1">${item.subtitle || 'Huấn luyện cá nhân'}</h4>
+              </div>
+              <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25">${this.formatCurrency(item.price)}</span>
+            </div>
+            <p class="text-body-secondary small mb-3 flex-grow-1">${item.description || 'HLV được quản lý bởi Admin.'}</p>
+            <div class="btn-group split-action mt-auto" role="group">
+              <button type="button" class="btn btn-outline-info btn-icon fw-bold" onclick="FitTrackApp.addCoachToCart('${item.title}', '${item.subtitle || 'Huấn luyện cá nhân'}', ${Number(item.price) || 0})"><i class="bi bi-plus-lg"></i></button>
+              <button type="button" class="btn btn-outline-info fw-semibold" onclick="FitTrackApp.startCoachCheckout('${item.title}', '${item.subtitle || 'Huấn luyện cá nhân'}', ${Number(item.price) || 0})">Thuê HLV</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('');
   },
 
   /**
@@ -106,7 +278,8 @@ const FitTrackApp = {
     if (settingsModalEl) {
       settingsModalEl.addEventListener('show.bs.modal', () => {
         document.getElementById('settingsUsername').value = this.currentUser.username;
-        document.getElementById('settingsRole').value = this.currentUser.role === 'admin' ? 'Quản trị viên (Admin)' : 'Học viên (Student)';
+        const activePackage = this.currentUser.activePackage || 'Starter';
+        document.getElementById('settingsRole').value = this.currentUser.role === 'admin' ? 'Quản trị viên (Admin)' : `Hội viên ${activePackage}`;
         document.getElementById('settingsFullName').value = this.currentUser.fullName;
         document.getElementById('settingsPassword').value = this.currentUser.password;
 
@@ -258,7 +431,10 @@ const FitTrackApp = {
     const headerFullName = document.getElementById('headerFullName');
     if (headerFullName) headerFullName.innerText = this.currentUser.fullName;
     const headerRole = document.getElementById('headerRole');
-    if (headerRole) headerRole.innerText = this.currentUser.role === 'admin' ? 'Quản trị viên' : 'Thành viên';
+    if (headerRole) {
+      const activePackage = this.currentUser.activePackage || 'Starter';
+      headerRole.innerText = this.currentUser.role === 'admin' ? 'Quản trị viên' : `Hội viên ${activePackage}`;
+    }
     const welcomeUserFullName = document.getElementById('welcomeUserFullName');
     if (welcomeUserFullName) welcomeUserFullName.innerText = this.currentUser.fullName;
 
@@ -757,7 +933,15 @@ const FitTrackApp = {
    * Handle gym/workout package selection
    * If not logged in, ask to login. If logged in, save request to MockAPI for Admin approval.
    */
+  normalizePackageName(packageName) {
+    const raw = String(packageName || '').toLowerCase().trim();
+    if (raw.includes('vip')) return 'VIP';
+    if (raw.includes('pro') || raw.includes('fitpro')) return 'Pro';
+    return 'Starter';
+  },
+
   getPackageCheckoutConfig(packageName) {
+    const normalizedPackageName = this.normalizePackageName(packageName);
     const packages = {
       Starter: {
         type: 'package',
@@ -782,7 +966,7 @@ const FitTrackApp = {
       }
     };
 
-    return packages[packageName] || packages.Starter;
+    return packages[normalizedPackageName] || packages.Starter;
   },
 
   formatCurrency(amount) {
@@ -802,9 +986,10 @@ const FitTrackApp = {
   },
 
   getPackageCheckoutItem(packageName) {
+    const normalizedPackageName = this.normalizePackageName(packageName);
     const item = {
-      ...this.getPackageCheckoutConfig(packageName),
-      id: `package-${packageName}`,
+      ...this.getPackageCheckoutConfig(normalizedPackageName),
+      id: `package-${normalizedPackageName}`,
       createdAt: new Date().toISOString()
     };
 
@@ -833,10 +1018,9 @@ const FitTrackApp = {
     if (!this.requireLoginForCheckout('Vui lòng đăng nhập tài khoản để thêm gói tập vào giỏ hàng!')) return;
 
     const item = this.getPackageCheckoutItem(packageName);
-    if (!this.canSelectPackage(item)) return;
-
+    const hadPackageInCart = this.getCheckoutItems().some(existing => existing.type === 'package');
     this.addCheckoutItem(item);
-    UTILS.showToast(`Đã thêm ${item.title} vào giỏ hàng!`, 'success');
+    UTILS.showToast(hadPackageInCart ? `Đã đổi gói trong giỏ hàng sang ${item.title}!` : `Đã thêm ${item.title} vào giỏ hàng!`, 'success');
   },
 
   startPackageCheckout(packageName) {

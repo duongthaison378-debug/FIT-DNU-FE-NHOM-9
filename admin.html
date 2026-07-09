@@ -326,10 +326,13 @@
                         <i class="bi bi-key-fill text-warning fs-3"></i>
                         <div>
                           <div class="small text-muted fw-semibold">Mật khẩu tài khoản</div>
-                          <div class="input-group input-group-sm mt-1" style="width: 180px;">
-                            <input type="password" class="form-control" id="selectedStudentPassword" readonly>
+                          <div class="input-group input-group-sm mt-1" style="width: 280px; max-width: 100%;">
+                            <input type="password" class="form-control" id="selectedStudentPassword">
                             <button class="btn btn-outline-secondary" type="button" id="togglePasswordBtn" onclick="FitTrackAdmin.togglePasswordVisibility()">
                               <i class="bi bi-eye-fill"></i>
+                            </button>
+                            <button class="btn btn-outline-success fw-semibold" type="button" onclick="FitTrackAdmin.handleAdminUpdatePassword()">
+                              Lưu
                             </button>
                           </div>
                         </div>
@@ -435,7 +438,7 @@
                 <div id="adminUserAlertPlaceholder" class="card border border-info-subtle rounded-3 p-4 bg-info bg-opacity-10 text-center d-none">
                   <i class="bi bi-shield-fill text-info display-5 mb-2"></i>
                   <h6 class="fw-bold text-info">Tài khoản Quản trị viên</h6>
-                  <p class="small text-body-secondary mb-0">Tài khoản này có vai trò Admin và không có buổi tập cá nhân cần duyệt tập.</p>
+                  <p class="small text-body-secondary mb-0">Tài khoản Admin mặc định dùng để quản lý hệ thống, không thể chỉnh sửa/xóa và không có buổi tập cá nhân cần duyệt.</p>
                 </div>
 
               </div>
@@ -460,6 +463,17 @@
           </div>
 
           <div class="row g-4">
+            <div class="col-12">
+              <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-4">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                  <h5 class="fw-bold mb-0"><i class="bi bi-journal-check text-success me-2"></i>Buổi tập chờ duyệt</h5>
+                  <span class="small text-body-secondary">Duyệt nhanh các buổi tập học viên vừa gửi</span>
+                </div>
+                <div id="adminWorkoutApprovalList" class="vstack gap-3">
+                  <div class="text-center text-muted py-4">Đang tải danh sách buổi tập chờ duyệt...</div>
+                </div>
+              </div>
+            </div>
             <div class="col-xl-6">
               <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-4 h-100">
                 <h5 class="fw-bold mb-3"><i class="bi bi-tags-fill text-success me-2"></i>Yêu cầu gói tập</h5>
@@ -513,14 +527,99 @@
               <p class="text-body-secondary mb-0">Theo dõi các thư mục/trang chính và mở nhanh khu cần chỉnh hoặc kiểm tra liên kết MockAPI.</p>
             </div>
             <div class="col-lg-4 text-lg-end">
-              <a class="btn btn-indigo rounded-3 fw-semibold" href="index.html">
-                <i class="bi bi-house-door-fill me-1"></i>Về trang chủ
-              </a>
+              <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+                <button class="btn btn-outline-primary rounded-3 fw-semibold" type="button" onclick="FitTrackAdmin.auditSiteLinks()">
+                  <i class="bi bi-link-45deg me-1"></i>Kiểm tra liên kết
+                </button>
+                <a class="btn btn-indigo rounded-3 fw-semibold" href="index.html">
+                  <i class="bi bi-house-door-fill me-1"></i>Về trang chủ
+                </a>
+              </div>
             </div>
           </div>
 
           <div class="row g-3" id="adminModuleOverview">
             <div class="col-12 text-center text-muted py-4">Đang tải danh sách trang quản lý...</div>
+          </div>
+
+          <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-4 mt-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+              <div>
+                <h5 class="fw-bold mb-1"><i class="bi bi-pencil-square text-success me-2"></i>Thêm / sửa / xóa nội dung có ảnh</h5>
+                <p class="small text-body-secondary mb-0">Dùng để quản lý banner trang chủ, gói tập, HLV, dinh dưỡng và hỗ trợ.</p>
+              </div>
+              <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-sm btn-outline-success rounded-3 fw-semibold" type="button" onclick="FitTrackAdmin.resetContentForm('package')">
+                  <i class="bi bi-tags-fill me-1"></i>Thêm gói tập
+                </button>
+                <button class="btn btn-sm btn-outline-info rounded-3 fw-semibold" type="button" onclick="FitTrackAdmin.resetContentForm('coach')">
+                  <i class="bi bi-person-workspace me-1"></i>Thêm HLV
+                </button>
+                <button class="btn btn-sm btn-outline-secondary rounded-3 fw-semibold" type="button" onclick="FitTrackAdmin.resetContentForm()">
+                  <i class="bi bi-plus-circle me-1"></i>Tạo mới
+                </button>
+              </div>
+            </div>
+
+            <form id="adminContentForm" class="row g-3 mb-4">
+              <input type="hidden" id="contentItemId">
+              <div class="col-md-3">
+                <label class="form-label small fw-bold" for="contentModule">Thư mục</label>
+                <select class="form-select" id="contentModule" required>
+                  <option value="home">Trang chủ / Banner</option>
+                  <option value="package">Gói tập</option>
+                  <option value="coach">Thuê HLV</option>
+                  <option value="nutrition">Dinh dưỡng</option>
+                  <option value="support">Hỗ trợ</option>
+                </select>
+              </div>
+              <div class="col-md-5">
+                <label class="form-label small fw-bold" for="contentTitle">Tiêu đề / Tên</label>
+                <input type="text" class="form-control" id="contentTitle" placeholder="Ví dụ: Gói FitPro, HLV Recovery..." required>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label small fw-bold" for="contentPrice">Giá</label>
+                <input type="number" class="form-control" id="contentPrice" min="0" placeholder="399000">
+              </div>
+              <div class="col-md-2">
+                <label class="form-label small fw-bold" for="contentStatus">Trạng thái</label>
+                <select class="form-select" id="contentStatus">
+                  <option value="active">Hiển thị</option>
+                  <option value="hidden">Ẩn</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-bold" for="contentSubtitle">Phụ đề / Chuyên môn</label>
+                <input type="text" class="form-control" id="contentSubtitle" placeholder="Ví dụ: Tăng cơ - Sức mạnh">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-bold" for="contentImage">Link ảnh</label>
+                <input type="url" class="form-control" id="contentImage" placeholder="https://...">
+              </div>
+              <div class="col-12">
+                <label class="form-label small fw-bold" for="contentDescription">Mô tả</label>
+                <textarea class="form-control" id="contentDescription" rows="3" placeholder="Mô tả ngắn nội dung, quyền lợi, thành tích hoặc thông tin tham khảo..."></textarea>
+              </div>
+              <div class="col-12 text-end">
+                <button type="submit" class="btn btn-indigo rounded-3 fw-semibold px-4">
+                  <i class="bi bi-save-fill me-1"></i>Lưu nội dung
+                </button>
+              </div>
+            </form>
+
+            <div class="row g-3" id="adminContentList">
+              <div class="col-12 text-center text-muted py-3">Chưa có nội dung tùy chỉnh.</div>
+            </div>
+          </div>
+
+          <div class="card bg-secondary bg-opacity-10 border border-secondary-subtle rounded-3 p-4 mt-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+              <h5 class="fw-bold mb-0"><i class="bi bi-link-45deg text-info me-2"></i>Kiểm tra liên kết trang</h5>
+              <span class="small text-body-secondary">Dùng để rà nhanh các thư mục HTML/JS chính của FitTrack</span>
+            </div>
+            <div id="adminLinkAuditList" class="row g-2">
+              <div class="col-12 text-center text-muted py-3">Bấm “Kiểm tra liên kết” để rà trạng thái các trang.</div>
+            </div>
           </div>
         </div>
 
